@@ -21,7 +21,8 @@ namespace tictactoe.Classes
         {
             foreach (var button in buttonList)
             {
-                    button.Content = "";
+                button.Content = "";
+                button.IsEnabled = true;
             }
 
             Turn = true;

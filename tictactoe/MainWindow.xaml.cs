@@ -21,7 +21,7 @@ namespace tictactoe
     /// </summary>
     public partial class MainWindow : Window
     {
-        readonly Tictactoe _tictactoe = new Tictactoe();
+        private readonly Tictactoe _tictactoe = new Tictactoe();
         private readonly IEnumerable<Button> _buttonCollection;
         private int _fieldsLeftCounter = 9;
 
@@ -43,17 +43,18 @@ namespace tictactoe
             if (button.Content.ToString() == "")
             {
                 button.Content = currentPlayer;
+                button.IsEnabled = false;
                 _fieldsLeftCounter--;
 
                 if (CheckWinner())
                 {
-                    var continueBoxResult = MessageBox.Show(button.Content + " wins! Do you want to start a new game?", "Winner!", MessageBoxButton.YesNo);
+                    MessageBox.Show("Congratulations! Player " + currentPlayer + " wins!", "Winner!", MessageBoxButton.OK);
 
-                    if (continueBoxResult == MessageBoxResult.Yes)
+                    if (!AskForNewGame())
                     {
-                        RestartGame(sender, e);
+                        DisableButtons();
                     }
-                    
+                 
                 }
 
                 else
@@ -74,10 +75,63 @@ namespace tictactoe
         private bool CheckWinner()
         {
             //Check rows
-            return button_A1.Content.Equals(button_A2.Content);
+            if (button_A1.Content.ToString() == button_A2.Content.ToString() && button_A2.Content.ToString() == button_A3.Content.ToString() && !button_A1.IsEnabled)
+            {
+                return true;
+            }
+
+            if (button_B1.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_B3.Content.ToString() && !button_B1.IsEnabled)
+            {
+                return true;
+            }
+
+            if (button_C1.Content.ToString() == button_C2.Content.ToString() && button_C2.Content.ToString() == button_C3.Content.ToString() && !button_C1.IsEnabled)
+            {
+                return true;
+            }
+
+            //Check columns
+            if (button_A1.Content.ToString() == button_B1.Content.ToString() && button_B1.Content.ToString() == button_C1.Content.ToString() && !button_A1.IsEnabled)
+            {
+                return true;
+            }
+
+            if (button_A2.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C2.Content.ToString() && !button_A2.IsEnabled)
+            {
+                return true;
+            }
+
+            if (button_A3.Content.ToString() == button_B3.Content.ToString() && button_B3.Content.ToString() == button_C3.Content.ToString() && !button_A3.IsEnabled)
+            {
+                return true;
+            }
+
+            //Check diagonals
+            if (button_A1.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C3.Content.ToString() && !button_A1.IsEnabled)
+            {
+                return true;
+            }
+
+            if (button_A3.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C1.Content.ToString() && !button_A3.IsEnabled)
+            {
+                return true;
+            }
+
+            return false;
+
+
         }
 
         private void RestartGame(object sender, RoutedEventArgs e)
+        {
+            //_tictactoe.NewGame(_buttonCollection);
+            //_fieldsLeftCounter = 9;
+            //UpdateUi();
+
+            RestartGame();
+        }
+
+        private void RestartGame()
         {
             _tictactoe.NewGame(_buttonCollection);
             _fieldsLeftCounter = 9;
@@ -92,7 +146,19 @@ namespace tictactoe
 
         private void DisableButtons()
         {
-            //TODO disable all buttons after a winning game
+            foreach (var button in _buttonCollection)
+            {
+                button.IsEnabled = false;
+            }
+        }
+
+        private bool AskForNewGame()
+        {
+            var continueBoxResult = MessageBox.Show("Do you want to start a new game?", "Winner!", MessageBoxButton.YesNo);
+
+            if (continueBoxResult != MessageBoxResult.Yes) return false;
+            RestartGame();
+            return true;
         }
     }
 }
