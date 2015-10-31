@@ -12,16 +12,16 @@ namespace tictactoe.Classes
     {
         public bool Turn { get; private set; } = true;
 
-        public char GetCurrentTurnPlayer()
+        public string GetCurrentTurnPlayer()
         {
-            return char.Parse(Turn ? "X" : "O");
+            return Turn ? "X" : "O";
         }
 
         public void NewGame(IEnumerable<Button> buttonList )
         {
             foreach (var button in buttonList)
             {
-                    button.Content = char.Parse(" ");
+                    button.Content = "";
             }
 
             Turn = true;

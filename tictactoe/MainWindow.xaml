@@ -11,7 +11,7 @@
             <ColumnDefinition Width="549*"/>
             <ColumnDefinition Width="200*"/>
         </Grid.ColumnDefinitions>
-        <Viewbox Stretch="Fill" Margin="5,25,0,25" >
+        <Viewbox Stretch="Fill" Margin="5,25,0,30" >
             <Grid x:Name="GridPlayingField" Height="240" Width="240">
                 <Button x:Name="button_A1" Content="" Margin="0,0,160,160" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
                 <Button x:Name="button_B1" Content="" Margin="0,80,160,80" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
@@ -24,7 +24,14 @@
                 <Button x:Name="button_C3" Content="" Margin="160,160,0,0" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
             </Grid>
         </Viewbox>
-        <StatusBar Grid.ColumnSpan="2" Height="25" VerticalAlignment="Bottom"/>
-        <Menu x:Name="menu" Height="25" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <StatusBar x:Name="StatusBar" Grid.ColumnSpan="2" Grid.Column="0" Height="30" VerticalAlignment="Bottom">
+            <Label x:Name="LabelStatus" Content=""/>
+        </StatusBar>
+        <Menu x:Name="Menu" Height="25" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Column="0">
+            <MenuItem Header="MenuItem" Height="25" Width="70">
+                <MenuItem x:Name="MenuItemSettings" Header="Settings..."/>
+                <MenuItem x:Name="MenuItemNewGame" Header="New Game..." Click="RestartGame"/>
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>

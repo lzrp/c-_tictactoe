@@ -9,7 +9,6 @@ namespace tictactoe.Classes
         void NewGame(IEnumerable<Button> buttonList);
         void NextTurn();
 
-        char GetCurrentTurnPlayer();
-        //string CheckWinner();
+        string GetCurrentTurnPlayer();
     }
 }
