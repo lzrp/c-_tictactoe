@@ -24,7 +24,7 @@ namespace tictactoe
         private readonly Tictactoe _tictactoe = new Tictactoe();
         private readonly IEnumerable<Button> _buttonCollection;
         private int _fieldsLeftCounter = 9;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -163,6 +163,48 @@ namespace tictactoe
             if (continueBoxResult != MessageBoxResult.Yes) return false;
             RestartGame();
             return true;
+        }
+        
+        private void MenuItemAiEasy_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.DifficultySetting = 0;
+            Properties.Settings.Default.Save();
+        }
+
+        private void MenuItemAiMedium_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.DifficultySetting = 1;
+            Properties.Settings.Default.Save();
+        }
+
+        private void MenuItemAiImpossible_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.DifficultySetting = 2;
+            Properties.Settings.Default.Save();
+        }
+
+        private void MenuItemAiEasy_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Properties.Settings.Default.DifficultySetting != 0) return;
+            MenuItemAiEasy.IsChecked = true;
+            MenuItemAiMedium.IsChecked = false;
+            MenuItemAiImpossible.IsChecked = false;
+        }
+
+        private void MenuItemAiMedium_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Properties.Settings.Default.DifficultySetting != 1) return;
+            MenuItemAiEasy.IsChecked = false;
+            MenuItemAiMedium.IsChecked = true;
+            MenuItemAiImpossible.IsChecked = false;
+        }
+
+        private void MenuItemAiImpossible_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Properties.Settings.Default.DifficultySetting != 2) return;
+            MenuItemAiEasy.IsChecked = false;
+            MenuItemAiMedium.IsChecked = false;
+            MenuItemAiImpossible.IsChecked = true;
         }
     }
 }
