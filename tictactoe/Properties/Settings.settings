@@ -6,7 +6,7 @@
       <Value Profile="(Default)">DefaultPlayerName</Value>
     </Setting>
     <Setting Name="DifficultySetting" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="VsComputer" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

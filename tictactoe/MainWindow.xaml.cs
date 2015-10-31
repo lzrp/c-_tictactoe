@@ -49,25 +49,21 @@ namespace tictactoe
                 if (CheckWinner())
                 {
                     MessageBox.Show("Congratulations! Player " + currentPlayer + " wins!", "Winner!", MessageBoxButton.OK);
-
-                    if (!AskForNewGame())
-                    {
-                        DisableButtons();
-                    }
-                 
                 }
 
                 else
                 {
                     _tictactoe.NextTurn();
+                    if (_fieldsLeftCounter != 0) return;
+                    MessageBox.Show("Players draw.", "Draw!", MessageBoxButton.OK);
                 }
 
                 UpdateUi();
 
-                if (_fieldsLeftCounter != 0) return;
-                MessageBox.Show("Players draw.", "Draw!", MessageBoxButton.OK);
-
-                AskForNewGame();
+                if (!AskForNewGame())
+                {
+                    DisableButtons();
+                }
             }
 
             else
@@ -205,6 +201,17 @@ namespace tictactoe
             MenuItemAiEasy.IsChecked = false;
             MenuItemAiMedium.IsChecked = false;
             MenuItemAiImpossible.IsChecked = true;
+        }
+
+        private void MenuItemVsComputer_Loaded(object sender, RoutedEventArgs e)
+        {
+            MenuItemVsComputer.IsChecked = Properties.Settings.Default.VsComputer;
+        }
+
+        private void MenuItemVsComputer_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
+            Properties.Settings.Default.Save();
         }
     }
 }

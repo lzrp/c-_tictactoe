@@ -37,6 +37,7 @@
                         <MenuItem x:Name="MenuItemAiImpossible" Header="Impossible" Click="MenuItemAiImpossible_Click" IsCheckable="True" Loaded="MenuItemAiImpossible_Loaded"/>
                     </MenuItem>
                     <MenuItem x:Name="MenuItemResetSettings" Header="Reset Settings"/>
+                    <MenuItem x:Name="MenuItemVsComputer" Header="Computer Oponent" Loaded="MenuItemVsComputer_Loaded" Click="MenuItemVsComputer_Click" IsCheckable="True"/>
                 </MenuItem>
                 
             </MenuItem>
