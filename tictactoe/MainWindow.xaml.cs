@@ -63,7 +63,11 @@ namespace tictactoe
                 }
 
                 UpdateUi();
-                
+
+                if (_fieldsLeftCounter != 0) return;
+                MessageBox.Show("Players draw.", "Draw!", MessageBoxButton.OK);
+
+                AskForNewGame();
             }
 
             else
@@ -154,7 +158,7 @@ namespace tictactoe
 
         private bool AskForNewGame()
         {
-            var continueBoxResult = MessageBox.Show("Do you want to start a new game?", "Winner!", MessageBoxButton.YesNo);
+            var continueBoxResult = MessageBox.Show("Do you want to start a new game?", "New game?" , MessageBoxButton.YesNo);
 
             if (continueBoxResult != MessageBoxResult.Yes) return false;
             RestartGame();
