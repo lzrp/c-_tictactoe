@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using tictactoe.Classes;
 
 namespace tictactoe
 {
@@ -20,9 +21,31 @@ namespace tictactoe
     /// </summary>
     public partial class MainWindow : Window
     {
+        readonly Tictactoe _tictactoe = new Tictactoe();
+
         public MainWindow()
         {
             InitializeComponent();
+
+            var buttonCollection = GridPlayingField.Children.OfType<Button>();
+
+            _tictactoe.NewGame(buttonCollection);
+        }
+
+        private void PlaceMarker(object sender, RoutedEventArgs e)
+        {
+            var button = (Button) sender;
+
+            if (button.Content.ToString() == " ")
+            {
+                button.Content = _tictactoe.GetCurrentTurnPlayer();
+                _tictactoe.NextTurn();
+            }
+
+            else
+            {
+            MessageBox.Show("You can't place your marker to an already marked field!");
+            }
         }
     }
 }

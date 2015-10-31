@@ -1,12 +1,30 @@
-﻿<Window x:Class="tictactoe.MainWindow"
+﻿<Window x:Name="MainWindow1" x:Class="tictactoe.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:tictactoe"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="TicTacToe" ResizeMode="CanResizeWithGrip" Height="538" Width="757" MinWidth="640" MinHeight="480">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="549*"/>
+            <ColumnDefinition Width="200*"/>
+        </Grid.ColumnDefinitions>
+        <Viewbox Stretch="Fill" Margin="5,25,0,25" >
+            <Grid x:Name="GridPlayingField" Height="240" Width="240">
+                <Button x:Name="button_A1" Content="" Margin="0,0,160,160" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
+                <Button x:Name="button_B1" Content="" Margin="0,80,160,80" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
+                <Button x:Name="button_C1" Content="" Margin="0,160,160,0" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
+                <Button x:Name="button_A2" Content="" Margin="80,0,80,160" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
+                <Button x:Name="button_B2" Content="" Margin="80" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
+                <Button x:Name="button_C2" Content="" Margin="80,160,80,0" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
+                <Button x:Name="button_A3" Content="" Margin="160,0,0,160" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
+                <Button x:Name="button_B3" Content="" Margin="160,80,0,80" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
+                <Button x:Name="button_C3" Content="" Margin="160,160,0,0" Height="80" Width="80" Click="PlaceMarker" FontSize="26.667"/>
+            </Grid>
+        </Viewbox>
+        <StatusBar Grid.ColumnSpan="2" Height="25" VerticalAlignment="Bottom"/>
+        <Menu x:Name="menu" Height="25" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
