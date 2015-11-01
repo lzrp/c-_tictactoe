@@ -8,7 +8,15 @@ namespace tictactoe.Classes
     {
         void NewGame(IEnumerable<Button> buttonList);
         void NextTurn();
+        void AnnounceWinner(string player);
+        void AnnounceDraw();
+
+        bool PlaceMarker(Button button);
+        bool CheckWinner(char[,] board);
+        bool AskForNewGame();
 
         string GetCurrentTurnPlayer();
+
+
     }
 }
