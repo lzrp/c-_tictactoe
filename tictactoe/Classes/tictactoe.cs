@@ -71,7 +71,7 @@ namespace tictactoe.Classes
 
         public void PlaceMarker(Button button)
         {
-            if (!GameInProgress) return false;
+            if (!GameInProgress) return;
 
             var currentPlayer = GetCurrentTurnPlayer();
 
@@ -86,12 +86,11 @@ namespace tictactoe.Classes
                 var buttonVerticalPosition = GetButtonVerticalCoordinate(button);
 
                 Board[buttonHorizontalPosition, buttonVerticalPosition] = char.Parse(currentPlayer);
+                return;
 
-                return true;
             }
 
             MessageBox.Show("You can't place your marker to an already marked field!", "Warning.", MessageBoxButton.OK);
-            return false;
         }
 
         public bool CheckWinner(char[,] board)
