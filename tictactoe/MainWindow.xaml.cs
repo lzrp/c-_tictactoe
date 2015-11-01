@@ -23,8 +23,7 @@ namespace tictactoe
     {
         private readonly Tictactoe _tictactoe = new Tictactoe();
         private readonly IEnumerable<Button> _buttonCollection;
-        private int _fieldsLeftCounter = 9;
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,111 +35,104 @@ namespace tictactoe
 
         private void PlaceMarker(object sender, RoutedEventArgs e)
         {
-            var currentPlayer = _tictactoe.GetCurrentTurnPlayer();
+            _tictactoe.PlaceMarker(sender as Button);
 
-            var button = (Button) sender;
-
-            if (button.Content.ToString() == "")
+            if (_tictactoe.CheckWinner(_tictactoe.Board))
             {
-                button.Content = currentPlayer;
-                button.IsEnabled = false;
-                _fieldsLeftCounter--;
-
-                if (CheckWinner())
+                DisableButtons();
+                _tictactoe.AnnounceWinner(_tictactoe.GetCurrentTurnPlayer());
+                
+                if (_tictactoe.AskForNewGame())
                 {
-                    MessageBox.Show("Congratulations! Player " + currentPlayer + " wins!", "Winner!", MessageBoxButton.OK);
+                    _tictactoe.NewGame(_buttonCollection);
                 }
 
-                else
-                {
-                    _tictactoe.NextTurn();
-                    if (_fieldsLeftCounter != 0) return;
-                    MessageBox.Show("Players draw.", "Draw!", MessageBoxButton.OK);
-                }
-
-                UpdateUi();
-
-                if (!AskForNewGame())
-                {
-                    DisableButtons();
-                }
             }
 
             else
             {
-            MessageBox.Show("You can't place your marker to an already marked field!");
+                _tictactoe.NextTurn();
+                if (_tictactoe.BoardFieldsLeftCounter == 0)
+                {
+                    DisableButtons();
+                    _tictactoe.AnnounceDraw();
+                    
+                    if (_tictactoe.AskForNewGame())
+                    {
+                        _tictactoe.NewGame(_buttonCollection);
+                    }
+                }
             }
+            UpdateUi();
+
         }
 
-        private bool CheckWinner()
-        {
-            //Check rows
-            if (button_A1.Content.ToString() == button_A2.Content.ToString() && button_A2.Content.ToString() == button_A3.Content.ToString() && !button_A1.IsEnabled)
-            {
-                return true;
-            }
-
-            if (button_B1.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_B3.Content.ToString() && !button_B1.IsEnabled)
-            {
-                return true;
-            }
-
-            if (button_C1.Content.ToString() == button_C2.Content.ToString() && button_C2.Content.ToString() == button_C3.Content.ToString() && !button_C1.IsEnabled)
-            {
-                return true;
-            }
-
-            //Check columns
-            if (button_A1.Content.ToString() == button_B1.Content.ToString() && button_B1.Content.ToString() == button_C1.Content.ToString() && !button_A1.IsEnabled)
-            {
-                return true;
-            }
-
-            if (button_A2.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C2.Content.ToString() && !button_A2.IsEnabled)
-            {
-                return true;
-            }
-
-            if (button_A3.Content.ToString() == button_B3.Content.ToString() && button_B3.Content.ToString() == button_C3.Content.ToString() && !button_A3.IsEnabled)
-            {
-                return true;
-            }
-
-            //Check diagonals
-            if (button_A1.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C3.Content.ToString() && !button_A1.IsEnabled)
-            {
-                return true;
-            }
-
-            if (button_A3.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C1.Content.ToString() && !button_A3.IsEnabled)
-            {
-                return true;
-            }
-
-            return false;
 
 
-        }
+        //private bool CheckWinner()
+        //{
+        //    //Check rows
+        //    if (button_A1.Content.ToString() == button_A2.Content.ToString() && button_A2.Content.ToString() == button_A3.Content.ToString() && !button_A1.IsEnabled)
+        //    {
+        //        return true;
+        //    }
+
+        //    if (button_B1.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_B3.Content.ToString() && !button_B1.IsEnabled)
+        //    {
+        //        return true;
+        //    }
+
+        //    if (button_C1.Content.ToString() == button_C2.Content.ToString() && button_C2.Content.ToString() == button_C3.Content.ToString() && !button_C1.IsEnabled)
+        //    {
+        //        return true;
+        //    }
+
+        //    //Check columns
+        //    if (button_A1.Content.ToString() == button_B1.Content.ToString() && button_B1.Content.ToString() == button_C1.Content.ToString() && !button_A1.IsEnabled)
+        //    {
+        //        return true;
+        //    }
+
+        //    if (button_A2.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C2.Content.ToString() && !button_A2.IsEnabled)
+        //    {
+        //        return true;
+        //    }
+
+        //    if (button_A3.Content.ToString() == button_B3.Content.ToString() && button_B3.Content.ToString() == button_C3.Content.ToString() && !button_A3.IsEnabled)
+        //    {
+        //        return true;
+        //    }
+
+        //    //Check diagonals
+        //    if (button_A1.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C3.Content.ToString() && !button_A1.IsEnabled)
+        //    {
+        //        return true;
+        //    }
+
+        //    if (button_A3.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C1.Content.ToString() && !button_A3.IsEnabled)
+        //    {
+        //        return true;
+        //    }
+
+        //    return false;
+
+
+        //}
 
         private void RestartGame(object sender, RoutedEventArgs e)
         {
-            //_tictactoe.NewGame(_buttonCollection);
-            //_fieldsLeftCounter = 9;
-            //UpdateUi();
-
             RestartGame();
         }
 
         private void RestartGame()
         {
             _tictactoe.NewGame(_buttonCollection);
-            _fieldsLeftCounter = 9;
             UpdateUi();
         }
 
         private void UpdateUi()
         {
-            LabelStatus.Content = "Fields left: " + _fieldsLeftCounter;
+            LabelStatus.Content = "Fields left: " + _tictactoe.BoardFieldsLeftCounter;
             //TODO AI WINDOW
         }
 
@@ -150,15 +142,6 @@ namespace tictactoe
             {
                 button.IsEnabled = false;
             }
-        }
-
-        private bool AskForNewGame()
-        {
-            var continueBoxResult = MessageBox.Show("Do you want to start a new game?", "New game?" , MessageBoxButton.YesNo);
-
-            if (continueBoxResult != MessageBoxResult.Yes) return false;
-            RestartGame();
-            return true;
         }
         
         private void MenuItemAiEasy_Click(object sender, RoutedEventArgs e)
@@ -215,3 +198,4 @@ namespace tictactoe
         }
     }
 }
+
