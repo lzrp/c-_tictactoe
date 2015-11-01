@@ -39,6 +39,7 @@ namespace tictactoe
 
             if (_tictactoe.CheckWinner(_tictactoe.Board))
             {
+                _tictactoe.StopGame();
                 DisableButtons();
                 _tictactoe.AnnounceWinner(_tictactoe.GetCurrentTurnPlayer());
                 
@@ -54,6 +55,7 @@ namespace tictactoe
                 _tictactoe.NextTurn();
                 if (_tictactoe.BoardFieldsLeftCounter == 0)
                 {
+                    _tictactoe.StopGame();
                     DisableButtons();
                     _tictactoe.AnnounceDraw();
                     

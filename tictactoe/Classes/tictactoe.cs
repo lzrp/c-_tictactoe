@@ -64,12 +64,12 @@ namespace tictactoe.Classes
             Turn = !Turn;
         }
 
-        public void PlaceMarker()
+        public void PlaceMarker(int x, int y)
         {
             
         }
 
-        public bool PlaceMarker(Button button)
+        public void PlaceMarker(Button button)
         {
             if (!GameInProgress) return false;
 
