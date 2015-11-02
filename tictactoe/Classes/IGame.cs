@@ -11,9 +11,12 @@ namespace tictactoe.Classes
         void AnnounceWinner(string player);
         void AnnounceDraw();
         void PlaceMarker(Button button);
+        void PlaceMarker(int x, int y);
 
         bool CheckWinner(char[,] board);
         bool AskForNewGame();
+        bool IsBoardFieldEmpty(Button button);
+        bool IsBoardFieldEmpty(int x, int y);
 
         string GetCurrentTurnPlayer();
 
