@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using tictactoe.Classes;
 
 namespace tictactoe
@@ -32,6 +34,15 @@ namespace tictactoe
             _buttonCollection = GridPlayingField.Children.OfType<Button>();
 
             _tictactoe.NewGame(_buttonCollection);
+        }
+
+        //TODO FIGURE OUT 
+        private void GameLoop()
+        {
+            while (_tictactoe.GameInProgress)
+            {
+                
+            }
         }
 
         private void ButtonClick(object sender, RoutedEventArgs e)
@@ -71,12 +82,7 @@ namespace tictactoe
                 }
             }
             UpdateUi();
-
         }
-
-
-
-        
 
         private void RestartGame(object sender, RoutedEventArgs e)
         {
@@ -155,6 +161,8 @@ namespace tictactoe
             Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
             Properties.Settings.Default.Save();
         }
+
+        
     }
 }
 
