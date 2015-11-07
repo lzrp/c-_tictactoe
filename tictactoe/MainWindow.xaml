@@ -13,15 +13,15 @@
         </Grid.ColumnDefinitions>
         <Viewbox Stretch="Fill" Margin="5,25,0,30" >
             <Grid x:Name="GridPlayingField" Height="240" Width="240">
-                <Button x:Name="button_A1" Content="" Margin="0,0,160,160" Height="80" Width="80" Click="PlaceMarker" FontSize="40" Tag="00"/>
-                <Button x:Name="button_B1" Content="" Margin="0,80,160,80" Height="80" Width="80" Click="PlaceMarker" FontSize="40" Tag="10"/>
-                <Button x:Name="button_C1" Content="" Margin="0,160,160,0" Height="80" Width="80" Click="PlaceMarker" FontSize="40" Tag="20"/>
-                <Button x:Name="button_A2" Content="" Margin="80,0,80,160" Height="80" Width="80" Click="PlaceMarker" FontSize="40" Tag="01"/>
-                <Button x:Name="button_B2" Content="" Margin="80" Height="80" Width="80" Click="PlaceMarker" FontSize="40" Tag="11"/>
-                <Button x:Name="button_C2" Content="" Margin="80,160,80,0" Height="80" Width="80" Click="PlaceMarker" FontSize="40" Tag="21"/>
-                <Button x:Name="button_A3" Content="" Margin="160,0,0,160" Height="80" Width="80" Click="PlaceMarker" FontSize="40" Tag="02"/>
-                <Button x:Name="button_B3" Content="" Margin="160,80,0,80" Height="80" Width="80" Click="PlaceMarker" FontSize="40" Tag="12"/>
-                <Button x:Name="button_C3" Content="" Margin="160,160,0,0" Height="80" Width="80" Click="PlaceMarker" FontSize="40" Tag="22"/>
+                <Button x:Name="button_A1" Content="" Margin="0,0,160,160" Height="80" Width="80" Click="ButtonClick" FontSize="40" Tag="00"/>
+                <Button x:Name="button_B1" Content="" Margin="0,80,160,80" Height="80" Width="80" Click="ButtonClick" FontSize="40" Tag="10"/>
+                <Button x:Name="button_C1" Content="" Margin="0,160,160,0" Height="80" Width="80" Click="ButtonClick" FontSize="40" Tag="20"/>
+                <Button x:Name="button_A2" Content="" Margin="80,0,80,160" Height="80" Width="80" Click="ButtonClick" FontSize="40" Tag="01"/>
+                <Button x:Name="button_B2" Content="" Margin="80" Height="80" Width="80" Click="ButtonClick" FontSize="40" Tag="11"/>
+                <Button x:Name="button_C2" Content="" Margin="80,160,80,0" Height="80" Width="80" Click="ButtonClick" FontSize="40" Tag="21"/>
+                <Button x:Name="button_A3" Content="" Margin="160,0,0,160" Height="80" Width="80" Click="ButtonClick" FontSize="40" Tag="02"/>
+                <Button x:Name="button_B3" Content="" Margin="160,80,0,80" Height="80" Width="80" Click="ButtonClick" FontSize="40" Tag="12"/>
+                <Button x:Name="button_C3" Content="" Margin="160,160,0,0" Height="80" Width="80" Click="ButtonClick" FontSize="40" Tag="22"/>
             </Grid>
         </Viewbox>
         <StatusBar x:Name="StatusBar" Grid.ColumnSpan="2" Grid.Column="0" Height="30" VerticalAlignment="Bottom">
@@ -31,7 +31,7 @@
             <MenuItem x:Name="Menu1" Header="Menu" Height="25">
                 <MenuItem x:Name="MenuItemNewGame" Header="New Game..." Click="RestartGame"/>
                 <MenuItem x:Name="MenuItemSettings" Header="Settings...">
-                    <MenuItem x:Name="MenuItemDifficulty" Header="AI Difficulty">
+                    <MenuItem x:Name="MenuItemDifficulty" Header="Ai Difficulty">
                         <MenuItem x:Name="MenuItemAiEasy" Header="Easy" Click="MenuItemAiEasy_Click" Loaded="MenuItemAiEasy_Loaded" IsCheckable="True"/>
                         <MenuItem x:Name="MenuItemAiMedium" Header="Medium" Click="MenuItemAiMedium_Click" IsCheckable="True" Loaded="MenuItemAiMedium_Loaded"/>
                         <MenuItem x:Name="MenuItemAiImpossible" Header="Impossible" Click="MenuItemAiImpossible_Click" IsCheckable="True" Loaded="MenuItemAiImpossible_Loaded"/>

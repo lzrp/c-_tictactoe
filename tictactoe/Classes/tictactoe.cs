@@ -10,9 +10,9 @@ using System.Windows.Media;
 
 namespace tictactoe.Classes
 {
-    class Tictactoe : IGame
+    internal class Tictactoe : IGame
     {
-        //member fields
+        #region class members
         private const char Emptyfield = ' ';
         private const int BoardSizeHorizontal = 3;
         private const int BoardSizeVertical = 3;
@@ -21,14 +21,13 @@ namespace tictactoe.Classes
         public bool GameInProgress { get; private set; } = false;
         public bool PlayerStartsFirst { get; private set; } = true;
 
-        
-
         public int BoardFieldsLeftCounter { get; private set; } = 9;
 
         public char[,] Board { get; private set; } = new char[BoardSizeHorizontal,BoardSizeVertical];
-        public List<Button> ButtonCollection { get; private set; } 
+        public List<Button> ButtonCollection { get; private set; }
+        #endregion
 
-
+        #region class methods
         /// <summary>
         /// Displays a dialog asking if the user wants to play a new game.
         /// </summary>
@@ -214,5 +213,6 @@ namespace tictactoe.Classes
         {
             return int.Parse(button.Tag.ToString().Substring(1, 1));
         }
+        #endregion
     }
 }

@@ -84,6 +84,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\Ai.cs" />
     <Compile Include="Classes\IGame.cs" />
     <Compile Include="Classes\tictactoe.cs" />
     <Compile Include="MainWindow.xaml.cs">

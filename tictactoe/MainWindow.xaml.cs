@@ -28,15 +28,17 @@ namespace tictactoe
         {
             InitializeComponent();
 
+            //Get the button collection from the UI and initialize a newgame
             _buttonCollection = GridPlayingField.Children.OfType<Button>();
 
             _tictactoe.NewGame(_buttonCollection);
         }
 
-        private void PlaceMarker(object sender, RoutedEventArgs e)
+        private void ButtonClick(object sender, RoutedEventArgs e)
         {
             _tictactoe.PlaceMarker(sender as Button);
 
+            //Check for a winner
             if (_tictactoe.CheckWinner(_tictactoe.Board))
             {
                 _tictactoe.StopGame();
@@ -50,9 +52,12 @@ namespace tictactoe
 
             }
 
+            //Else advance to the next turn
             else
             {
                 _tictactoe.NextTurn();
+
+                //If there are no empty fields left, end the game
                 if (_tictactoe.BoardFieldsLeftCounter == 0)
                 {
                     _tictactoe.StopGame();
@@ -71,55 +76,7 @@ namespace tictactoe
 
 
 
-        //private bool CheckWinner()
-        //{
-        //    //Check rows
-        //    if (button_A1.Content.ToString() == button_A2.Content.ToString() && button_A2.Content.ToString() == button_A3.Content.ToString() && !button_A1.IsEnabled)
-        //    {
-        //        return true;
-        //    }
-
-        //    if (button_B1.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_B3.Content.ToString() && !button_B1.IsEnabled)
-        //    {
-        //        return true;
-        //    }
-
-        //    if (button_C1.Content.ToString() == button_C2.Content.ToString() && button_C2.Content.ToString() == button_C3.Content.ToString() && !button_C1.IsEnabled)
-        //    {
-        //        return true;
-        //    }
-
-        //    //Check columns
-        //    if (button_A1.Content.ToString() == button_B1.Content.ToString() && button_B1.Content.ToString() == button_C1.Content.ToString() && !button_A1.IsEnabled)
-        //    {
-        //        return true;
-        //    }
-
-        //    if (button_A2.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C2.Content.ToString() && !button_A2.IsEnabled)
-        //    {
-        //        return true;
-        //    }
-
-        //    if (button_A3.Content.ToString() == button_B3.Content.ToString() && button_B3.Content.ToString() == button_C3.Content.ToString() && !button_A3.IsEnabled)
-        //    {
-        //        return true;
-        //    }
-
-        //    //Check diagonals
-        //    if (button_A1.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C3.Content.ToString() && !button_A1.IsEnabled)
-        //    {
-        //        return true;
-        //    }
-
-        //    if (button_A3.Content.ToString() == button_B2.Content.ToString() && button_B2.Content.ToString() == button_C1.Content.ToString() && !button_A3.IsEnabled)
-        //    {
-        //        return true;
-        //    }
-
-        //    return false;
-
-
-        //}
+        
 
         private void RestartGame(object sender, RoutedEventArgs e)
         {
@@ -135,7 +92,7 @@ namespace tictactoe
         private void UpdateUi()
         {
             LabelStatus.Content = "Fields left: " + _tictactoe.BoardFieldsLeftCounter;
-            //TODO AI WINDOW
+            //TODO Ai WINDOW
         }
 
         private void DisableButtons()
