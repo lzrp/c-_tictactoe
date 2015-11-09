@@ -45,7 +45,7 @@ namespace tictactoe.Classes
             
         }
 
-        public Move ComputeMoveValue(char[,] board)
+        public Move ComputeMoveValue(string[,] board)
         {
             var x = 0;
             var y = 0;

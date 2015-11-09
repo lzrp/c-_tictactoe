@@ -13,7 +13,7 @@ namespace tictactoe.Classes
     internal class Tictactoe : IGame
     {
         #region class members
-        private const char Emptyfield = ' ';
+        private const string Emptyfield = " ";
         private const int BoardSizeHorizontal = 3;
         private const int BoardSizeVertical = 3;
 
@@ -23,7 +23,7 @@ namespace tictactoe.Classes
 
         public int BoardFieldsLeftCounter { get; private set; } = 9;
 
-        public char[,] Board { get; private set; } = new char[BoardSizeHorizontal,BoardSizeVertical];
+        public string[,] Board { get; private set; } = new string[BoardSizeHorizontal,BoardSizeVertical];
         //public List<Button> ButtonCollection { get; private set; }
         public IEnumerable<Button> ButtonCollection { get; private set; }
         #endregion
@@ -76,7 +76,7 @@ namespace tictactoe.Classes
         /// <returns></returns>
         public bool IsBoardFieldEmpty(int x, int y)
         {
-            return Board[x, y] == ' ';
+            return Board[x, y] == " ";
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace tictactoe.Classes
         }
 
         /// <summary>
-        /// Advance to the next turn.
+        /// Advances to the next turn.
         /// </summary>
         public void NextTurn()
         {
@@ -130,7 +130,7 @@ namespace tictactoe.Classes
         public void PlaceMarker(int x, int y)
         {
             BoardFieldsLeftCounter--;
-            Board[x, y] = char.Parse(GetCurrentTurnPlayer());
+            Board[x, y] = GetCurrentTurnPlayer();
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace tictactoe.Classes
         /// </summary>
         /// <param name="board">Board representing the playing field array.</param>
         /// <returns>Bool result true if there is a winner.</returns>
-        public bool CheckWinner(char[,] board)
+        public bool CheckWinner(string[,] board)
         {
             //Check if a game is in progress
             if (!GameInProgress) return false;
@@ -176,19 +176,19 @@ namespace tictactoe.Classes
             //Check board rows - 00=01=02 | 10=11=12 | 20=21=22
             for (var i = 0; i < BoardSizeVertical; i++)
             {
-                if (Board[i, 0] != Board[i, 1] || Board[i, 1] != Board[i, 2] || Board[i, 0] == ' ') continue;
+                if (Board[i, 0] != Board[i, 1] || Board[i, 1] != Board[i, 2] || Board[i, 0] == Emptyfield) continue;
                 return true;
             }
 
             //Check board columns - 00=10=20 | 01=11=21 | 02=12=22
             for (var i = 0; i < BoardSizeHorizontal; i++)
             {
-                if (Board[0, i] != Board[1, i] || Board[1, i] != Board[2, i] || Board[0, i] == ' ') continue;
+                if (Board[0, i] != Board[1, i] || Board[1, i] != Board[2, i] || Board[0, i] == Emptyfield) continue;
                 return true;
             }
 
             //Check diagonals - 00=11=22 | 02=11=20
-            return (Board[0, 0] == Board[1, 1] && Board[1, 1] == Board[2, 2] || Board[0, 2] == Board[1, 1] && Board[1, 1] == Board[2, 0]) && Board[1, 1] != ' ';
+            return (Board[0, 0] == Board[1, 1] && Board[1, 1] == Board[2, 2] || Board[0, 2] == Board[1, 1] && Board[1, 1] == Board[2, 0]) && Board[1, 1] != Emptyfield;
         }
 
         public bool GameStateCheck()
@@ -206,20 +206,21 @@ namespace tictactoe.Classes
                 return false;
             }
 
-            //Else advance to the next turn
-            else
+            //If there are no empty fields left, end the game in a draw
+            if (BoardFieldsLeftCounter == 0)
             {
-                //If there are no empty fields left, end the game in a draw
-                if (BoardFieldsLeftCounter != 0) return true;
                 AnnounceDraw();
 
                 if (AskForNewGame())
                 {
                     NewGame();
                 }
-
                 return false;
             }
+
+            //Else advance to the next turn
+            NextTurn();
+            return true;
         }
 
         /// <summary>

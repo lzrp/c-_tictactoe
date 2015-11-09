@@ -39,6 +39,7 @@ namespace tictactoe
 
             //Initialize and start the game
             _tictactoe = new Tictactoe(_buttonCollection);
+            UpdateUi();
 
             //Initialize the game and AI if needed
             _computerAi = new Ai(_tictactoe);
@@ -64,18 +65,12 @@ namespace tictactoe
             {
                 return;
             }
-            _tictactoe.NextTurn();
             
-            //Computers turn after the end of players turn
+            //Computers turn
             _computerAi.PerformMove(_computerAi.ComputeMoveValue(_tictactoe.Board));
             UpdateUi();
-            if (!_tictactoe.GameStateCheck())
-            {
-                return;
-            }
-            _tictactoe.NextTurn();
-
-            
+            _tictactoe.GameStateCheck();
+            UpdateStatusLabel();
         }
 
         private void RestartGame(object sender, RoutedEventArgs e)
@@ -105,12 +100,29 @@ namespace tictactoe
                     button.IsEnabled = false;
                 }
             }
-            
-            LabelStatus.Content = "Fields left: " + _tictactoe.BoardFieldsLeftCounter + " / Player on move: " + _tictactoe.GetCurrentTurnPlayer();
+
+            UpdateStatusLabel();
+        }
+
+        private void UpdateStatusLabel()
+        {
+            string playerStatus;
+
+            if (_tictactoe.GameInProgress)
+            {
+                playerStatus = "Player on move: " + _tictactoe.GetCurrentTurnPlayer();
+            }
+
+            else
+            {
+                playerStatus = "Game is over.";
+            }
+
+            LabelStatus.Content = "Fields left: " + _tictactoe.BoardFieldsLeftCounter + " / " + playerStatus;
             //TODO Ai WINDOW
         }
 
-        
+
         //Menuitem event handlers
 
         private void MenuItemAiEasy_Click(object sender, RoutedEventArgs e)
