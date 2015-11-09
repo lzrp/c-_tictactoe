@@ -6,7 +6,7 @@ namespace tictactoe.Classes
 {
     public interface IGame
     {
-        void NewGame(IEnumerable<Button> buttonList);
+        void NewGame();
         void NextTurn();
         void AnnounceWinner(string player);
         void AnnounceDraw();

@@ -24,8 +24,9 @@ namespace tictactoe
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly Tictactoe _tictactoe = new Tictactoe();
         private readonly IEnumerable<Button> _buttonCollection;
+        private readonly Tictactoe _tictactoe;
+        private static Ai _computerAi;
         //private readonly Random _rnd = new Random();
 
 
@@ -36,53 +37,45 @@ namespace tictactoe
             //Get the button collection from the UI and initialize a newgame
             _buttonCollection = GridPlayingField.Children.OfType<Button>();
 
-            _tictactoe.NewGame(_buttonCollection);
+            //Initialize and start the game
+            _tictactoe = new Tictactoe(_buttonCollection);
 
-            //Invoke computers move if AI starts first
-            //if (!_tictactoe.PlayerStartsFirst)
-            //{
+            //Initialize the game and AI if needed
+            _computerAi = new Ai(_tictactoe);
 
-            //}
-           
-            
+            //If AI starts first
+            if (!_tictactoe.PlayerStartsFirst)
+            {
+                _computerAi.PerformMove(_computerAi.ComputeMoveValue(_tictactoe.Board));
+                _tictactoe.NextTurn();
+
+                UpdateUi();
+            }
+
+
         }
 
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
+            //Players turn
             _tictactoe.PlaceMarker(sender as Button);
-
-            //Check for a winner
-            if (_tictactoe.CheckWinner(_tictactoe.Board))
-            {
-                _tictactoe.AnnounceWinner(_tictactoe.GetCurrentTurnPlayer());
-                
-                if (_tictactoe.AskForNewGame())
-                {
-                    _tictactoe.NewGame(_buttonCollection);
-                }
-
-            }
-
-            //Else advance to the next turn
-            else
-            {
-                _tictactoe.NextTurn();
-
-                //If there are no empty fields left, end the game
-                if (_tictactoe.BoardFieldsLeftCounter == 0)
-                {
-                    _tictactoe.AnnounceDraw();
-                    
-                    if (_tictactoe.AskForNewGame())
-                    {
-                        _tictactoe.NewGame(_buttonCollection);
-                    }
-                }
-            }
             UpdateUi();
+            if (!_tictactoe.GameStateCheck())
+            {
+                return;
+            }
+            _tictactoe.NextTurn();
+            
+            //Computers turn after the end of players turn
+            _computerAi.PerformMove(_computerAi.ComputeMoveValue(_tictactoe.Board));
+            UpdateUi();
+            if (!_tictactoe.GameStateCheck())
+            {
+                return;
+            }
+            _tictactoe.NextTurn();
 
-            //Invoke computers move after the end of players turn
-
+            
         }
 
         private void RestartGame(object sender, RoutedEventArgs e)
@@ -92,26 +85,34 @@ namespace tictactoe
 
         private void RestartGame()
         {
-            _tictactoe.NewGame(_buttonCollection);
+            _tictactoe.NewGame();
             UpdateUi();
         }
 
         private void UpdateUi()
         {
-            LabelStatus.Content = "Fields left: " + _tictactoe.BoardFieldsLeftCounter;
+            //Redraw the board buttons
+            foreach (var button in _buttonCollection)
+            {
+                var x = _tictactoe.GetButtonHorizontalCoordinate(button);
+                var y = _tictactoe.GetButtonVerticalCoordinate(button);
+
+                button.Content = _tictactoe.Board[x, y];
+
+                //Disable the button if its marked by a player
+                if (button.Content.ToString() != " ")
+                {
+                    button.IsEnabled = false;
+                }
+            }
+            
+            LabelStatus.Content = "Fields left: " + _tictactoe.BoardFieldsLeftCounter + " / Player on move: " + _tictactoe.GetCurrentTurnPlayer();
             //TODO Ai WINDOW
         }
 
-        private void DisableButtons()
-        {
-            foreach (var button in _buttonCollection)
-            {
-                button.IsEnabled = false;
-            }
-        }
-
-        //Menuitem event handlers
         
+        //Menuitem event handlers
+
         private void MenuItemAiEasy_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.DifficultySetting = 0;

@@ -24,10 +24,19 @@ namespace tictactoe.Classes
         public int BoardFieldsLeftCounter { get; private set; } = 9;
 
         public char[,] Board { get; private set; } = new char[BoardSizeHorizontal,BoardSizeVertical];
-        public List<Button> ButtonCollection { get; private set; }
+        //public List<Button> ButtonCollection { get; private set; }
+        public IEnumerable<Button> ButtonCollection { get; private set; }
         #endregion
 
         #region class methods
+
+        public Tictactoe(IEnumerable<Button> buttonList)
+        {
+            ButtonCollection = buttonList;
+            NewGame();
+            //ButtonCollection = buttonList as List<Button>;
+        }
+
         /// <summary>
         /// Displays a dialog asking if the user wants to play a new game.
         /// </summary>
@@ -39,6 +48,16 @@ namespace tictactoe.Classes
             return continueBoxResult == MessageBoxResult.Yes;
         }
 
+        /// <summary>
+        /// Disables all buttons.
+        /// </summary>
+        private void DisableButtons()
+        {
+            foreach (var button in ButtonCollection)
+            {
+                button.IsEnabled = false;
+            }
+        }
         /// <summary>
         /// Checks if the board field is empty given the correspondings board field button.
         /// </summary>
@@ -61,17 +80,6 @@ namespace tictactoe.Classes
         }
 
         /// <summary>
-        /// Disable the board buttons.
-        /// </summary>
-        public void DisableButtons()
-        {
-            foreach (var button in ButtonCollection)
-            {
-                button.IsEnabled = false;
-            }
-        }
-
-        /// <summary>
         /// Gets the string representation of the currents player marker.
         /// </summary>
         /// <returns>String representation of a players marker.</returns>
@@ -84,14 +92,14 @@ namespace tictactoe.Classes
         /// Resets game parameters, board fields and buttons representing the board.
         /// </summary>
         /// <param name="buttonList">Buttons used to represent the board.</param>
-        public void NewGame(IEnumerable<Button> buttonList )
+        public void NewGame()
         {
             GameInProgress = true;
             BoardFieldsLeftCounter = 9;
-            ButtonCollection = buttonList as List<Button>;
+            //ButtonCollection = buttonList as List<Button>;
 
             // Reset all buttons and board fields
-            foreach (var button in buttonList)
+            foreach (var button in ButtonCollection)
             {
                 var buttonHorizontalPosition = GetButtonHorizontalCoordinate(button);
                 var buttonVerticalPosition = GetButtonVerticalCoordinate(button);
@@ -107,21 +115,22 @@ namespace tictactoe.Classes
         }
 
         /// <summary>
-        /// Changes the games turn.
+        /// Advance to the next turn.
         /// </summary>
         public void NextTurn()
         {
             Turn = !Turn;
         }
+
         /// <summary>
-        /// Places a marker at a specified position into the board and adjusts the number of board fields left.
+        /// Places a marker at a specified position into the board.
         /// </summary>
         /// <param name="x">The horizontal coordinate within the board.</param>
         /// <param name="y">The vertical coordinate within the board.</param>
         public void PlaceMarker(int x, int y)
         {
-            Board[x, y] = char.Parse(GetCurrentTurnPlayer());
             BoardFieldsLeftCounter--;
+            Board[x, y] = char.Parse(GetCurrentTurnPlayer());
         }
 
         /// <summary>
@@ -181,7 +190,38 @@ namespace tictactoe.Classes
             //Check diagonals - 00=11=22 | 02=11=20
             return (Board[0, 0] == Board[1, 1] && Board[1, 1] == Board[2, 2] || Board[0, 2] == Board[1, 1] && Board[1, 1] == Board[2, 0]) && Board[1, 1] != ' ';
         }
-        
+
+        public bool GameStateCheck()
+        {
+            //Check for a winner
+            if (CheckWinner(Board))
+            {
+                AnnounceWinner(GetCurrentTurnPlayer());
+
+                if (AskForNewGame())
+                {
+                    NewGame();
+                }
+
+                return false;
+            }
+
+            //Else advance to the next turn
+            else
+            {
+                //If there are no empty fields left, end the game in a draw
+                if (BoardFieldsLeftCounter != 0) return true;
+                AnnounceDraw();
+
+                if (AskForNewGame())
+                {
+                    NewGame();
+                }
+
+                return false;
+            }
+        }
+
         /// <summary>
         /// Shows a message with the name of the winning player.
         /// </summary>
@@ -191,7 +231,6 @@ namespace tictactoe.Classes
             //Stop the game and disable the buttons.
             StopGame();
             DisableButtons();
-
             MessageBox.Show("Congratulations, player " + player + " wins!", "Winner!", MessageBoxButton.OK);
         }
 
@@ -203,7 +242,6 @@ namespace tictactoe.Classes
             //Stop the game and disable the buttons.
             StopGame();
             DisableButtons();
-
             MessageBox.Show("Players draw!","Draw.", MessageBoxButton.OK);
         }
 
