@@ -104,7 +104,7 @@ namespace tictactoe.Classes
         }
 
         /// <summary>
-        /// Places a marker at a specified position into the board.
+        /// Places a marker at a specified position into the board and adjusts the number of board fields left.
         /// </summary>
         /// <param name="x">The horizontal coordinate within the board.</param>
         /// <param name="y">The vertical coordinate within the board.</param>
@@ -128,6 +128,7 @@ namespace tictactoe.Classes
             //Check if the button is not taken yet, place marker if not
             if (IsBoardFieldEmpty(button))
             {
+                //Asign the currents player mark as the button content
                 button.Content = currentPlayer;
                 button.IsEnabled = false;
 

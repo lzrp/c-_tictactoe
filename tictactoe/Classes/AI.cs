@@ -9,7 +9,6 @@ namespace tictactoe.Classes
     internal class Ai
     {
         //TODO DESIGN CLASS
-        private readonly Random _randomNumberGenetator = new Random();
         private readonly Tictactoe _tictactoe;
 
         public Ai(Tictactoe tictactoe)
@@ -19,7 +18,7 @@ namespace tictactoe.Classes
 
         public void PerformMove(int x, int y)
         {
-            _tictactoe.PlaceMarker(x,y);
+           _tictactoe.PlaceMarker(x, y);
         }
     }
 }

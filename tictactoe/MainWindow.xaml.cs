@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using tictactoe.Classes;
+using tictactoe.Events;
 
 namespace tictactoe
 {
@@ -25,6 +26,8 @@ namespace tictactoe
     {
         private readonly Tictactoe _tictactoe = new Tictactoe();
         private readonly IEnumerable<Button> _buttonCollection;
+        private static readonly ManualResetEvent _mre = new ManualResetEvent(false);
+        public event ComputersMoveEventHandler OnAiMove;
 
         public MainWindow()
         {
@@ -34,15 +37,12 @@ namespace tictactoe
             _buttonCollection = GridPlayingField.Children.OfType<Button>();
 
             _tictactoe.NewGame(_buttonCollection);
-        }
 
-        //TODO FIGURE OUT 
-        private void GameLoop()
-        {
-            while (_tictactoe.GameInProgress)
+            if (!_tictactoe.PlayerStartsFirst)
             {
-                
+                OnAiMove?.Invoke(this, new ComputersMoveEventArgs(_tictactoe.GetCurrentTurnPlayer()));
             }
+            
         }
 
         private void ButtonClick(object sender, RoutedEventArgs e)
@@ -82,6 +82,8 @@ namespace tictactoe
                 }
             }
             UpdateUi();
+
+            OnAiMove?.Invoke(this, new ComputersMoveEventArgs(_tictactoe.GetCurrentTurnPlayer()));
         }
 
         private void RestartGame(object sender, RoutedEventArgs e)
