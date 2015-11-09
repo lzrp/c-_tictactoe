@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,8 +27,9 @@ namespace tictactoe
     {
         private readonly Tictactoe _tictactoe = new Tictactoe();
         private readonly IEnumerable<Button> _buttonCollection;
-        private static readonly ManualResetEvent _mre = new ManualResetEvent(false);
         public event ComputersMoveEventHandler OnAiMove;
+        //private readonly Random _rnd = new Random();
+
 
         public MainWindow()
         {
@@ -38,10 +40,11 @@ namespace tictactoe
 
             _tictactoe.NewGame(_buttonCollection);
 
-            if (!_tictactoe.PlayerStartsFirst)
-            {
-                OnAiMove?.Invoke(this, new ComputersMoveEventArgs(_tictactoe.GetCurrentTurnPlayer()));
-            }
+            //Invoke computers move if AI starts first
+            //if (!_tictactoe.PlayerStartsFirst)
+            //{
+            //    OnAiMove?.Invoke(this, new ComputersMoveEventArgs(_tictactoe.GetCurrentTurnPlayer()));
+            //}
             
         }
 
@@ -52,8 +55,6 @@ namespace tictactoe
             //Check for a winner
             if (_tictactoe.CheckWinner(_tictactoe.Board))
             {
-                _tictactoe.StopGame();
-                DisableButtons();
                 _tictactoe.AnnounceWinner(_tictactoe.GetCurrentTurnPlayer());
                 
                 if (_tictactoe.AskForNewGame())
@@ -71,8 +72,6 @@ namespace tictactoe
                 //If there are no empty fields left, end the game
                 if (_tictactoe.BoardFieldsLeftCounter == 0)
                 {
-                    _tictactoe.StopGame();
-                    DisableButtons();
                     _tictactoe.AnnounceDraw();
                     
                     if (_tictactoe.AskForNewGame())
@@ -83,7 +82,8 @@ namespace tictactoe
             }
             UpdateUi();
 
-            OnAiMove?.Invoke(this, new ComputersMoveEventArgs(_tictactoe.GetCurrentTurnPlayer()));
+            //Invoke computers move after the end of players turn
+            //OnAiMove?.Invoke(this, new ComputersMoveEventArgs(_tictactoe.GetCurrentTurnPlayer()));
         }
 
         private void RestartGame(object sender, RoutedEventArgs e)
@@ -110,6 +110,8 @@ namespace tictactoe
                 button.IsEnabled = false;
             }
         }
+
+        //Menuitem event handlers
         
         private void MenuItemAiEasy_Click(object sender, RoutedEventArgs e)
         {

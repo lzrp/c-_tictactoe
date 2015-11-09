@@ -60,6 +60,15 @@ namespace tictactoe.Classes
             return Board[x, y] == ' ';
         }
 
+        public void DisableButtons()
+        {
+            foreach (var button in ButtonCollection)
+            {
+                button.IsEnabled = false;
+            }
+        }
+
+
         /// <summary>
         /// Gets the string representation of the currents player marker.
         /// </summary>
@@ -178,6 +187,10 @@ namespace tictactoe.Classes
         /// <param name="player"></param>
         public void AnnounceWinner(string player)
         {
+            //Stop the game and disable the buttons.
+            StopGame();
+            DisableButtons();
+
             MessageBox.Show("Congratulations, player " + player + " wins!", "Winner!", MessageBoxButton.OK);
         }
 
@@ -186,6 +199,10 @@ namespace tictactoe.Classes
         /// </summary>
         public void AnnounceDraw()
         {
+            //Stop the game and disable the buttons.
+            StopGame();
+            DisableButtons();
+
             MessageBox.Show("Players draw!","Draw.", MessageBoxButton.OK);
         }
 

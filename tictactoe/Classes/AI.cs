@@ -11,6 +11,9 @@ namespace tictactoe.Classes
         //TODO DESIGN CLASS
         private readonly Tictactoe _tictactoe;
 
+        //TODO TEST STUFF, DELETE AFTER IMPLEMENTATION
+        private readonly Random _rnd = new Random();
+
         public Ai(Tictactoe tictactoe)
         {
             _tictactoe = tictactoe;
@@ -18,7 +21,11 @@ namespace tictactoe.Classes
 
         public void PerformMove(int x, int y)
         {
-           _tictactoe.PlaceMarker(x, y);
+            while (_tictactoe.IsBoardFieldEmpty(x, y))
+            {
+                _tictactoe.PlaceMarker(x, y);
+                break;
+            }
         }
     }
 }
