@@ -10,6 +10,12 @@ namespace tictactoe.Classes
     {
         //TODO DESIGN CLASS
         private readonly Tictactoe _tictactoe;
+        public struct Move
+        {
+            private int x;
+            private int y;
+            private int value;
+        }
 
         //TODO TEST STUFF, DELETE AFTER IMPLEMENTATION
         private readonly Random _rnd = new Random();
@@ -19,13 +25,14 @@ namespace tictactoe.Classes
             _tictactoe = tictactoe;
         }
 
-        public void PerformMove(int x, int y)
+        public void PerformMove(Move move)
         {
-            while (_tictactoe.IsBoardFieldEmpty(x, y))
-            {
-                _tictactoe.PlaceMarker(x, y);
-                break;
-            }
+
+        }
+
+        public Move ComputeMoveValue(char[,] bpard)
+        {
+            return new Move();
         }
     }
 }

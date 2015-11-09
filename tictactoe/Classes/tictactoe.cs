@@ -60,6 +60,9 @@ namespace tictactoe.Classes
             return Board[x, y] == ' ';
         }
 
+        /// <summary>
+        /// Disable the board buttons.
+        /// </summary>
         public void DisableButtons()
         {
             foreach (var button in ButtonCollection)
@@ -67,7 +70,6 @@ namespace tictactoe.Classes
                 button.IsEnabled = false;
             }
         }
-
 
         /// <summary>
         /// Gets the string representation of the currents player marker.
@@ -111,7 +113,6 @@ namespace tictactoe.Classes
         {
             Turn = !Turn;
         }
-
         /// <summary>
         /// Places a marker at a specified position into the board and adjusts the number of board fields left.
         /// </summary>
@@ -213,6 +214,7 @@ namespace tictactoe.Classes
         {
             GameInProgress = false;
         }
+
         /// <summary>
         /// Get the buttons horizontal coordinate within the board given its tag.
         /// </summary>
@@ -222,6 +224,7 @@ namespace tictactoe.Classes
         {
             return int.Parse(button.Tag.ToString().Substring(0, 1));
         }
+
         /// <summary>
         /// Get the buttons vertical coordinate within the board given its tag.
         /// </summary>

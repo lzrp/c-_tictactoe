@@ -16,7 +16,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using tictactoe.Classes;
-using tictactoe.Events;
 
 namespace tictactoe
 {
@@ -27,7 +26,6 @@ namespace tictactoe
     {
         private readonly Tictactoe _tictactoe = new Tictactoe();
         private readonly IEnumerable<Button> _buttonCollection;
-        public event ComputersMoveEventHandler OnAiMove;
         //private readonly Random _rnd = new Random();
 
 
@@ -43,8 +41,9 @@ namespace tictactoe
             //Invoke computers move if AI starts first
             //if (!_tictactoe.PlayerStartsFirst)
             //{
-            //    OnAiMove?.Invoke(this, new ComputersMoveEventArgs(_tictactoe.GetCurrentTurnPlayer()));
+
             //}
+           
             
         }
 
@@ -83,7 +82,7 @@ namespace tictactoe
             UpdateUi();
 
             //Invoke computers move after the end of players turn
-            //OnAiMove?.Invoke(this, new ComputersMoveEventArgs(_tictactoe.GetCurrentTurnPlayer()));
+
         }
 
         private void RestartGame(object sender, RoutedEventArgs e)
