@@ -38,6 +38,7 @@
                     </MenuItem>
                     <MenuItem x:Name="MenuItemResetSettings" Header="Reset Settings"/>
                     <MenuItem x:Name="MenuItemVsComputer" Header="Computer Oponent" Loaded="MenuItemVsComputer_Loaded" Click="MenuItemVsComputer_Click" IsCheckable="True"/>
+                    <MenuItem x:Name="MenuItemPlayerStartsFirst" Header="Player Starts First" HorizontalAlignment="Left" Width="188" Click="MenuItemPlayerStartsFirst_Click" Loaded="MenuItemPlayerStartsFirst_Loaded"/>
                 </MenuItem>
                 
             </MenuItem>

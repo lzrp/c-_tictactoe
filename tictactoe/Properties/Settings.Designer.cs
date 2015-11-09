@@ -58,5 +58,17 @@ namespace tictactoe.Properties {
                 this["VsComputer"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PlayerStartsFirst {
+            get {
+                return ((bool)(this["PlayerStartsFirst"]));
+            }
+            set {
+                this["PlayerStartsFirst"] = value;
+            }
+        }
     }
 }

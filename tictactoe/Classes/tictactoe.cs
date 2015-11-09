@@ -18,8 +18,8 @@ namespace tictactoe.Classes
         private const int BoardSizeVertical = 3;
 
         public bool Turn { get; private set; } = true;
-        public bool GameInProgress { get; private set; } = false;
-        public bool PlayerStartsFirst { get; private set; } = true;
+        public bool GameInProgress { get; private set; } 
+        //public bool PlayerStartsFirst { get; private set; } = true;
 
         public int BoardFieldsLeftCounter { get; private set; } = 9;
 
@@ -34,7 +34,6 @@ namespace tictactoe.Classes
         {
             ButtonCollection = buttonList;
             NewGame();
-            //ButtonCollection = buttonList as List<Button>;
         }
 
         /// <summary>
@@ -215,6 +214,7 @@ namespace tictactoe.Classes
                 {
                     NewGame();
                 }
+
                 return false;
             }
 

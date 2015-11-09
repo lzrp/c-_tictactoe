@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -28,12 +29,11 @@ namespace tictactoe
         private readonly Tictactoe _tictactoe;
         private static Ai _computerAi;
         //private readonly Random _rnd = new Random();
-
-
+           
         public MainWindow()
         {
             InitializeComponent();
-
+            //ComponentDispatcher.ThreadIdle += AiTest;
             //Get the button collection from the UI and initialize a newgame
             _buttonCollection = GridPlayingField.Children.OfType<Button>();
 
@@ -45,16 +45,20 @@ namespace tictactoe
             _computerAi = new Ai(_tictactoe);
 
             //If AI starts first
-            if (!_tictactoe.PlayerStartsFirst)
+            if (Properties.Settings.Default.PlayerStartsFirst && Properties.Settings.Default.VsComputer)
             {
                 _computerAi.PerformMove(_computerAi.ComputeMoveValue(_tictactoe.Board));
                 _tictactoe.NextTurn();
 
                 UpdateUi();
             }
-
-
         }
+
+        //private void AiTest(object sender, EventArgs e)
+        //{
+        //    MessageBox.Show("IDLE STATE");
+        //    ComponentDispatcher.ThreadIdle -= AiTest;
+        //}
 
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
@@ -63,10 +67,12 @@ namespace tictactoe
             UpdateUi();
             if (!_tictactoe.GameStateCheck())
             {
+                UpdateStatusLabel();
                 return;
             }
-            
+
             //Computers turn
+            if (!Properties.Settings.Default.VsComputer) return;
             _computerAi.PerformMove(_computerAi.ComputeMoveValue(_tictactoe.Board));
             UpdateUi();
             _tictactoe.GameStateCheck();
@@ -174,11 +180,25 @@ namespace tictactoe
 
         private void MenuItemVsComputer_Click(object sender, RoutedEventArgs e)
         {
+            var messageBoxResult = MessageBox.Show(MenuItemVsComputer.IsChecked ? "This will start a new game with a computer oponent. Are you sure you want to start a new game?" : "This will start a new game with a human oponent. Are you sure you want to start a new game?", "Restart game", MessageBoxButton.YesNo);
+
+            if (messageBoxResult != MessageBoxResult.Yes) return;
             Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
+            Properties.Settings.Default.Save();
+
+            RestartGame();
+        }
+
+        private void MenuItemPlayerStartsFirst_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
             Properties.Settings.Default.Save();
         }
 
-        
+        private void MenuItemPlayerStartsFirst_Loaded(object sender, RoutedEventArgs e)
+        {
+            MenuItemVsComputer.IsChecked = Properties.Settings.Default.PlayerStartsFirst;
+        }
     }
 }
 
