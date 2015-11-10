@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
+using System.Windows;
 
 namespace tictactoe.Classes
 {
@@ -93,7 +94,13 @@ namespace tictactoe.Classes
             // This AI uses negamax algorithm to find the optimal move. Playing against this AI will ALWAYS result in a lost game or a draw.
             if (Properties.Settings.Default.DifficultySetting == (int)AiDifficulty.Impossible)
             {
+                int a = Negamax(Board, playerMark).X;
+                int b = Negamax(Board, playerMark).Y;
+                int val = Negamax(Board, playerMark).Value;
 
+                MessageBox.Show("AI MARKS: " + a + " " + b + val);
+
+                return Negamax(Board, playerMark);
             }
 
             return new Move() {X = x, Y = y};
@@ -104,14 +111,15 @@ namespace tictactoe.Classes
             // Set the oponent players mark
             string oponentPlayerMark = playerMark == CrossMark ? CircleMark : CrossMark;
 
+
             // Check if the player calling the function won
-            if (Tictactoe.CheckWinner(board) && playerMark == CrossMark)
+            if (Tictactoe.CheckWinner(board, playerMark))
             {
-                return new Move() {Value = 1};
+                return new Move() { Value = 1};
             }
 
             // Check if the player calling the function lost
-            if (Tictactoe.CheckWinner(board) && playerMark == CircleMark)
+            if (Tictactoe.CheckWinner(board, oponentPlayerMark))
             {
                 return new Move() {Value = -1};
             }
@@ -121,14 +129,15 @@ namespace tictactoe.Classes
             {
                 return new Move() {Value = 0};
             }
-            
+
             // Initialize helper variables, set maxValue to -2 because thats lower than the possible value you can get from this implementation (which is -1)
             int maxValue = -2, boardHorizontalCoordinate = 0, boardVerticalCoordinate = 0;
+       
 
             // Loop through the board
             for (int i = 0; i < Tictactoe.GetBoardMaxHorizontalSize(); i++)
             {
-                for (int j = 0; j < Tictactoe.GetBoardMaxHorizontalSize(); j++)
+                for (int j = 0; j < Tictactoe.GetBoardMaxVerticalSize(); j++)
                 {
                     if (IsBoardFieldEmpty(board, i, j))
                     {
@@ -139,8 +148,8 @@ namespace tictactoe.Classes
                         // Needs to be negative because thats how the algorithm
                         //differentiates between two players - one who maximizes and the
                         //second one who minimizes
-                        int value = - Negamax(board, oponentPlayerMark).Value;
-
+                        int value = -Negamax(board, oponentPlayerMark).Value;
+                        
                         // Store move information if it has better value
                         if (value > maxValue)
                         {
@@ -154,7 +163,6 @@ namespace tictactoe.Classes
                     }
                 }
             }
-
             // Return the move with the best value
             return new Move() {Value = maxValue, X = boardHorizontalCoordinate, Y = boardVerticalCoordinate};
         }

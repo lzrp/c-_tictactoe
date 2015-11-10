@@ -14,7 +14,7 @@ namespace tictactoe.Classes
         private const int BoardSizeHorizontal = 3;
         private const int BoardSizeVertical = 3;
 
-        public bool Turn { get; private set; } = true;
+        public bool Turn { get; private set; }
         public bool GameInProgress { get; private set; }
         public int BoardFieldsLeftCounter { get; private set; } = 9;
         public Ai ComputerPlayerAi { get; private set; }
@@ -235,26 +235,26 @@ namespace tictactoe.Classes
         /// </summary>
         /// <param name="board">Board representing the playing field array.</param>
         /// <returns>Bool result true if there is a winner.</returns>
-        public static bool CheckWinner(string[,] board)
+        public static bool CheckWinner(string[,] board, string mark)
         {
             // Check board rows, columns and diagonals. Also check for empty fields
             // Check board rows - 00=01=02 | 10=11=12 | 20=21=22
             for (int i = 0; i < BoardSizeVertical; i++)
             {
-                if (board[i, 0] != board[i, 1] || board[i, 1] != board[i, 2] || board[i, 0] == EmptyField) continue;
+                if (board[i, 0] != board[i, 1] || board[i, 1] != board[i, 2] || board[i, 0] != mark) continue;
                 return true;
             }
 
             // Check board columns - 00=10=20 | 01=11=21 | 02=12=22
             for (int i = 0; i < BoardSizeHorizontal; i++)
             {
-                if (board[0, i] != board[1, i] || board[1, i] != board[2, i] || board[0, i] == EmptyField) continue;
+                if (board[0, i] != board[1, i] || board[1, i] != board[2, i] || board[0, i] != mark) continue;
                 return true;
             }
 
             // Check diagonals - 00=11=22 | 02=11=20
             return (board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2] ||
-                    board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0]) && board[1, 1] != EmptyField;
+                    board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0]) && board[1, 1] == mark;
         }
 
         /// <summary>
@@ -293,13 +293,15 @@ namespace tictactoe.Classes
         /// </summary>
         /// <returns>Returns a bool result true if the game state has not changed. (No wins or draws.)</returns>
         public bool GameStateCheck()
-        {
+    {
+        string currentPlayer = GetCurrentTurnPlayer();
+
             // Check for a winner
-            if (CheckWinner(Board))
+            if (CheckWinner(Board, currentPlayer))
             {
                 StopGame();
 
-                AnnounceWinner(GetCurrentTurnPlayer());
+                AnnounceWinner(currentPlayer);
                 
                 if (AskForNewGame())
                 {
