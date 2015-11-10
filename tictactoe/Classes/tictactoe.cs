@@ -19,12 +19,10 @@ namespace tictactoe.Classes
 
         public bool Turn { get; private set; } = true;
         public bool GameInProgress { get; private set; } 
-        //public bool PlayerStartsFirst { get; private set; } = true;
-
         public int BoardFieldsLeftCounter { get; private set; } = 9;
+        public Ai ComputerPlayerAi { get; private set; }
 
-        public string[,] Board { get; private set; } = new string[BoardSizeHorizontal,BoardSizeVertical];
-        //public List<Button> ButtonCollection { get; private set; }
+        public string[,] Board { get; } = new string[BoardSizeHorizontal,BoardSizeVertical];
         public IEnumerable<Button> ButtonCollection { get; private set; }
         #endregion
 
@@ -33,6 +31,7 @@ namespace tictactoe.Classes
         public Tictactoe(IEnumerable<Button> buttonList)
         {
             ButtonCollection = buttonList;
+            ComputerPlayerAi = new Ai(Board);
             NewGame();
         }
 
@@ -111,6 +110,32 @@ namespace tictactoe.Classes
 
             //set the turn to true so that X starts
             Turn = true;
+
+            //If the AI is the first on turn, let it make the first move
+            if (!Properties.Settings.Default.PlayerStartsFirst && Properties.Settings.Default.VsComputer)
+            {
+                PlaceMarker(ComputerPlayerAi.ComputeMoveValue().X, ComputerPlayerAi.ComputeMoveValue().Y);
+                UpdateUi();
+                GameStateCheck();
+            }
+        }
+
+        public void UpdateUi()
+        {
+            //Redraw the board buttons
+            foreach (var button in ButtonCollection)
+            {
+                var x = GetButtonHorizontalCoordinate(button);
+                var y = GetButtonVerticalCoordinate(button);
+
+                button.Content = Board[x, y];
+
+                //Disable the button if its marked by a player
+                if (button.Content.ToString() != " ")
+                {
+                    button.IsEnabled = false;
+                }
+            }
         }
 
         /// <summary>

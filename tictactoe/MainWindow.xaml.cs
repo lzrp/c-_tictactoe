@@ -1,21 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 using tictactoe.Classes;
 
 namespace tictactoe
@@ -27,7 +13,6 @@ namespace tictactoe
     {
         private readonly IEnumerable<Button> _buttonCollection;
         private readonly Tictactoe _tictactoe;
-        private static Ai _computerAi;
         //private readonly Random _rnd = new Random();
            
         public MainWindow()
@@ -40,25 +25,8 @@ namespace tictactoe
             //Initialize and start the game
             _tictactoe = new Tictactoe(_buttonCollection);
             UpdateUi();
-
-            //Initialize the game and AI if needed
-            _computerAi = new Ai(_tictactoe);
-
-            //If AI starts first
-            if (Properties.Settings.Default.PlayerStartsFirst && Properties.Settings.Default.VsComputer)
-            {
-                _computerAi.PerformMove(_computerAi.ComputeMoveValue(_tictactoe.Board));
-                _tictactoe.NextTurn();
-
-                UpdateUi();
-            }
+            
         }
-
-        //private void AiTest(object sender, EventArgs e)
-        //{
-        //    MessageBox.Show("IDLE STATE");
-        //    ComponentDispatcher.ThreadIdle -= AiTest;
-        //}
 
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
@@ -73,7 +41,7 @@ namespace tictactoe
 
             //Computers turn
             if (!Properties.Settings.Default.VsComputer) return;
-            _computerAi.PerformMove(_computerAi.ComputeMoveValue(_tictactoe.Board));
+            _tictactoe.PlaceMarker(_tictactoe.ComputerPlayerAi.ComputeMoveValue().X, _tictactoe.ComputerPlayerAi.ComputeMoveValue().Y);
             UpdateUi();
             _tictactoe.GameStateCheck();
             UpdateStatusLabel();
@@ -173,11 +141,6 @@ namespace tictactoe
             MenuItemAiImpossible.IsChecked = true;
         }
 
-        private void MenuItemVsComputer_Loaded(object sender, RoutedEventArgs e)
-        {
-            MenuItemVsComputer.IsChecked = Properties.Settings.Default.VsComputer;
-        }
-
         private void MenuItemVsComputer_Click(object sender, RoutedEventArgs e)
         {
             var messageBoxResult = MessageBox.Show(MenuItemVsComputer.IsChecked ? "This will start a new game with a computer oponent. Are you sure you want to start a new game?" : "This will start a new game with a human oponent. Are you sure you want to start a new game?", "Restart game", MessageBoxButton.YesNo);
@@ -193,11 +156,6 @@ namespace tictactoe
         {
             Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
             Properties.Settings.Default.Save();
-        }
-
-        private void MenuItemPlayerStartsFirst_Loaded(object sender, RoutedEventArgs e)
-        {
-            MenuItemVsComputer.IsChecked = Properties.Settings.Default.PlayerStartsFirst;
         }
     }
 }

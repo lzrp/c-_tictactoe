@@ -15,6 +15,8 @@ namespace tictactoe.Classes
         private readonly Tictactoe _tictactoe;
         private readonly Random _random = new Random();
 
+        public string[,] Board { get; private set; }
+
         public enum AiDifficulty
         {
             Easy = 0,
@@ -31,21 +33,13 @@ namespace tictactoe.Classes
         //TODO TEST STUFF, DELETE AFTER IMPLEMENTATION
         private readonly Random _rnd = new Random();
 
-        public Ai(Tictactoe tictactoe)
+
+        public Ai(string[,] ticTacToeBoard)
         {
-            _tictactoe = tictactoe;
+            Board = ticTacToeBoard;
         }
 
-        public void PerformMove(Move move)
-        {
-            if (_tictactoe.GameInProgress)
-            {
-                _tictactoe.PlaceMarker(move.X, move.Y);
-            }
-            
-        }
-
-        public Move ComputeMoveValue(string[,] board)
+        public Move ComputeMoveValue()
         {
             var x = 0;
             var y = 0;
@@ -54,7 +48,7 @@ namespace tictactoe.Classes
             {
                 for (var j = 0; j < 3; j++)
                 {
-                    if (_tictactoe.IsBoardFieldEmpty(i,j))
+                    if (Board[i,j] == " ")
                     {
                         x = i;
                         y = j;
@@ -65,5 +59,11 @@ namespace tictactoe.Classes
 
             return new Move() {X = x, Y = y};
         }
+        
+        
+
+
+
+        
     }
 }
