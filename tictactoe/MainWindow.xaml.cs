@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using tictactoe.Classes;
+using static tictactoe.Classes.Ai;
 
 namespace tictactoe
 {
@@ -11,74 +11,58 @@ namespace tictactoe
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IEnumerable<Button> _buttonCollection;
         private readonly Tictactoe _tictactoe;
-        //private readonly Random _rnd = new Random();
            
         public MainWindow()
         {
+            // Initialize the application components
             InitializeComponent();
-            //ComponentDispatcher.ThreadIdle += AiTest;
-            //Get the button collection from the UI and initialize a newgame
-            _buttonCollection = GridPlayingField.Children.OfType<Button>();
 
-            //Initialize and start the game
-            _tictactoe = new Tictactoe(_buttonCollection);
-            UpdateUi();
-            
+            // Get the button collection from the UI and initialize a newgame
+            var buttonCollection = GridPlayingField.Children.OfType<Button>();
+
+            // Initialize and start the game
+            _tictactoe = new Tictactoe(buttonCollection);
+
+            // Update the user interface
+            _tictactoe.UpdateUi();
+            UpdateStatusLabel();
+
         }
 
+        // Button click event, gets fired on each board button click
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
-            //Players turn
+            // Players turn
+            // Place the marker and update the user interface
             _tictactoe.PlaceMarker(sender as Button);
-            UpdateUi();
+            _tictactoe.UpdateUi();
+
+            // Check for the game state
             if (!_tictactoe.GameStateCheck())
             {
                 UpdateStatusLabel();
                 return;
             }
 
-            //Computers turn
+            UpdateStatusLabel();
+
+            // Computers turn
+            // Skip when the computer oponent is disabled
             if (!Properties.Settings.Default.VsComputer) return;
-            _tictactoe.PlaceMarker(_tictactoe.ComputerPlayerAi.ComputeMoveValue().X, _tictactoe.ComputerPlayerAi.ComputeMoveValue().Y);
-            UpdateUi();
+
+            // Compute the AIs move and place the marker
+            Move computerMove = _tictactoe.ComputerPlayerAi.ComputeMoveValue();
+            _tictactoe.PlaceMarker(computerMove.X, computerMove.Y);
+
+            // Check for the game state and update user interface
+            _tictactoe.UpdateUi();
             _tictactoe.GameStateCheck();
             UpdateStatusLabel();
         }
 
-        private void RestartGame(object sender, RoutedEventArgs e)
-        {
-            RestartGame();
-        }
-
-        private void RestartGame()
-        {
-            _tictactoe.NewGame();
-            UpdateUi();
-        }
-
-        private void UpdateUi()
-        {
-            //Redraw the board buttons
-            foreach (var button in _buttonCollection)
-            {
-                var x = _tictactoe.GetButtonHorizontalCoordinate(button);
-                var y = _tictactoe.GetButtonVerticalCoordinate(button);
-
-                button.Content = _tictactoe.Board[x, y];
-
-                //Disable the button if its marked by a player
-                if (button.Content.ToString() != " ")
-                {
-                    button.IsEnabled = false;
-                }
-            }
-
-            UpdateStatusLabel();
-        }
-
-        private void UpdateStatusLabel()
+        // Updates the status label
+        public void UpdateStatusLabel()
         {
             string playerStatus;
 
@@ -93,12 +77,9 @@ namespace tictactoe
             }
 
             LabelStatus.Content = "Fields left: " + _tictactoe.BoardFieldsLeftCounter + " / " + playerStatus;
-            //TODO Ai WINDOW
         }
 
-
-        //Menuitem event handlers
-
+        #region MenuItem event handlers
         private void MenuItemAiEasy_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.DifficultySetting = 0;
@@ -149,7 +130,7 @@ namespace tictactoe
             Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
             Properties.Settings.Default.Save();
 
-            RestartGame();
+            _tictactoe.RestartGame();
         }
 
         private void MenuItemPlayerStartsFirst_Click(object sender, RoutedEventArgs e)
@@ -157,6 +138,12 @@ namespace tictactoe
             Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
             Properties.Settings.Default.Save();
         }
+
+        private void NewGameMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            _tictactoe.RestartGame();
+        }
+        #endregion
     }
 }
 

@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using static tictactoe.Classes.Ai;
 
 namespace tictactoe.Classes
 {
@@ -28,10 +30,19 @@ namespace tictactoe.Classes
 
         #region class methods
 
+        /// <summary>
+        /// Creates a new instance of the Tictactoe class.
+        /// </summary>
+        /// <param name="buttonList">Button collection representing the playing board.</param>
         public Tictactoe(IEnumerable<Button> buttonList)
         {
+            // Assign the button collection
             ButtonCollection = buttonList;
+
+            // Create AI player
             ComputerPlayerAi = new Ai(Board);
+
+            // Start a new game
             NewGame();
         }
 
@@ -47,7 +58,7 @@ namespace tictactoe.Classes
         }
 
         /// <summary>
-        /// Disables all buttons.
+        /// Disables all buttons in the games board button collection.
         /// </summary>
         private void DisableButtons()
         {
@@ -60,7 +71,7 @@ namespace tictactoe.Classes
         /// Checks if the board field is empty given the correspondings board field button.
         /// </summary>
         /// <param name="button">Button which board field is checked.</param>
-        /// <returns>Bool result indicating whether the field is empty.</returns>
+        /// <returns>Bool result true if the field is empty.</returns>
         public bool IsBoardFieldEmpty(Button button)
         {
             return button.Content.ToString() == " ";
@@ -71,7 +82,7 @@ namespace tictactoe.Classes
         /// </summary>
         /// <param name="x">X coordinate of the board field.</param>
         /// <param name="y">Y coordinate of the board field.</param>
-        /// <returns></returns>
+        /// <returns>Bool result true if the field is empty.</returns>
         public bool IsBoardFieldEmpty(int x, int y)
         {
             return Board[x, y] == " ";
@@ -89,48 +100,63 @@ namespace tictactoe.Classes
         /// <summary>
         /// Resets game parameters, board fields and buttons representing the board.
         /// </summary>
-        /// <param name="buttonList">Buttons used to represent the board.</param>
         public void NewGame()
         {
+            // Start the game and reset the empty fields counter
             GameInProgress = true;
             BoardFieldsLeftCounter = 9;
-            //ButtonCollection = buttonList as List<Button>;
 
             // Reset all buttons and board fields
             foreach (var button in ButtonCollection)
             {
-                var buttonHorizontalPosition = GetButtonHorizontalCoordinate(button);
-                var buttonVerticalPosition = GetButtonVerticalCoordinate(button);
+                // Reset board
+                int buttonHorizontalPosition = GetButtonHorizontalCoordinate(button);
+                int buttonVerticalPosition = GetButtonVerticalCoordinate(button);
 
                 Board[buttonHorizontalPosition, buttonVerticalPosition] = Emptyfield;
 
+                // Reset buttons
                 button.Content = Emptyfield;
                 button.IsEnabled = true;
             }
 
-            //set the turn to true so that X starts
+            // Set the turn to true so that X starts
             Turn = true;
 
-            //If the AI is the first on turn, let it make the first move
-            if (!Properties.Settings.Default.PlayerStartsFirst && Properties.Settings.Default.VsComputer)
-            {
-                PlaceMarker(ComputerPlayerAi.ComputeMoveValue().X, ComputerPlayerAi.ComputeMoveValue().Y);
-                UpdateUi();
-                GameStateCheck();
-            }
+            // If the AI is the first on turn, let it make the first move
+            if (Properties.Settings.Default.PlayerStartsFirst || !Properties.Settings.Default.VsComputer) return;
+
+            Move computerMove = ComputerPlayerAi.ComputeMoveValue();
+            PlaceMarker(computerMove.X, computerMove.Y);
+
+            // Update the UI and check the state of the game
+            UpdateUi();
+            GameStateCheck();
         }
 
+        /// <summary>
+        /// Restarts the game and updates the UI.
+        /// </summary>
+        public void RestartGame()
+        {
+            NewGame();
+            UpdateUi();
+        }
+
+        /// <summary>
+        /// Updates the board buttons.
+        /// </summary>
         public void UpdateUi()
         {
-            //Redraw the board buttons
+            // Redraw the board buttons
             foreach (var button in ButtonCollection)
             {
-                var x = GetButtonHorizontalCoordinate(button);
-                var y = GetButtonVerticalCoordinate(button);
+                int x = GetButtonHorizontalCoordinate(button);
+                int y = GetButtonVerticalCoordinate(button);
 
                 button.Content = Board[x, y];
 
-                //Disable the button if its marked by a player
+                // Disable the button if its marked by a player
                 if (button.Content.ToString() != " ")
                 {
                     button.IsEnabled = false;
@@ -153,6 +179,7 @@ namespace tictactoe.Classes
         /// <param name="y">The vertical coordinate within the board.</param>
         public void PlaceMarker(int x, int y)
         {
+            // Adjust the fields left counter and mark the board field
             BoardFieldsLeftCounter--;
             Board[x, y] = GetCurrentTurnPlayer();
         }
@@ -163,27 +190,27 @@ namespace tictactoe.Classes
         /// <param name="button">Pressed button indicating the position on the board.</param>
         public void PlaceMarker(Button button)
         {
-            //Return immediately when the game ended or havent started yet.
+            // Return immediately when the game ended or havent started yet
             if (!GameInProgress) return;
 
-            var currentPlayer = GetCurrentTurnPlayer();
+            string currentPlayer = GetCurrentTurnPlayer();
 
-            //Check if the button is not taken yet, place marker if not
+            // Check if the button is not taken yet, place marker if not
             if (IsBoardFieldEmpty(button))
             {
-                //Asign the currents player mark as the button content
+                // Asign the currents player mark as the button content
                 button.Content = currentPlayer;
                 button.IsEnabled = false;
 
-                var buttonHorizontalPosition = GetButtonHorizontalCoordinate(button);
-                var buttonVerticalPosition = GetButtonVerticalCoordinate(button);
+                int buttonHorizontalPosition = GetButtonHorizontalCoordinate(button);
+                int buttonVerticalPosition = GetButtonVerticalCoordinate(button);
 
+                // Place the marker
                 PlaceMarker(buttonHorizontalPosition, buttonVerticalPosition);
                 return;
-
             }
 
-            //Otherwise show a warning dialog
+            // Otherwise show a warning dialog
             MessageBox.Show("You can't place your marker to an already marked field!", "Warning.", MessageBoxButton.OK);
         }
 
@@ -194,34 +221,41 @@ namespace tictactoe.Classes
         /// <returns>Bool result true if there is a winner.</returns>
         public bool CheckWinner(string[,] board)
         {
-            //Check if a game is in progress
+            // Check if a game is in progress
             if (!GameInProgress) return false;
 
-            //Check board rows - 00=01=02 | 10=11=12 | 20=21=22
-            for (var i = 0; i < BoardSizeVertical; i++)
+            // Check board rows, columns and diagonals. Also check for empty fields
+            // Check board rows - 00=01=02 | 10=11=12 | 20=21=22
+            for (int i = 0; i < BoardSizeVertical; i++)
             {
                 if (Board[i, 0] != Board[i, 1] || Board[i, 1] != Board[i, 2] || Board[i, 0] == Emptyfield) continue;
                 return true;
             }
 
-            //Check board columns - 00=10=20 | 01=11=21 | 02=12=22
-            for (var i = 0; i < BoardSizeHorizontal; i++)
+            // Check board columns - 00=10=20 | 01=11=21 | 02=12=22
+            for (int i = 0; i < BoardSizeHorizontal; i++)
             {
                 if (Board[0, i] != Board[1, i] || Board[1, i] != Board[2, i] || Board[0, i] == Emptyfield) continue;
                 return true;
             }
 
-            //Check diagonals - 00=11=22 | 02=11=20
+            // Check diagonals - 00=11=22 | 02=11=20
             return (Board[0, 0] == Board[1, 1] && Board[1, 1] == Board[2, 2] || Board[0, 2] == Board[1, 1] && Board[1, 1] == Board[2, 0]) && Board[1, 1] != Emptyfield;
         }
 
+        /// <summary>
+        /// Checks for the state of the game.
+        /// </summary>
+        /// <returns>Returns a bool result true if the game state has not changed. (No wins or draws.)</returns>
         public bool GameStateCheck()
         {
-            //Check for a winner
+            // Check for a winner
             if (CheckWinner(Board))
             {
-                AnnounceWinner(GetCurrentTurnPlayer());
+                StopGame();
 
+                AnnounceWinner(GetCurrentTurnPlayer());
+                
                 if (AskForNewGame())
                 {
                     NewGame();
@@ -230,9 +264,11 @@ namespace tictactoe.Classes
                 return false;
             }
 
-            //If there are no empty fields left, end the game in a draw
+            // If there are no empty fields left, end the game in a draw
             if (BoardFieldsLeftCounter == 0)
             {
+                StopGame();
+
                 AnnounceDraw();
 
                 if (AskForNewGame())
@@ -243,7 +279,7 @@ namespace tictactoe.Classes
                 return false;
             }
 
-            //Else advance to the next turn
+            // Else advance to the next turn
             NextTurn();
             return true;
         }
@@ -251,12 +287,10 @@ namespace tictactoe.Classes
         /// <summary>
         /// Shows a message with the name of the winning player.
         /// </summary>
-        /// <param name="player"></param>
+        /// <param name="player">The winning player.</param>
         public void AnnounceWinner(string player)
         {
-            //Stop the game and disable the buttons.
-            StopGame();
-            DisableButtons();
+            // Announce the winner
             MessageBox.Show("Congratulations, player " + player + " wins!", "Winner!", MessageBoxButton.OK);
         }
 
@@ -265,9 +299,7 @@ namespace tictactoe.Classes
         /// </summary>
         public void AnnounceDraw()
         {
-            //Stop the game and disable the buttons.
-            StopGame();
-            DisableButtons();
+            // Announce draw
             MessageBox.Show("Players draw!","Draw.", MessageBoxButton.OK);
         }
 
@@ -276,13 +308,15 @@ namespace tictactoe.Classes
         /// </summary>
         public void StopGame()
         {
+            // Stop the game and disable all buttons.
+            DisableButtons();
             GameInProgress = false;
         }
 
         /// <summary>
         /// Get the buttons horizontal coordinate within the board given its tag.
         /// </summary>
-        /// <param name="button">Button with a tag in a specific pattern. Tag = (int)horizontalCoordinate(int)verticalCoordinate. Example button.Tag = 01</param>
+        /// <param name="button">Button with a Tag property in a specific pattern. Tag = (int)horizontalCoordinate(int)verticalCoordinate. Example: button.Tag = 01</param>
         /// <returns>Integer horizontal coordinate value</returns>
         public int GetButtonHorizontalCoordinate(Button button)
         {
@@ -292,7 +326,7 @@ namespace tictactoe.Classes
         /// <summary>
         /// Get the buttons vertical coordinate within the board given its tag.
         /// </summary>
-        /// <param name="button">Button with a tag in a specific pattern. Tag = (int)horizontalCoordinate(int)verticalCoordinate. Example button.Tag = 01</param>
+        /// <param name="button">Button with a Tag property in a specific pattern. Tag = (int)horizontalCoordinate(int)verticalCoordinate. Example: button.Tag = 01</param>
         /// <returns>Integer vertical coordinate value</returns>
         public int GetButtonVerticalCoordinate(Button button)
         {
