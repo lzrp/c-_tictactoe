@@ -234,27 +234,28 @@ namespace tictactoe.Classes
         /// Checks if the last move resulted in a player winning the game.
         /// </summary>
         /// <param name="board">Board representing the playing field array.</param>
+        /// <param name="playerMark">Mark for which to check the winner.</param>
         /// <returns>Bool result true if there is a winner.</returns>
-        public static bool CheckWinner(string[,] board, string mark)
+        public static bool CheckWinner(string[,] board, string playerMark)
         {
             // Check board rows, columns and diagonals. Also check for empty fields
             // Check board rows - 00=01=02 | 10=11=12 | 20=21=22
             for (int i = 0; i < BoardSizeVertical; i++)
             {
-                if (board[i, 0] != board[i, 1] || board[i, 1] != board[i, 2] || board[i, 0] != mark) continue;
+                if (board[i, 0] != board[i, 1] || board[i, 1] != board[i, 2] || board[i, 0] != playerMark) continue;
                 return true;
             }
 
             // Check board columns - 00=10=20 | 01=11=21 | 02=12=22
             for (int i = 0; i < BoardSizeHorizontal; i++)
             {
-                if (board[0, i] != board[1, i] || board[1, i] != board[2, i] || board[0, i] != mark) continue;
+                if (board[0, i] != board[1, i] || board[1, i] != board[2, i] || board[0, i] != playerMark) continue;
                 return true;
             }
 
             // Check diagonals - 00=11=22 | 02=11=20
             return (board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2] ||
-                    board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0]) && board[1, 1] == mark;
+                    board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0]) && board[1, 1] == playerMark;
         }
 
         /// <summary>
@@ -278,7 +279,7 @@ namespace tictactoe.Classes
             {
                 for (int j = 0; j < BoardSizeVertical; j++)
                 {
-                    if (board[i,j] != EmptyField)
+                    if (board[i,j] == EmptyField)
                     {
                         return false;
                     }
