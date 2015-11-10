@@ -96,7 +96,6 @@ namespace tictactoe.Classes
         {
             return Turn ? "X" : "O";
         }
-
         /// <summary>
         /// Resets game parameters, board fields and buttons representing the board.
         /// </summary>
@@ -183,7 +182,6 @@ namespace tictactoe.Classes
             BoardFieldsLeftCounter--;
             Board[x, y] = GetCurrentTurnPlayer();
         }
-
         /// <summary>
         /// Places a marker at the specified position on a button and into the board.
         /// </summary>
@@ -312,7 +310,6 @@ namespace tictactoe.Classes
             DisableButtons();
             GameInProgress = false;
         }
-
         /// <summary>
         /// Get the buttons horizontal coordinate within the board given its tag.
         /// </summary>
@@ -322,7 +319,6 @@ namespace tictactoe.Classes
         {
             return int.Parse(button.Tag.ToString().Substring(0, 1));
         }
-
         /// <summary>
         /// Get the buttons vertical coordinate within the board given its tag.
         /// </summary>

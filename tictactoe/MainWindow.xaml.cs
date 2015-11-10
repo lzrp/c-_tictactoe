@@ -128,13 +128,18 @@ namespace tictactoe
             var messageBoxResult = MessageBox.Show(MenuItemVsComputer.IsChecked ? "This will start a new game with a computer oponent. Are you sure you want to start a new game?" : "This will start a new game with a human oponent. Are you sure you want to start a new game?", "Restart game", MessageBoxButton.YesNo);
 
             // Save the selected option if user clicked Yes
-            if (messageBoxResult != MessageBoxResult.Yes) return;
-            Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
-            Properties.Settings.Default.Save();
-            
-            // Restart the game
-            _tictactoe.RestartGame();
-            UpdateStatusLabel();
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
+                Properties.Settings.Default.Save();
+
+                // Restart the game
+                _tictactoe.RestartGame();
+                UpdateStatusLabel();
+            }
+
+            // Else undo the click
+            MenuItemVsComputer.IsChecked = !MenuItemVsComputer.IsChecked;
         }
 
         private void MenuItemPlayerStartsFirst_Click(object sender, RoutedEventArgs e)
@@ -143,14 +148,18 @@ namespace tictactoe
             var messageBoxResult = MessageBox.Show("Changing this setting requires a game restart. Are you sure you want to restart the game?" , "Restart game", MessageBoxButton.YesNo);
 
             // Save the selected option if user clicked Yes
-            if (messageBoxResult != MessageBoxResult.Yes) return;
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
+                Properties.Settings.Default.Save();
 
-            Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
-            Properties.Settings.Default.Save();
+                // Restart the game
+                _tictactoe.RestartGame();
+                UpdateStatusLabel();
+            }
 
-            // Restart the game
-            _tictactoe.RestartGame();
-            UpdateStatusLabel();
+            // Else undo the click
+            MenuItemPlayerStartsFirst.IsChecked = !MenuItemPlayerStartsFirst.IsChecked;
         }
 
         private void NewGameMenuItemClick(object sender, RoutedEventArgs e)
