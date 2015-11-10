@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace tictactoe.Classes
 {
@@ -13,7 +7,10 @@ namespace tictactoe.Classes
     {
         #region class members
 
-        private const string EmptyValue = " ";
+        private const string EmptyField = " ";
+        private const string CrossMark = "X";
+        private const string CircleMark = "O";
+
         private readonly Random _random = new Random();
         public string[,] Board { get; }
         public enum AiDifficulty
@@ -36,16 +33,16 @@ namespace tictactoe.Classes
             Board = ticTacToeBoard;
         }
 
-        public bool IsBoardFieldEmpty(int x, int y)
+        public static bool IsBoardFieldEmpty(string[,] board, int x, int y)
         {
-            return Board[x, y] == EmptyValue;
+            return board[x, y] == EmptyField;
         }
 
         /// <summary>
         /// Computes the move value from its coordinates.
         /// </summary>
         /// <returns>A move structure with the coordinates of the move and its value based on difficulty.</returns>
-        public Move ComputeMoveValue()
+        public Move ComputeMoveValue(string playerMark)
         {
             int x = 0;
             int y = 0;
@@ -60,7 +57,7 @@ namespace tictactoe.Classes
                     for (int j = 0; j < 3; j++)
                     {
                         // Check for an empty field
-                        if (!IsBoardFieldEmpty(i, j)) continue;
+                        if (!IsBoardFieldEmpty(Board, i, j)) continue;
 
                         // Assign coordinates if found
                         x = i;
@@ -83,7 +80,7 @@ namespace tictactoe.Classes
                     y = _random.Next(0, 3);
 
                     // Check if the field is empty
-                    if (IsBoardFieldEmpty(x, y))
+                    if (IsBoardFieldEmpty(Board, x, y))
                     {
                         // Indicate that a move is found and exit the loop
                         moveFound = true;
@@ -100,6 +97,63 @@ namespace tictactoe.Classes
             }
 
             return new Move() {X = x, Y = y};
+        }
+
+        private static Move negamax(string[,] board, string playerMark)
+        {
+            // Set the oponent players mark
+            string oponentPlayerMark = playerMark == CrossMark ? CircleMark : CrossMark;
+
+            // Check if the player calling the function won
+            if (Tictactoe.CheckWinner(board) && playerMark == CrossMark)
+            {
+                return new Move() {Value = 1};
+            }
+
+            // Check if the player calling the function lost
+            if (Tictactoe.CheckWinner(board) && playerMark == CircleMark)
+            {
+                return new Move() {Value = -1};
+            }
+
+            // Check for a draw
+            if (Tictactoe.CheckForDraw(board))
+            {
+                return new Move() {Value = 0};
+            }
+            
+            // Initialize helper variables, set maxValue to -2 because thats lower than the possible value you can get from this implementation (which is -1)
+            int maxValue = -2, boardHorizontalCoordinate = 0, boardVerticalCoordinate = 0;
+
+            // Loop through the board
+            for (int i = 0; i < Tictactoe.GetBoardMaxHorizontalSize(); i++)
+            {
+                for (int j = 0; j < Tictactoe.GetBoardMaxHorizontalSize(); j++)
+                {
+                    if (IsBoardFieldEmpty(board, i, j))
+                    {
+                        // Mark the board field
+                        board[i, j] = playerMark;
+
+                        // Assign a new value from the recursive function call
+                        int value = negamax(board, oponentPlayerMark).Value;
+
+                        // Store move information if it has better value
+                        if (value > maxValue)
+                        {
+                            maxValue = value;
+                            boardHorizontalCoordinate = i;
+                            boardVerticalCoordinate = j;
+                        }
+
+                        // Change the board field back to empty
+                        board[i, j] = EmptyField;
+                    }
+                }
+            }
+
+            // Return the move with the best value
+            return new Move() {Value = maxValue, X = boardHorizontalCoordinate, Y = boardVerticalCoordinate};
         }
     }
 }

@@ -52,7 +52,7 @@ namespace tictactoe
             if (!Properties.Settings.Default.VsComputer) return;
 
             // Compute the AIs move and place the marker
-            Move computerMove = _tictactoe.ComputerPlayerAi.ComputeMoveValue();
+            Move computerMove = _tictactoe.ComputerPlayerAi.ComputeMoveValue(_tictactoe.GetCurrentTurnPlayer());
             _tictactoe.PlaceMarker(computerMove.X, computerMove.Y);
 
             // Check for the game state and update user interface
@@ -170,8 +170,6 @@ namespace tictactoe
             UpdateStatusLabel();
         }
 
-        #endregion
-
         private void MenuItemVsComputer_Loaded(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
@@ -183,6 +181,9 @@ namespace tictactoe
             Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
             Properties.Settings.Default.Save();
         }
+        #endregion
+
+
     }
 }
 
