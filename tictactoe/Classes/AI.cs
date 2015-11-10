@@ -99,7 +99,7 @@ namespace tictactoe.Classes
             return new Move() {X = x, Y = y};
         }
 
-        private static Move negamax(string[,] board, string playerMark)
+        private static Move Negamax(string[,] board, string playerMark)
         {
             // Set the oponent players mark
             string oponentPlayerMark = playerMark == CrossMark ? CircleMark : CrossMark;
@@ -135,8 +135,11 @@ namespace tictactoe.Classes
                         // Mark the board field
                         board[i, j] = playerMark;
 
-                        // Assign a new value from the recursive function call
-                        int value = negamax(board, oponentPlayerMark).Value;
+                        // Assign a new value to the opposite of a recursive function call
+                        // Needs to be negative because thats how the algorithm
+                        //differentiates between two players - one who maximizes and the
+                        //second one who minimizes
+                        int value = - Negamax(board, oponentPlayerMark).Value;
 
                         // Store move information if it has better value
                         if (value > maxValue)
