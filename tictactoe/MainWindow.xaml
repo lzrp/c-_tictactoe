@@ -36,8 +36,8 @@
                         <MenuItem x:Name="MenuItemAiMedium" Header="Medium" Click="MenuItemAiMedium_Click" IsCheckable="True" Loaded="MenuItemAiMedium_Loaded"/>
                         <MenuItem x:Name="MenuItemAiImpossible" Header="Impossible" Click="MenuItemAiImpossible_Click" IsCheckable="True" Loaded="MenuItemAiImpossible_Loaded"/>
                     </MenuItem>
-                    <MenuItem x:Name="MenuItemVsComputer" Header="Computer Oponent" Click="MenuItemVsComputer_Click" IsCheckable="True" IsChecked="True"/>
-                    <MenuItem x:Name="MenuItemPlayerStartsFirst" Header="Player Starts First" HorizontalAlignment="Left" Width="188" Click="MenuItemPlayerStartsFirst_Click" IsCheckable="True" IsChecked="True">
+                    <MenuItem x:Name="MenuItemVsComputer" Header="Computer Oponent" Click="MenuItemVsComputer_Click" IsCheckable="True" IsChecked="True" Loaded="MenuItemVsComputer_Loaded"/>
+                    <MenuItem x:Name="MenuItemPlayerStartsFirst" Header="Player Starts First" HorizontalAlignment="Left" Width="188" Click="MenuItemPlayerStartsFirst_Click" IsCheckable="True" IsChecked="True" Loaded="MenuItemPlayerStartsFirst_Loaded">
                     </MenuItem>
                 </MenuItem>
                 

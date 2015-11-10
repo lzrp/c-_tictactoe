@@ -136,6 +136,7 @@ namespace tictactoe
                 // Restart the game
                 _tictactoe.RestartGame();
                 UpdateStatusLabel();
+                return;
             }
 
             // Else undo the click
@@ -156,6 +157,7 @@ namespace tictactoe
                 // Restart the game
                 _tictactoe.RestartGame();
                 UpdateStatusLabel();
+                return;
             }
 
             // Else undo the click
@@ -167,9 +169,20 @@ namespace tictactoe
             _tictactoe.RestartGame();
             UpdateStatusLabel();
         }
+
         #endregion
 
+        private void MenuItemVsComputer_Loaded(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
+            Properties.Settings.Default.Save();
+        }
 
+        private void MenuItemPlayerStartsFirst_Loaded(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
+            Properties.Settings.Default.Save();
+        }
     }
 }
 

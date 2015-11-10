@@ -60,7 +60,7 @@ namespace tictactoe.Classes
                     for (int j = 0; j < 3; j++)
                     {
                         // Check for an empty field
-                        if (IsBoardFieldEmpty(i, j)) continue;
+                        if (!IsBoardFieldEmpty(i, j)) continue;
 
                         // Assign coordinates if found
                         x = i;
