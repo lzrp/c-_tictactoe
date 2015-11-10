@@ -124,26 +124,43 @@ namespace tictactoe
 
         private void MenuItemVsComputer_Click(object sender, RoutedEventArgs e)
         {
+            // Ask for confirmation
             var messageBoxResult = MessageBox.Show(MenuItemVsComputer.IsChecked ? "This will start a new game with a computer oponent. Are you sure you want to start a new game?" : "This will start a new game with a human oponent. Are you sure you want to start a new game?", "Restart game", MessageBoxButton.YesNo);
 
+            // Save the selected option if user clicked Yes
             if (messageBoxResult != MessageBoxResult.Yes) return;
             Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
             Properties.Settings.Default.Save();
-
+            
+            // Restart the game
             _tictactoe.RestartGame();
+            UpdateStatusLabel();
         }
 
         private void MenuItemPlayerStartsFirst_Click(object sender, RoutedEventArgs e)
         {
+            // Ask for confirmation
+            var messageBoxResult = MessageBox.Show("Changing this setting requires a game restart. Are you sure you want to restart the game?" , "Restart game", MessageBoxButton.YesNo);
+
+            // Save the selected option if user clicked Yes
+            if (messageBoxResult != MessageBoxResult.Yes) return;
+
             Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
             Properties.Settings.Default.Save();
+
+            // Restart the game
+            _tictactoe.RestartGame();
+            UpdateStatusLabel();
         }
 
         private void NewGameMenuItemClick(object sender, RoutedEventArgs e)
         {
             _tictactoe.RestartGame();
+            UpdateStatusLabel();
         }
         #endregion
+
+
     }
 }
 
