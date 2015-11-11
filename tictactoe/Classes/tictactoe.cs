@@ -14,7 +14,7 @@ namespace tictactoe.Classes
         private const int BoardSizeHorizontal = 3;
         private const int BoardSizeVertical = 3;
 
-        public bool Turn { get; private set; }
+        public bool Turn { get; private set; } // true = Xs turn, false = Os turn
         public bool GameInProgress { get; private set; }
         public int BoardFieldsLeftCounter { get; private set; } = 9;
         public Ai ComputerPlayerAi { get; private set; }
@@ -46,7 +46,7 @@ namespace tictactoe.Classes
         /// Gets the maximum horizontal size of the game board.
         /// </summary>
         /// <returns></returns>
-        public static int GetBoardMaxHorizontalSize()
+        public static int GetBoardSizeHorizontal()
         {
             return BoardSizeHorizontal;
         }
@@ -55,7 +55,7 @@ namespace tictactoe.Classes
         /// Gets the maximum vertical size of the game board.
         /// </summary>
         /// <returns></returns>
-        public static int GetBoardMaxVerticalSize()
+        public static int GetBoardSizeVertical()
         {
             return BoardSizeVertical;
         }
@@ -142,12 +142,12 @@ namespace tictactoe.Classes
             // If the AI is the first on turn, let it make the first move
             if (Properties.Settings.Default.PlayerStartsFirst || !Properties.Settings.Default.VsComputer) return;
 
-            Move computerMove = ComputerPlayerAi.ComputeMoveValue(GetCurrentTurnPlayer());
+            Move computerMove = ComputerPlayerAi.PerformMove(GetCurrentTurnPlayer());
             PlaceMarker(computerMove.X, computerMove.Y);
 
             // Update the UI and check the state of the game
             UpdateUi();
-            GameStateCheck();
+            GameStateCheckChanged();
         }
 
         /// <summary>
@@ -292,8 +292,8 @@ namespace tictactoe.Classes
     /// <summary>
         /// Checks for the state of the game.
         /// </summary>
-        /// <returns>Returns a bool result true if the game state has not changed. (No wins or draws.)</returns>
-        public bool GameStateCheck()
+        /// <returns>Returns a bool result true if the game state changed. (Player ýwins or draws.)</returns>
+        public bool GameStateCheckChanged()
     {
         string currentPlayer = GetCurrentTurnPlayer();
 
@@ -303,13 +303,14 @@ namespace tictactoe.Classes
                 StopGame();
 
                 AnnounceWinner(currentPlayer);
-                
+
+                // Ask for a new game, start when user says Yes
                 if (AskForNewGame())
                 {
                     NewGame();
                 }
 
-                return false;
+                return true;
             }
 
             // If there are no empty fields left, end the game in a draw
@@ -319,17 +320,18 @@ namespace tictactoe.Classes
 
                 AnnounceDraw();
 
+                // Ask for a new game, start when user says Yes
                 if (AskForNewGame())
                 {
                     NewGame();
                 }
 
-                return false;
+                return true;
             }
 
             // Else advance to the next turn
             NextTurn();
-            return true;
+            return false;
         }
 
         /// <summary>

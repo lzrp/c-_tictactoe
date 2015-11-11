@@ -28,22 +28,29 @@ namespace tictactoe.Classes
         }
         #endregion
 
-
+        #region class methods
         public Ai(string[,] ticTacToeBoard)
         {
             Board = ticTacToeBoard;
         }
 
+        /// <summary>
+        /// Checks if the board field is empty.
+        /// </summary>
+        /// <param name="board">Board which to check.</param>
+        /// <param name="x">Horizontal coordinate within the board.</param>
+        /// <param name="y">Vertical coordinate within the board.</param>
+        /// <returns></returns>
         public static bool IsBoardFieldEmpty(string[,] board, int x, int y)
         {
             return board[x, y] == EmptyField;
         }
 
         /// <summary>
-        /// Computes the move value from its coordinates.
+        /// Performs the computers move.
         /// </summary>
         /// <returns>A move structure with the coordinates of the move and its value based on difficulty.</returns>
-        public Move ComputeMoveValue(string playerMark)
+        public Move PerformMove(string playerMark)
         {
             int x = 0;
             int y = 0;
@@ -100,6 +107,13 @@ namespace tictactoe.Classes
             return new Move() { X = x, Y = y };
         }
 
+        /// <summary>
+        /// Computes the best move available through the negamax algorithm.
+        /// </summary>
+        /// <param name="board">Board on which to do the calculations.</param>
+        /// <param name="playerMark">Mark of the player who is calling the function.</param>
+        /// <returns>An optimal move for the given board and player.</returns>
+        /// Can be upgraded with alpha-beta pruning to increase performance.
         private static Move Negamax(string[,] board, string playerMark)
         {
             // Set the oponent players mark
@@ -134,9 +148,9 @@ namespace tictactoe.Classes
             var bestMove = new Move() { Value = -2 };
 
             // Loop through the board
-            for (int i = 0; i < Tictactoe.GetBoardMaxHorizontalSize(); i++)
+            for (int i = 0; i < Tictactoe.GetBoardSizeHorizontal(); i++)
             {
-                for (int j = 0; j < Tictactoe.GetBoardMaxVerticalSize(); j++)
+                for (int j = 0; j < Tictactoe.GetBoardSizeVertical(); j++)
                 {
                     if (IsBoardFieldEmpty(board, i, j))
                     {
@@ -166,5 +180,6 @@ namespace tictactoe.Classes
             // Return the move with the best value
             return bestMove;
         }
+        #endregion
     }
 }

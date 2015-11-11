@@ -39,7 +39,7 @@ namespace tictactoe
             _tictactoe.UpdateUi();
 
             // Check for the game state
-            if (!_tictactoe.GameStateCheck())
+            if (_tictactoe.GameStateCheckChanged())
             {
                 UpdateStatusLabel();
                 return;
@@ -52,16 +52,18 @@ namespace tictactoe
             if (!Properties.Settings.Default.VsComputer) return;
 
             // Compute the AIs move and place the marker
-            Move computerMove = _tictactoe.ComputerPlayerAi.ComputeMoveValue(_tictactoe.GetCurrentTurnPlayer());
+            Move computerMove = _tictactoe.ComputerPlayerAi.PerformMove(_tictactoe.GetCurrentTurnPlayer());
             _tictactoe.PlaceMarker(computerMove.X, computerMove.Y);
 
             // Check for the game state and update user interface
             _tictactoe.UpdateUi();
-            _tictactoe.GameStateCheck();
+            _tictactoe.GameStateCheckChanged();
             UpdateStatusLabel();
         }
 
-        // Updates the status label
+        /// <summary>
+        /// Updates the status label.
+        /// </summary>
         public void UpdateStatusLabel()
         {
             string playerStatus;
@@ -94,6 +96,9 @@ namespace tictactoe
 
         private void MenuItemAiImpossible_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show(
+                "You have selected the impossible difficulty. All games played on this difficulty will result in a draw or a loss against the computer player.",
+                "Impossible difficulty", MessageBoxButton.OK);
             Properties.Settings.Default.DifficultySetting = 2;
             Properties.Settings.Default.Save();
         }
