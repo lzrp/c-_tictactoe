@@ -104,35 +104,34 @@ namespace tictactoe.Classes
         {
             // Set the oponent players mark
             string oponentPlayerMark = playerMark == CrossMark ? CircleMark : CrossMark;
-            var move = new Move() {Value = -2};
+            
 
             // Check if the player calling the function won
             if (Tictactoe.CheckWinner(board, playerMark))
             {
-                move.Value = 1;
-                return move;
-                //return new Move() {Value = 1};
+                //move.Value = 1;
+                //return move;
+                return new Move() {Value = 1};
             }
 
             // Check if the player calling the function lost
             if (Tictactoe.CheckWinner(board, oponentPlayerMark))
             {
-                move.Value = -1;
-                return move;
-                //return new Move() {Value = -1};
+                //move.Value = -1;
+                //return move;
+                return new Move() {Value = -1};
             }
 
             // Check for a draw
             if (Tictactoe.CheckForDraw(board))
             {
-                move.Value = 0;
-                return move;
-                //return new Move() {Value = 0};
+                //move.Value = 0;
+                //return move;
+                return new Move() {Value = 0};
             }
 
             // Initialize helper variables, set maxValue to -2 because thats lower than the possible value you can get from this implementation (which is -1)
-            //int maxValue = -2, boardHorizontalCoordinate = 0, boardVerticalCoordinate = 0;
-       
+            var bestMove = new Move() { Value = -2 };
 
             // Loop through the board
             for (int i = 0; i < Tictactoe.GetBoardMaxHorizontalSize(); i++)
@@ -146,16 +145,16 @@ namespace tictactoe.Classes
 
                         // Assign a new value to the opposite of a recursive function call
                         // Needs to be negative because thats how the algorithm
-                        //differentiates between two players - one who maximizes and the
-                        //second one who minimizes
+                        // differentiates between two players - one who maximizes and the
+                        // second one who minimizes
                         int value = -Negamax(board, oponentPlayerMark).Value;
                         
                         // Store move information if it has better value
-                        if (value > move.Value)
+                        if (value > bestMove.Value)
                         {
-                            move.Value = value;
-                            move.X = i;
-                            move.Y = j;
+                            bestMove.Value = value;
+                            bestMove.X = i;
+                            bestMove.Y = j;
                         }
 
                         // Change the board field back to empty
@@ -163,9 +162,9 @@ namespace tictactoe.Classes
                     }
                 }
             }
+
             // Return the move with the best value
-            //return new Move() {Value = maxValue, X = boardHorizontalCoordinate, Y = boardVerticalCoordinate};
-            return move;
+            return bestMove;
         }
     }
 }
