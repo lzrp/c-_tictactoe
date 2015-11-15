@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace tictactoe.Classes
 {
-    internal class Ai
+    public class Ai
     {
         #region class members
 
@@ -18,7 +18,8 @@ namespace tictactoe.Classes
         {
             Easy = 0,
             Medium = 1,
-            Impossible = 2
+            Impossible = 2,
+            NotSet = 3
         }
         public struct Move
         {
@@ -102,6 +103,14 @@ namespace tictactoe.Classes
             if (Properties.Settings.Default.DifficultySetting == (int)AiDifficulty.Impossible)
             {
                 return Negamax(Board, playerMark);
+            }
+
+            // Display an error message if no AI difficulty is set
+            if (Properties.Settings.Default.DifficultySetting == (int)AiDifficulty.NotSet)
+            {
+                MessageBox.Show(
+                    "The AI player doesn't have its difficulty set. Please choose an AI difficulty from the settings.",
+                    "AI difficulty not set", MessageBoxButton.OK);
             }
 
             return new Move() { X = x, Y = y };

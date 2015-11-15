@@ -6,21 +6,23 @@ using static tictactoe.Classes.Ai;
 
 namespace tictactoe.Classes
 {
-    internal class Tictactoe : IGame
+    public class Tictactoe : IGame
     {
         #region class members
 
         private const string EmptyField = " ";
         private const int BoardSizeHorizontal = 3;
         private const int BoardSizeVertical = 3;
+        private const string CrossMark = "X";
+        private const string CircleMark = "O";
 
         public bool Turn { get; private set; } // true = Xs turn, false = Os turn
         public bool GameInProgress { get; private set; }
         public int BoardFieldsLeftCounter { get; private set; } = 9;
-        public Ai ComputerPlayerAi { get; private set; }
+        public Ai ComputerPlayerAi { get; }
 
         public string[,] Board { get; } = new string[BoardSizeHorizontal, BoardSizeVertical];
-        public IEnumerable<Button> ButtonCollection { get; private set; }
+        public IEnumerable<Button> ButtonCollection { get; }
 
         #endregion
 
@@ -82,7 +84,6 @@ namespace tictactoe.Classes
                 button.IsEnabled = false;
             }
         }
-
         /// <summary>
         /// Checks if the board field is empty given the correspondings board field button.
         /// </summary>
@@ -110,9 +111,8 @@ namespace tictactoe.Classes
         /// <returns>String representation of a players marker.</returns>
         public string GetCurrentTurnPlayer()
         {
-            return Turn ? "X" : "O";
+            return Turn ? CrossMark : CircleMark;
         }
-
         /// <summary>
         /// Resets game parameters, board fields and buttons representing the board.
         /// </summary>
@@ -147,7 +147,7 @@ namespace tictactoe.Classes
 
             // Update the UI and check the state of the game
             UpdateUi();
-            GameStateCheckChanged();
+            GameStateChanged();
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace tictactoe.Classes
         /// Checks for the state of the game.
         /// </summary>
         /// <returns>Returns a bool result true if the game state changed. (Player ýwins or draws.)</returns>
-        public bool GameStateCheckChanged()
+        public bool GameStateChanged()
     {
         string currentPlayer = GetCurrentTurnPlayer();
 

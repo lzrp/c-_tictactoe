@@ -20,8 +20,6 @@ namespace tictactoe
 
             // Get the button collection from the UI and initialize a newgame
             var buttonCollection = GridPlayingField.Children.OfType<Button>();
-
-            // Initialize and start the game
             _tictactoe = new Tictactoe(buttonCollection);
 
             // Update the user interface
@@ -38,8 +36,8 @@ namespace tictactoe
             _tictactoe.PlaceMarker(sender as Button);
             _tictactoe.UpdateUi();
 
-            // Check for the game state
-            if (_tictactoe.GameStateCheckChanged())
+            // Check if the game state has changed
+            if (_tictactoe.GameStateChanged())
             {
                 UpdateStatusLabel();
                 return;
@@ -57,7 +55,7 @@ namespace tictactoe
 
             // Check for the game state and update user interface
             _tictactoe.UpdateUi();
-            _tictactoe.GameStateCheckChanged();
+            _tictactoe.GameStateChanged();
             UpdateStatusLabel();
         }
 
