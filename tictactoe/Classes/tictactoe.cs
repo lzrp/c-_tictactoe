@@ -8,8 +8,6 @@ namespace tictactoe.Classes
 {
     public class Tictactoe : IGame
     {
-        #region class members
-
         private const string EmptyField = " ";
         private const int BoardSizeHorizontal = 3;
         private const int BoardSizeVertical = 3;
@@ -23,11 +21,7 @@ namespace tictactoe.Classes
 
         public string[,] Board { get; } = new string[BoardSizeHorizontal, BoardSizeVertical];
         public IEnumerable<Button> ButtonCollection { get; }
-
-        #endregion
-
-        #region class methods
-
+        
         /// <summary>
         /// Creates a new instance of the Tictactoe class.
         /// </summary>
@@ -142,7 +136,7 @@ namespace tictactoe.Classes
             // If the AI is the first on turn, let it make the first move
             if (Properties.Settings.Default.PlayerStartsFirst || !Properties.Settings.Default.VsComputer) return;
 
-            Move computerMove = ComputerPlayerAi.PerformMove(GetCurrentTurnPlayer());
+            Move computerMove = ComputerPlayerAi.PerformMove(GetCurrentTurnPlayer(), Properties.Settings.Default.DifficultySetting);
             PlaceMarker(computerMove.X, computerMove.Y);
 
             // Update the UI and check the state of the game
@@ -380,6 +374,5 @@ namespace tictactoe.Classes
         {
             return int.Parse(button.Tag.ToString().Substring(1, 1));
         }
-        #endregion
-    }
+        }
 }

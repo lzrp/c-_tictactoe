@@ -6,8 +6,6 @@ namespace tictactoe.Classes
 {
     public class Ai
     {
-        #region class members
-
         private const string EmptyField = " ";
         private const string CrossMark = "X";
         private const string CircleMark = "O";
@@ -27,9 +25,7 @@ namespace tictactoe.Classes
             public int Y;
             public int Value;
         }
-        #endregion
-
-        #region class methods
+        
         public Ai(string[,] ticTacToeBoard)
         {
             Board = ticTacToeBoard;
@@ -51,14 +47,14 @@ namespace tictactoe.Classes
         /// Performs the computers move.
         /// </summary>
         /// <returns>A move structure with the coordinates of the move and its value based on difficulty.</returns>
-        public Move PerformMove(string playerMark)
+        public Move PerformMove(string playerMark, int aiDifficulty)
         {
             int x = 0;
             int y = 0;
 
             // If the AI is set to easy
             // This AI uses always the same strategy, filling the board from bottom left to the right and upwards.
-            if (Properties.Settings.Default.DifficultySetting == (int)AiDifficulty.Easy)
+            if (aiDifficulty == (int)AiDifficulty.Easy)
             {
                 // Loop through all board fields, pick the first one which is empty
                 for (int i = 0; i < 3; i++)
@@ -78,7 +74,7 @@ namespace tictactoe.Classes
 
             // If the AI is set to medium
             // This AI uses random and unpredictable moves.
-            if (Properties.Settings.Default.DifficultySetting == (int)AiDifficulty.Medium)
+            if (aiDifficulty == (int)AiDifficulty.Medium)
             {
                 bool moveFound = false;
 
@@ -100,13 +96,13 @@ namespace tictactoe.Classes
 
             // If the AI is set to impossible
             // This AI uses negamax algorithm to find the optimal move. Playing against this AI will ALWAYS result in a lost game or a draw.
-            if (Properties.Settings.Default.DifficultySetting == (int)AiDifficulty.Impossible)
+            if (aiDifficulty == (int)AiDifficulty.Impossible)
             {
                 return Negamax(Board, playerMark);
             }
 
             // Display an error message if no AI difficulty is set
-            if (Properties.Settings.Default.DifficultySetting == (int)AiDifficulty.NotSet)
+            if (aiDifficulty == (int)AiDifficulty.NotSet)
             {
                 MessageBox.Show(
                     "The AI player doesn't have its difficulty set. Please choose an AI difficulty from the settings.",
@@ -189,6 +185,6 @@ namespace tictactoe.Classes
             // Return the move with the best value
             return bestMove;
         }
-        #endregion
+        
     }
 }

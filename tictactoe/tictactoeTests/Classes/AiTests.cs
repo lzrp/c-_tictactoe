@@ -43,7 +43,8 @@ namespace tictactoeTests.Classes
             Ai.Move expectedMove = new Ai.Move() {X = 2, Y = 0};
 
             // Act
-            Ai.Move computersMove = computerPlayer.PerformMove("X");
+            // Use zero for for aiDifficulty
+            Ai.Move computersMove = computerPlayer.PerformMove("X", 0);
             
             // Assert
             Assert.AreEqual(expectedMove, computersMove);

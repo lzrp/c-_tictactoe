@@ -50,7 +50,7 @@ namespace tictactoe
             if (!Properties.Settings.Default.VsComputer) return;
 
             // Compute the AIs move and place the marker
-            Move computerMove = _tictactoe.ComputerPlayerAi.PerformMove(_tictactoe.GetCurrentTurnPlayer());
+            Move computerMove = _tictactoe.ComputerPlayerAi.PerformMove(_tictactoe.GetCurrentTurnPlayer(), Properties.Settings.Default.DifficultySetting);
             _tictactoe.PlaceMarker(computerMove.X, computerMove.Y);
 
             // Check for the game state and update user interface
@@ -78,8 +78,7 @@ namespace tictactoe
 
             LabelStatus.Content = "Fields left: " + _tictactoe.BoardFieldsLeftCounter + " / " + playerStatus;
         }
-
-        #region MenuItem event handlers
+        
         private void MenuItemAiEasy_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.DifficultySetting = 0;
@@ -184,8 +183,7 @@ namespace tictactoe
             Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
             Properties.Settings.Default.Save();
         }
-        #endregion
-
+        
 
     }
 }
