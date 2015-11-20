@@ -10,7 +10,7 @@ namespace tictactoe.Classes
         private const string CrossMark = "X";
         private const string CircleMark = "O";
 
-        private readonly Random _random = new Random();
+        private Random RandomGenerator { get; }
         public string[,] Board { get; }
         public enum AiDifficulty
         {
@@ -26,9 +26,14 @@ namespace tictactoe.Classes
             public int Value;
         }
         
-        public Ai(string[,] ticTacToeBoard)
+        public Ai(string[,] ticTacToeBoard, Random randomGenerator)
         {
+            if (ticTacToeBoard == null || randomGenerator == null)
+            {
+                throw new NullReferenceException();
+            }
             Board = ticTacToeBoard;
+            RandomGenerator = randomGenerator;
         }
 
         /// <summary>
@@ -81,8 +86,8 @@ namespace tictactoe.Classes
                 while (!moveFound)
                 {
                     // Generate random coordinates
-                    x = _random.Next(0, 3);
-                    y = _random.Next(0, 3);
+                    x = RandomGenerator.Next(0, 3);
+                    y = RandomGenerator.Next(0, 3);
 
                     // Check if the field is empty
                     if (IsBoardFieldEmpty(Board, x, y))
@@ -95,7 +100,7 @@ namespace tictactoe.Classes
             }
 
             // If the AI is set to impossible
-            // This AI uses negamax algorithm to find the optimal move. Playing against this AI will ALWAYS result in a lost game or a draw.
+            // This AI uses negamax algorithm to find the optimal move. Playing against this AI will ALWAYS result in a lost game or a draw. (Only way to win is to change to this difficulty before the player places his winning move - cheating.)
             if (aiDifficulty == (int)AiDifficulty.Impossible)
             {
                 return Negamax(Board, playerMark);
@@ -107,6 +112,12 @@ namespace tictactoe.Classes
                 MessageBox.Show(
                     "The AI player doesn't have its difficulty set. Please choose an AI difficulty from the settings.",
                     "AI difficulty not set", MessageBoxButton.OK);
+            }
+
+            // Throw an ARgumentOutOfRangeException if the difficulty is out of range
+            if (aiDifficulty > 4 || aiDifficulty < 0)
+            {
+                throw new ArgumentOutOfRangeException();
             }
 
             return new Move() { X = x, Y = y };

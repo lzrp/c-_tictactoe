@@ -21,6 +21,8 @@ namespace tictactoe.Classes
 
         public string[,] Board { get; } = new string[BoardSizeHorizontal, BoardSizeVertical];
         public IEnumerable<Button> ButtonCollection { get; }
+
+        private readonly Random RandomGenerator = new Random();
         
         /// <summary>
         /// Creates a new instance of the Tictactoe class.
@@ -32,7 +34,7 @@ namespace tictactoe.Classes
             ButtonCollection = buttonList;
 
             // Create AI player
-            ComputerPlayerAi = new Ai(Board);
+            ComputerPlayerAi = new Ai(Board, RandomGenerator);
 
             // Start a new game
             NewGame();
