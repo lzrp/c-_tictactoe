@@ -54,6 +54,12 @@ namespace tictactoe.Classes
         /// <returns>A move structure with the coordinates of the move and its value based on difficulty.</returns>
         public Move PerformMove(string playerMark, int aiDifficulty)
         {
+            // Throw an ArgumentException if the players mark doesnt match a cross or a circle mark
+            if (playerMark != CircleMark && playerMark != CrossMark)
+            {
+                throw new ArgumentException();
+            }
+
             int x = 0;
             int y = 0;
 
@@ -133,7 +139,7 @@ namespace tictactoe.Classes
         private static Move Negamax(string[,] board, string playerMark)
         {
             // Set the oponent players mark
-            string oponentPlayerMark = playerMark == CrossMark ? CircleMark : CrossMark;
+            string oponentPlayerMark = (playerMark == CrossMark) ? CircleMark : CrossMark;
             
 
             // Check if the player calling the function won

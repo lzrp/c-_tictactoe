@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using tictactoe.Classes;
 using tictactoeTests.Classes;
@@ -10,15 +12,15 @@ namespace tictactoeTests.Classes
     public class AiTests
     {
         readonly string[,] _board = { { " ", "", "X" }, { "O", " ", "X" }, { " ", " ", "" } };
-        readonly Random RandomGenerator = new Random();
-        readonly MockRandom MockRandomGenerator = new MockRandom();
+        readonly Random _randomGenerator = new Random();
+        readonly MockRandom _mockRandomGenerator = new MockRandom();
 
         [TestMethod()]
         public void Ai_BoardParameterIsNotNull_Success()
         {
             // Arrange
             // Act
-            var computerPlayer = new Ai(_board, RandomGenerator);
+            var computerPlayer = new Ai(_board, _randomGenerator);
             
             // Assert
             Assert.AreEqual(computerPlayer.Board, _board);
@@ -30,7 +32,7 @@ namespace tictactoeTests.Classes
         {
             // Arrange
             // Act
-            var computerPlayer = new Ai(null, RandomGenerator);
+            var computerPlayer = new Ai(null, _randomGenerator);
 
             // Assert
             Assert.Fail("No exception was thrown.");
@@ -87,7 +89,7 @@ namespace tictactoeTests.Classes
         public void PerformMove_EasyAiValidMove_Success()
         {
             // Arrange
-            var computerPlayer = new Ai(_board, RandomGenerator);
+            var computerPlayer = new Ai(_board, _randomGenerator);
             var expectedMove = new Ai.Move() {X = 2, Y = 0};
             const int aiDifficulty = (int)Ai.AiDifficulty.Easy;
 
@@ -103,7 +105,7 @@ namespace tictactoeTests.Classes
         public void PerformMove_DifficultyIsOutOfRange_ThrowsException()
         {
             // Arrange
-            var computerPlayer = new Ai(_board, RandomGenerator);
+            var computerPlayer = new Ai(_board, _randomGenerator);
             const int aiDifficulty = 5;
 
             // Act
@@ -117,7 +119,7 @@ namespace tictactoeTests.Classes
         public void PerformMove_MediumAiValidMove_Success()
         {
             // Arrange
-            var computerPlayer = new Ai(_board, MockRandomGenerator);
+            var computerPlayer = new Ai(_board, _mockRandomGenerator);
             const int aiDifficulty = (int)Ai.AiDifficulty.Medium;
             
             // Possible valid moves
@@ -141,6 +143,89 @@ namespace tictactoeTests.Classes
             {
                 Assert.AreEqual(validMoves[i], computedMoves[i]);
             }
+        }
+
+        [TestMethod()]
+        public void PerformMove_ImpossibleAiValidMove_Success()
+        {
+            // Arrange
+            const int aiDifficulty = (int)Ai.AiDifficulty.Impossible;
+            
+            // Players mark is X
+            string[,] boardPlayerStartsFirstOne = { { "X", "O", "X" }, { "X", "O", " " }, { " ", " ", " " } };
+            string[,] boardPlayerStartsFirstTwo = { { "X", "O", "X" }, { "O", "O", " " }, { "X", "X", " " } };
+            string[,] boardPlayerStartsFirstThree = { { "X", "O", "X" }, { "O", "O", "X" }, { " ", "X", " " } };
+
+            string[][,] boardsPlayerStartsFirst = {boardPlayerStartsFirstOne, boardPlayerStartsFirstTwo,
+                boardPlayerStartsFirstThree};
+
+            var expectedMovePlayerStartsFirstOne = new Ai.Move() { X = 2, Y = 1 };
+            var expectedMovePlayerStartsFirstTwo = new Ai.Move() { X = 1, Y = 2 };
+            var expectedMovePlayerStartsFirstThree = new Ai.Move() { X = 2, Y = 2 };
+
+            List<Ai.Move> expectedPlayerStartsFirstMoves = new List<Ai.Move>
+            {
+                expectedMovePlayerStartsFirstOne,
+                expectedMovePlayerStartsFirstTwo, expectedMovePlayerStartsFirstThree
+            };
+
+            // Players mark is O
+            string[,] boardAiStartsFirstOne = { { "X", "O", " " }, { "X", "X", " " }, { "O", "O", " " } };
+            string[,] boardAiStartsFirstTwo = { { "X", "O", " " }, { "X", "X", " " }, { "O", " ", "O" } };
+            string[,] boardAiStartsFirstThree = { { "X", "X", "O" }, { "O", "O", " " }, { "X", " ", " " } };
+
+            string[][,] boardsAiStartsFirst = {boardAiStartsFirstOne, boardAiStartsFirstTwo,
+                boardAiStartsFirstThree};
+
+            var expectedMoveAiStartsFirstOne = new Ai.Move() { X = 1, Y = 2 };
+            var expectedMoveAiStartsFirstTwo = new Ai.Move() { X = 1, Y = 2 };
+            var expectedMoveAiStartsFirstThree = new Ai.Move() { X = 1, Y = 2 };
+
+            List<Ai.Move> expectedAiStartsFirstMoves = new List<Ai.Move>
+            {
+                expectedMoveAiStartsFirstOne, expectedMoveAiStartsFirstTwo, expectedMoveAiStartsFirstThree
+            };
+
+            List<Ai.Move> performedPlayerStartsFirstMoves = new List<Ai.Move>();
+            List<Ai.Move> performedAiStartsFirstMoves = new List<Ai.Move>();
+
+            // Act
+            for (int i = 0; i < 3; i++)
+            {
+                var computerPlayerOMark = new Ai(boardsPlayerStartsFirst[i], _randomGenerator);
+                var playerStartsFirstMove = computerPlayerOMark.PerformMove("O", aiDifficulty);
+                performedPlayerStartsFirstMoves.Add(playerStartsFirstMove);
+
+                var computerPlayerXMark = new Ai(boardsAiStartsFirst[i], _randomGenerator);
+                var aiStartsFirstMove = computerPlayerXMark.PerformMove("X", aiDifficulty);
+                
+                performedAiStartsFirstMoves.Add(aiStartsFirstMove);
+            }
+
+            // Assert
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.AreEqual(expectedPlayerStartsFirstMoves[i].X, performedPlayerStartsFirstMoves[i].X);
+                Assert.AreEqual(expectedPlayerStartsFirstMoves[i].Y, performedPlayerStartsFirstMoves[i].Y);
+
+                Assert.AreEqual(expectedAiStartsFirstMoves[i].X, performedAiStartsFirstMoves[i].X);
+                Assert.AreEqual(expectedAiStartsFirstMoves[i].Y, performedAiStartsFirstMoves[i].Y);
+            }
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof (ArgumentException))]
+        public void PerformMove_InvalidPlayerMarkArgument_ThrowsException()
+        {
+            // Arrange
+            var computerPlayer = new Ai(_board, _randomGenerator);
+            const int aiDifficulty = (int)Ai.AiDifficulty.Easy;
+
+            // Act
+            computerPlayer.PerformMove("invalidMark", aiDifficulty);
+
+            // Assert
+            Assert.Fail();
         }
     }
 }
