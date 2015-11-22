@@ -30,7 +30,7 @@ namespace tictactoe.Classes
         {
             if (ticTacToeBoard == null || randomGenerator == null)
             {
-                throw new NullReferenceException();
+                throw new ArgumentNullException(nameof(ticTacToeBoard), nameof(randomGenerator));
             }
             Board = ticTacToeBoard;
             RandomGenerator = randomGenerator;
@@ -45,6 +45,11 @@ namespace tictactoe.Classes
         /// <returns></returns>
         public static bool IsBoardFieldEmpty(string[,] board, int x, int y)
         {
+            if (board == null)
+            {
+                throw new ArgumentNullException(nameof(board));
+            }
+
             return board[x, y] == EmptyField;
         }
 

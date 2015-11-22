@@ -27,7 +27,7 @@ namespace tictactoeTests.Classes
         }
 
         [TestMethod()]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Ai_BoardParameterIsNull_ThrowsException()
         {
             // Arrange
@@ -53,7 +53,7 @@ namespace tictactoeTests.Classes
         }
 
         [TestMethod()]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void IsBoardFieldEmpty_BoardIsNull_ThrowsException()
         {
             // Arrange
