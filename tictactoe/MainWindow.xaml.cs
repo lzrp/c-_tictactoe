@@ -50,7 +50,7 @@ namespace tictactoe
             if (!Properties.Settings.Default.VsComputer) return;
 
             // Compute the AIs move and place the marker
-            Move computerMove = _tictactoe.ComputerPlayerAi.PerformMove(_tictactoe.GetCurrentTurnPlayer(), Properties.Settings.Default.DifficultySetting);
+            Move computerMove = _tictactoe.ComputerPlayerAi.GetMove(_tictactoe.GetCurrentTurnPlayer(), Properties.Settings.Default.DifficultySetting);
             _tictactoe.PlaceMarker(computerMove.X, computerMove.Y);
 
             // Check for the game state and update user interface

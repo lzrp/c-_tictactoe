@@ -86,37 +86,38 @@ namespace tictactoeTests.Classes
         }
         
         [TestMethod()]
-        public void PerformMove_EasyAiValidMove_Success()
+        public void GetMove_EasyAiValidMove_Success()
         {
             // Arrange
             var computerPlayer = new Ai(_board, _randomGenerator);
-            var expectedMove = new Ai.Move() {X = 2, Y = 0};
+            var expectedMove = new Ai.Move() {X = 2, Y = 1};
             const int aiDifficulty = (int)Ai.AiDifficulty.Easy;
 
             // Act
-            var computersMove = computerPlayer.PerformMove("O", aiDifficulty);
+            var computersMove = computerPlayer.GetMove("O", aiDifficulty);
             
             // Assert
-            Assert.AreEqual(expectedMove, computersMove);
+            Assert.AreEqual(expectedMove.X, computersMove.X);
+            Assert.AreEqual(expectedMove.Y, computersMove.Y);
         }
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void PerformMove_DifficultyIsOutOfRange_ThrowsException()
+        public void GetMove_DifficultyIsOutOfRange_ThrowsException()
         {
             // Arrange
             var computerPlayer = new Ai(_board, _randomGenerator);
             const int aiDifficulty = 5;
 
             // Act
-            computerPlayer.PerformMove("X", aiDifficulty);
+            computerPlayer.GetMove("X", aiDifficulty);
 
             // Assert
             Assert.Fail("No exception was thrown.");
         }
 
         [TestMethod()]
-        public void PerformMove_MediumAiValidMove_Success()
+        public void GetMove_MediumAiValidMove_Success()
         {
             // Arrange
             var computerPlayer = new Ai(_board, _mockRandomGenerator);
@@ -131,22 +132,23 @@ namespace tictactoeTests.Classes
             Ai.Move[] validMoves = { validMoveOne, validMoveTwo, validMoveThree, validMoveFour};
 
             // Act
-            var computedMoveOne = computerPlayer.PerformMove("O", aiDifficulty);
-            var computedMoveTwo = computerPlayer.PerformMove("O", aiDifficulty);
-            var computedMoveThree = computerPlayer.PerformMove("O", aiDifficulty);
-            var computedMoveFour = computerPlayer.PerformMove("O", aiDifficulty);
+            var computedMoveOne = computerPlayer.GetMove("O", aiDifficulty);
+            var computedMoveTwo = computerPlayer.GetMove("O", aiDifficulty);
+            var computedMoveThree = computerPlayer.GetMove("O", aiDifficulty);
+            var computedMoveFour = computerPlayer.GetMove("O", aiDifficulty);
 
             Ai.Move[] computedMoves = {computedMoveOne, computedMoveTwo, computedMoveThree, computedMoveFour};
 
             // Assert
             for (int i = 0; i < 4; i++)
             {
-                Assert.AreEqual(validMoves[i], computedMoves[i]);
+                Assert.AreEqual(validMoves[i].X, computedMoves[i].X);
+                Assert.AreEqual(validMoves[i].Y, computedMoves[i].Y);
             }
         }
 
         [TestMethod()]
-        public void PerformMove_ImpossibleAiValidMove_Success()
+        public void GetMove_ImpossibleAiValidMove_Success()
         {
             // Arrange
             const int aiDifficulty = (int)Ai.AiDifficulty.Impossible;
@@ -193,11 +195,11 @@ namespace tictactoeTests.Classes
             for (int i = 0; i < 3; i++)
             {
                 var computerPlayerOMark = new Ai(boardsPlayerStartsFirst[i], _randomGenerator);
-                var playerStartsFirstMove = computerPlayerOMark.PerformMove("O", aiDifficulty);
+                var playerStartsFirstMove = computerPlayerOMark.GetMove("O", aiDifficulty);
                 performedPlayerStartsFirstMoves.Add(playerStartsFirstMove);
 
                 var computerPlayerXMark = new Ai(boardsAiStartsFirst[i], _randomGenerator);
-                var aiStartsFirstMove = computerPlayerXMark.PerformMove("X", aiDifficulty);
+                var aiStartsFirstMove = computerPlayerXMark.GetMove("X", aiDifficulty);
                 
                 performedAiStartsFirstMoves.Add(aiStartsFirstMove);
             }
@@ -215,14 +217,14 @@ namespace tictactoeTests.Classes
 
         [TestMethod()]
         [ExpectedException(typeof (ArgumentException))]
-        public void PerformMove_InvalidPlayerMarkArgument_ThrowsException()
+        public void GetMove_InvalidPlayerMarkArgument_ThrowsException()
         {
             // Arrange
             var computerPlayer = new Ai(_board, _randomGenerator);
             const int aiDifficulty = (int)Ai.AiDifficulty.Easy;
 
             // Act
-            computerPlayer.PerformMove("invalidMark", aiDifficulty);
+            computerPlayer.GetMove("invalidMark", aiDifficulty);
 
             // Assert
             Assert.Fail();

@@ -138,7 +138,7 @@ namespace tictactoe.Classes
             // If the AI is the first on turn, let it make the first move
             if (Properties.Settings.Default.PlayerStartsFirst || !Properties.Settings.Default.VsComputer) return;
 
-            Move computerMove = ComputerPlayerAi.PerformMove(GetCurrentTurnPlayer(), Properties.Settings.Default.DifficultySetting);
+            Move computerMove = ComputerPlayerAi.GetMove(GetCurrentTurnPlayer(), Properties.Settings.Default.DifficultySetting);
             PlaceMarker(computerMove.X, computerMove.Y);
 
             // Update the UI and check the state of the game

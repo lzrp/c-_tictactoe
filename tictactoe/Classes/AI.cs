@@ -9,29 +9,31 @@ namespace tictactoe.Classes
         private const string EmptyField = " ";
         private const string CrossMark = "X";
         private const string CircleMark = "O";
-
         private Random RandomGenerator { get; }
+
         public string[,] Board { get; }
+
         public enum AiDifficulty
         {
             Easy = 0,
             Medium = 1,
-            Impossible = 2,
-            NotSet = 3
+            Impossible = 2
         }
+
         public struct Move
         {
             public int X;
             public int Y;
             public int Value;
         }
-        
+
         public Ai(string[,] ticTacToeBoard, Random randomGenerator)
         {
             if (ticTacToeBoard == null || randomGenerator == null)
             {
                 throw new ArgumentNullException(nameof(ticTacToeBoard), nameof(randomGenerator));
             }
+
             Board = ticTacToeBoard;
             RandomGenerator = randomGenerator;
         }
@@ -57,91 +59,89 @@ namespace tictactoe.Classes
         /// Performs the computers move.
         /// </summary>
         /// <returns>A move structure with the coordinates of the move and its value based on difficulty.</returns>
-        public Move PerformMove(string playerMark, int aiDifficulty)
+        public Move GetMove(string playerMark, int aiDifficulty)
         {
-            // Throw an ArgumentException if the players mark doesnt match a cross or a circle mark
+
+            // Throw an exception if the players mark doesnt match a cross or a circle mark
             if (playerMark != CircleMark && playerMark != CrossMark)
             {
                 throw new ArgumentException();
             }
 
-            int x = 0;
-            int y = 0;
-
-            // If the AI is set to easy
-            // This AI uses always the same strategy, filling the board from bottom left to the right and upwards.
-            if (aiDifficulty == (int)AiDifficulty.Easy)
+            switch (aiDifficulty)
             {
-                // Loop through all board fields, pick the first one which is empty
-                for (int i = 0; i < 3; i++)
-                {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        // Check for an empty field
-                        if (!IsBoardFieldEmpty(Board, i, j)) continue;
-
-                        // Assign coordinates if found
-                        x = i;
-                        y = j;
-                        break;
-                    }
-                }
+                case (int) AiDifficulty.Easy:
+                    return GenerateEasyDifficultyMove();
+                case (int) AiDifficulty.Medium:
+                    return GenerateMediumDifficultyMove();
+                case (int) AiDifficulty.Impossible:
+                    return GenerateImpossibleDifficultyMove(Board, playerMark);
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-
-            // If the AI is set to medium
-            // This AI uses random and unpredictable moves.
-            if (aiDifficulty == (int)AiDifficulty.Medium)
-            {
-                bool moveFound = false;
-
-                while (!moveFound)
-                {
-                    // Generate random coordinates
-                    x = RandomGenerator.Next(0, 3);
-                    y = RandomGenerator.Next(0, 3);
-
-                    // Check if the field is empty
-                    if (IsBoardFieldEmpty(Board, x, y))
-                    {
-                        // Indicate that a move is found and exit the loop
-                        moveFound = true;
-                    }
-                }
-
-            }
-
-            // If the AI is set to impossible
-            // This AI uses negamax algorithm to find the optimal move. Playing against this AI will ALWAYS result in a lost game or a draw. (Only way to win is to change to this difficulty before the player places his winning move - cheating.)
-            if (aiDifficulty == (int)AiDifficulty.Impossible)
-            {
-                return Negamax(Board, playerMark);
-            }
-
-            // Display an error message if no AI difficulty is set
-            if (aiDifficulty == (int)AiDifficulty.NotSet)
-            {
-                MessageBox.Show(
-                    "The AI player doesn't have its difficulty set. Please choose an AI difficulty from the settings.",
-                    "AI difficulty not set", MessageBoxButton.OK);
-            }
-
-            // Throw an ARgumentOutOfRangeException if the difficulty is out of range
-            if (aiDifficulty > 4 || aiDifficulty < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
-            return new Move() { X = x, Y = y };
         }
 
         /// <summary>
-        /// Computes the best move available through the negamax algorithm.
+        /// Generate a predictable move.
         /// </summary>
-        /// <param name="board">Board on which to do the calculations.</param>
-        /// <param name="playerMark">Mark of the player who is calling the function.</param>
-        /// <returns>An optimal move for the given board and player.</returns>
-        /// Can be upgraded with alpha-beta pruning to increase performance.
-        private static Move Negamax(string[,] board, string playerMark)
+        /// <returns>Returns a move object with defined X, Y coordinates</returns>
+        private Move GenerateEasyDifficultyMove()
+        {
+            // This AI uses always the same strategy, filling the board from bottom right to the left and upwards.
+            // Loop through all board fields, pick the first one which is empty
+            Move easyMove = new Move();
+            
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    // Check for an empty field
+                    if (!IsBoardFieldEmpty(Board, i, j)) continue;
+
+                    // Assign coordinates if found
+                    easyMove.X = i;
+                    easyMove.Y = j;
+                }
+            }
+
+            return easyMove;
+        }
+
+        /// <summary>
+        /// Generates a random, unpredictable move.
+        /// </summary>
+        /// <returns>Returns a move object with defined X, Y coordinates.</returns>
+        private Move GenerateMediumDifficultyMove()
+        {
+            bool moveIsFound = false;
+            Move mediumMove = new Move();
+
+            while (!moveIsFound)
+            {
+                // Generate random coordinates
+                mediumMove.X = RandomGenerator.Next(0, 3);
+                mediumMove.Y = RandomGenerator.Next(0, 3);
+
+                // Check if the field is empty
+                if (IsBoardFieldEmpty(Board, mediumMove.X, mediumMove.Y))
+                {
+                    // Indicate that a move is found and exit the loop
+                    moveIsFound = true;
+                }
+            }
+
+            return mediumMove;
+        }
+
+
+/// <summary>
+/// Generates the best move available using the negamax algorithm.
+/// </summary>
+/// <param name="board">Board on which to do the calculations.</param>
+/// <param name="playerMark">Mark of the player who is calling the function.</param>
+/// <returns>An optimal move for the given board and player.</returns>
+/// Can be upgraded with alpha-beta pruning to increase performance.
+private  Move GenerateImpossibleDifficultyMove(string[,] board, string playerMark)
         {
             // Set the oponent players mark
             string oponentPlayerMark = (playerMark == CrossMark) ? CircleMark : CrossMark;
@@ -188,7 +188,7 @@ namespace tictactoe.Classes
                         // Needs to be negative because thats how the algorithm
                         // differentiates between two players - one who maximizes and the
                         // second one who minimizes
-                        int value = -Negamax(board, oponentPlayerMark).Value;
+                        int value = -GenerateImpossibleDifficultyMove(board, oponentPlayerMark).Value;
                         
                         // Store move information if it has better value
                         if (value > bestMove.Value)
