@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using tictactoe.Classes;
@@ -64,21 +65,11 @@ namespace tictactoe
         /// </summary>
         public void UpdateStatusLabel()
         {
-            string playerStatus;
+            string playerStatus = _tictactoe.IsGameInProgress ? $"Player on move: {_tictactoe.GetCurrentTurnPlayerMark()}" : "Game is over.";
 
-            if (_tictactoe.IsGameInProgress)
-            {
-                playerStatus = "Player on move: " + _tictactoe.GetCurrentTurnPlayerMark();
-            }
-
-            else
-            {
-                playerStatus = "Game is over.";
-            }
-
-            LabelStatus.Content = "Fields left: " + _tictactoe.BoardFieldsLeftCounter + " / " + playerStatus;
+            LabelStatus.Content = $"Fields left:{_tictactoe.BoardFieldsLeftCounter} / {playerStatus}";
         }
-        
+
         private void MenuItemAiEasy_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.DifficultySetting = 0;
