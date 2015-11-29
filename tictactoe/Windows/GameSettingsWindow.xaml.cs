@@ -39,7 +39,10 @@ namespace tictactoe.Windows
             if (CheckBoxPlayerStartsFirst.IsChecked != null && CheckBoxPlayerStartsFirst.IsEnabled)
                 Properties.Settings.Default.PlayerStartsFirst = (bool)CheckBoxPlayerStartsFirst.IsChecked;
 
-            Properties.Settings.Default.DifficultySetting = ComboBoxDifficulty.SelectedIndex;
+            if (ComboBoxDifficulty.SelectedIndex > 0 && ComboBoxDifficulty.SelectedIndex < 4)
+            {
+                Properties.Settings.Default.DifficultySetting = ComboBoxDifficulty.SelectedIndex;
+            }
 
             Properties.Settings.Default.Save();
             Close();

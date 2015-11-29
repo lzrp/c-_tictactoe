@@ -40,7 +40,7 @@ namespace tictactoe
             Hide();
             IsEnabled = false;
 
-            // Show main game window
+            // Show game settings window
             var settingsWindow = new GameSettingsWindow();
             settingsWindow.ShowDialog();
 
