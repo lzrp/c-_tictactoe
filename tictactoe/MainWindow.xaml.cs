@@ -37,7 +37,7 @@ namespace tictactoe
             _tictactoe.UpdateUi();
 
             // Check if the game state has changed
-            if (_tictactoe.GameStateChanged())
+            if (_tictactoe.HasGameStateChanged())
             {
                 UpdateStatusLabel();
                 return;
@@ -50,12 +50,12 @@ namespace tictactoe
             if (!Properties.Settings.Default.VsComputer) return;
 
             // Compute the AIs move and place the marker
-            Move computerMove = _tictactoe.ComputerPlayerAi.GetMove(_tictactoe.GetCurrentTurnPlayer(), Properties.Settings.Default.DifficultySetting);
+            Move computerMove = _tictactoe.ComputerPlayerAi.GetMove(_tictactoe.GetCurrentTurnPlayerMark(), Properties.Settings.Default.DifficultySetting);
             _tictactoe.PlaceMarker(computerMove.X, computerMove.Y);
 
             // Check for the game state and update user interface
             _tictactoe.UpdateUi();
-            _tictactoe.GameStateChanged();
+            _tictactoe.HasGameStateChanged();
             UpdateStatusLabel();
         }
 
@@ -66,9 +66,9 @@ namespace tictactoe
         {
             string playerStatus;
 
-            if (_tictactoe.GameInProgress)
+            if (_tictactoe.IsGameInProgress)
             {
-                playerStatus = "Player on move: " + _tictactoe.GetCurrentTurnPlayer();
+                playerStatus = "Player on move: " + _tictactoe.GetCurrentTurnPlayerMark();
             }
 
             else

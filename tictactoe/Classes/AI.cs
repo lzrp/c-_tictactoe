@@ -149,19 +149,19 @@ private  Move GenerateImpossibleDifficultyMove(string[,] board, string playerMar
             string oponentPlayerMark = (playerMark == CrossMark) ? CircleMark : CrossMark;
 
             // Check if the player calling the function has won
-            if (Tictactoe.CheckWinner(board, playerMark))
+            if (Tictactoe.HasPlayerWon(board, playerMark))
             {
                 return new Move() {Value = 1};
             }
 
             // Check if the player calling the function has lost
-            if (Tictactoe.CheckWinner(board, oponentPlayerMark))
+            if (Tictactoe.HasPlayerWon(board, oponentPlayerMark))
             {
                 return new Move() {Value = -1};
             }
 
             // Check for a draw
-            if (Tictactoe.CheckForDraw(board))
+            if (Tictactoe.HavePlayersDraw(board))
             {
                 return new Move() {Value = 0};
             }

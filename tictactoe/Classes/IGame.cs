@@ -6,18 +6,18 @@ namespace tictactoe.Classes
 {
     public interface IGame
     {
-        void NewGame();
+        void StartNewGame();
         void NextTurn();
         void AnnounceWinner(string player);
         void AnnounceDraw();
         void PlaceMarker(Button button);
         void PlaceMarker(int x, int y);
         
-        bool AskForNewGame();
+        bool UserWantsToStartNewGame();
         bool IsBoardFieldEmpty(Button button);
         bool IsBoardFieldEmpty(int x, int y);
 
-        string GetCurrentTurnPlayer();
+        string GetCurrentTurnPlayerMark();
 
 
     }
