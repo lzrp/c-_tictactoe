@@ -1,0 +1,42 @@
+﻿<Window x:Class="tictactoe.Windows.TicTacToeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="TicTacToe" ResizeMode="CanResizeWithGrip" MinWidth="640" MinHeight="520" WindowStartupLocation="CenterScreen" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Width="640" Height="560">
+    <Grid>
+        <Viewbox Margin="5,25,5,30" Stretch="Fill" >
+            <Grid x:Name="GridPlayingField">
+                <Button x:Name="ButtonA1" Content="" Margin="0,0,160,160" Height="80" Width="80" Click="ButtonClick" FontSize="58" Tag="00"/>
+                <Button x:Name="ButtonB1" Content="" Margin="0,80,160,80" Height="80" Width="80" Click="ButtonClick" FontSize="58" Tag="10"/>
+                <Button x:Name="ButtonC1" Content="" Margin="0,160,160,0" Height="80" Width="80" Click="ButtonClick" FontSize="58" Tag="20"/>
+                <Button x:Name="ButtonA2" Content="" Margin="80,0,80,160" Height="80" Width="80" Click="ButtonClick" FontSize="58" Tag="01"/>
+                <Button x:Name="ButtonB2" Content="" Margin="80" Height="80" Width="80" Click="ButtonClick" FontSize="58" Tag="11"/>
+                <Button x:Name="ButtonC2" Content="" Margin="80,160,80,0" Height="80" Width="80" Click="ButtonClick" FontSize="58" Tag="21"/>
+                <Button x:Name="ButtonA3" Content="" Margin="160,0,0,160" Height="80" Width="80" Click="ButtonClick" FontSize="58" Tag="02"/>
+                <Button x:Name="ButtonB3" Content="" Margin="160,80,0,80" Height="80" Width="80" Click="ButtonClick" FontSize="58" Tag="12"/>
+                <Button x:Name="ButtonC3" Content="" Margin="160,160,0,0" Height="80" Width="80" Click="ButtonClick" FontSize="58" Tag="22"/>
+            </Grid>
+        </Viewbox>
+        <StatusBar x:Name="StatusBar" Grid.Column="0" Height="30" VerticalAlignment="Bottom">
+            <Label x:Name="LabelStatus" Content=""/>
+        </StatusBar>
+        <Menu x:Name="Menu" Height="25" VerticalAlignment="Top" Grid.Column="0">
+            <MenuItem x:Name="Menu1" Header="Menu" Height="25">
+                <MenuItem x:Name="MenuItemNewGame" Header="New Game..." Click="NewGameMenuItemClick"/>
+                <MenuItem x:Name="MenuItemSettings" Header="Settings...">
+                    <MenuItem x:Name="MenuItemDifficulty" Header="AI Difficulty">
+                        <MenuItem x:Name="MenuItemAiEasy" Header="Easy" Click="MenuItemAiEasy_Click" Loaded="MenuItemAiEasy_Loaded" IsCheckable="True"/>
+                        <MenuItem x:Name="MenuItemAiMedium" Header="Medium" Click="MenuItemAiMedium_Click" IsCheckable="True" Loaded="MenuItemAiMedium_Loaded"/>
+                        <MenuItem x:Name="MenuItemAiImpossible" Header="Impossible" Click="MenuItemAiImpossible_Click" IsCheckable="True" Loaded="MenuItemAiImpossible_Loaded"/>
+                    </MenuItem>
+                    <MenuItem x:Name="MenuItemVsComputer" Header="Computer Oponent" Click="MenuItemVsComputer_Click" IsCheckable="True" IsChecked="True" Loaded="MenuItemVsComputer_Loaded"/>
+                    <MenuItem x:Name="MenuItemPlayerStartsFirst" Header="Player Starts First" HorizontalAlignment="Left" Width="188" Click="MenuItemPlayerStartsFirst_Click" IsCheckable="True" IsChecked="True" Loaded="MenuItemPlayerStartsFirst_Loaded">
+                    </MenuItem>
+                </MenuItem>
+
+            </MenuItem>
+        </Menu>
+    </Grid>
+</Window>
