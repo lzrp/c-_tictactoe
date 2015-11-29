@@ -26,6 +26,7 @@ namespace tictactoe
             // Show starscreen
             Show();
             IsEnabled = true;
+            Focus();
         }
 
         private void ButtonExitGame_Click(object sender, RoutedEventArgs e)
@@ -35,7 +36,18 @@ namespace tictactoe
 
         private void ButtonGameSettings_Click(object sender, RoutedEventArgs e)
         {
+            // Hide startscreen
+            Hide();
+            IsEnabled = false;
 
+            // Show main game window
+            var settingsWindow = new GameSettingsWindow();
+            settingsWindow.ShowDialog();
+
+            // Show starscreen
+            Show();
+            IsEnabled = true;
+            Focus();
         }
     }
 }
