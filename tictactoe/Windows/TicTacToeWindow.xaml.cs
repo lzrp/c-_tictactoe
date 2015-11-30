@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using tictactoe.Classes;
@@ -57,7 +58,7 @@ namespace tictactoe.Windows
         }
 
         /// <summary>
-        /// Updates the status label.
+        /// Updates the status label with the current player and game state.
         /// </summary>
         public void UpdateStatusLabel()
         {
@@ -80,16 +81,16 @@ namespace tictactoe.Windows
 
         private void MenuItemAiImpossible_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(
-                "You have selected the impossible difficulty. All games played on this difficulty will result in a draw or a loss against the computer player.",
-                "Impossible difficulty", MessageBoxButton.OK);
             Properties.Settings.Default.DifficultySetting = 2;
             Properties.Settings.Default.Save();
         }
 
         private void MenuItemAiEasy_Loaded(object sender, RoutedEventArgs e)
         {
+            DisableMenuItemAfterFirstTurn(sender as MenuItem);
+
             if (Properties.Settings.Default.DifficultySetting != 0) return;
+
             MenuItemAiEasy.IsChecked = true;
             MenuItemAiMedium.IsChecked = false;
             MenuItemAiImpossible.IsChecked = false;
@@ -97,27 +98,55 @@ namespace tictactoe.Windows
 
         private void MenuItemAiMedium_Loaded(object sender, RoutedEventArgs e)
         {
+            DisableMenuItemAfterFirstTurn(sender as MenuItem);
+
             if (Properties.Settings.Default.DifficultySetting != 1) return;
+
             MenuItemAiEasy.IsChecked = false;
             MenuItemAiMedium.IsChecked = true;
             MenuItemAiImpossible.IsChecked = false;
         }
 
+        /// <summary>
+        /// Disables a menuitem after certain number of turns have passed.
+        /// </summary>
+        /// <param name="menuItem">Menuitem object which to disable.</param>
+        private void DisableMenuItemAfterFirstTurn(MenuItem menuItem)
+        {
+            if (_tictactoe.BoardFieldsLeftCounter < 8)
+            {
+                menuItem.IsEnabled = false;
+                return;
+            }
+            menuItem.IsEnabled = true;
+        }
+
         private void MenuItemAiImpossible_Loaded(object sender, RoutedEventArgs e)
         {
+            DisableMenuItemAfterFirstTurn(sender as MenuItem);
+
             if (Properties.Settings.Default.DifficultySetting != 2) return;
+
             MenuItemAiEasy.IsChecked = false;
             MenuItemAiMedium.IsChecked = false;
             MenuItemAiImpossible.IsChecked = true;
         }
 
+        /// <summary>
+        /// Displays a messagebox asking to confirm or cancel the change of a setting.
+        /// </summary>
+        /// <returns>A bool value when the user confirmed the action.</returns>
+        private static bool UserConfirmedSettingsChange()
+        {
+            var messageBoxResult = MessageBox.Show("Changing this setting requires a game restart. Are you sure you want to restart the game?", "Restart game", MessageBoxButton.YesNo);
+
+            return messageBoxResult == MessageBoxResult.Yes;
+        }
+
         private void MenuItemVsComputer_Click(object sender, RoutedEventArgs e)
         {
-            // Ask for confirmation
-            var messageBoxResult = MessageBox.Show(MenuItemVsComputer.IsChecked ? "This will start a new game with a computer oponent. Are you sure you want to start a new game?" : "This will start a new game with a human oponent. Are you sure you want to start a new game?", "Restart game", MessageBoxButton.YesNo);
-
             // Save the selected option if user clicked Yes
-            if (messageBoxResult == MessageBoxResult.Yes)
+            if (UserConfirmedSettingsChange())
             {
                 Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
                 Properties.Settings.Default.Save();
@@ -134,11 +163,8 @@ namespace tictactoe.Windows
 
         private void MenuItemPlayerStartsFirst_Click(object sender, RoutedEventArgs e)
         {
-            // Ask for confirmation
-            var messageBoxResult = MessageBox.Show("Changing this setting requires a game restart. Are you sure you want to restart the game?", "Restart game", MessageBoxButton.YesNo);
-
             // Save the selected option if user clicked Yes
-            if (messageBoxResult == MessageBoxResult.Yes)
+            if (UserConfirmedSettingsChange())
             {
                 Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
                 Properties.Settings.Default.Save();
@@ -161,14 +187,13 @@ namespace tictactoe.Windows
 
         private void MenuItemVsComputer_Loaded(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
-            Properties.Settings.Default.Save();
+            MenuItemVsComputer.IsChecked = Properties.Settings.Default.VsComputer;
         }
 
         private void MenuItemPlayerStartsFirst_Loaded(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
-            Properties.Settings.Default.Save();
+            MenuItemPlayerStartsFirst.IsChecked = Properties.Settings.Default.PlayerStartsFirst;
+            MenuItemPlayerStartsFirst.IsEnabled = MenuItemVsComputer.IsChecked;
         }
     }
 }
