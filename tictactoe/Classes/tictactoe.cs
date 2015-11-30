@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using tictactoe.Properties;
 using static tictactoe.Classes.Ai;
 
 namespace tictactoe.Classes
@@ -29,6 +31,15 @@ namespace tictactoe.Classes
         /// <param name="buttonList">Button collection representing the playing board.</param>
         public Tictactoe(IEnumerable<Button> buttonList)
         {
+            if (buttonList == null)
+            {
+                throw new ArgumentNullException(nameof(buttonList));
+            }
+
+            if (buttonList.Count() != 9)
+            {
+                throw new ArgumentOutOfRangeException(nameof(buttonList), Resources.TicTacToe_ArgumentOutOfRangeExceptionString);
+            }
 
             // Assign the button collection
             ButtonCollection = buttonList;
@@ -44,7 +55,7 @@ namespace tictactoe.Classes
         /// Gets the maximum horizontal size of the game board.
         /// </summary>
         /// <returns></returns>
-        public static int GetBoardSizeHorizontal()
+        public static int GetBoardHorizontalSize()
         {
             return BoardSizeHorizontal;
         }
@@ -53,7 +64,7 @@ namespace tictactoe.Classes
         /// Gets the maximum vertical size of the game board.
         /// </summary>
         /// <returns></returns>
-        public static int GetBoardSizeVertical()
+        public static int GetBoardVerticalSize()
         {
             return BoardSizeVertical;
         }
@@ -366,7 +377,7 @@ namespace tictactoe.Classes
         /// </summary>
         /// <param name="button">Button with a Tag property in a specific pattern. Tag = (int)horizontalCoordinate(int)verticalCoordinate. Example: button.Tag = 01</param>
         /// <returns>Integer horizontal coordinate value</returns>
-        private int GetButtonHorizontalCoordinate(Button button)
+        private static int GetButtonHorizontalCoordinate(Button button)
         {
             return int.Parse(button.Tag.ToString().Substring(0, 1));
         }
@@ -375,7 +386,7 @@ namespace tictactoe.Classes
         /// </summary>
         /// <param name="button">Button with a Tag property in a specific pattern. Tag = (int)horizontalCoordinate(int)verticalCoordinate. Example: button.Tag = 01</param>
         /// <returns>Integer vertical coordinate value</returns>
-        private int GetButtonVerticalCoordinate(Button button)
+        private static int GetButtonVerticalCoordinate(Button button)
         {
             return int.Parse(button.Tag.ToString().Substring(1, 1));
         }

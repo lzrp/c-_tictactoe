@@ -171,9 +171,9 @@ private  Move GenerateImpossibleDifficultyMove(string[,] board, string playerMar
             var bestMove = new Move() { Value = -2 };
 
             // Loop through the board
-            for (int i = 0; i < Tictactoe.GetBoardSizeHorizontal(); i++)
+            for (int i = 0; i < Tictactoe.GetBoardHorizontalSize(); i++)
             {
-                for (int j = 0; j < Tictactoe.GetBoardSizeVertical(); j++)
+                for (int j = 0; j < Tictactoe.GetBoardVerticalSize(); j++)
                 {
                     if (IsBoardFieldEmpty(board, i, j))
                     {

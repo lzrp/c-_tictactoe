@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using tictactoe.Classes;
+using tictactoe.Properties;
 
 namespace tictactoe.Windows
 {
@@ -45,10 +45,10 @@ namespace tictactoe.Windows
 
             // Computers turn
             // Skip when the computer oponent is disabled
-            if (!Properties.Settings.Default.VsComputer) return;
+            if (!Settings.Default.VsComputer) return;
 
             // Compute the AIs move and place the marker
-            var computerMove = _tictactoe.ComputerPlayerAi.GetMove(_tictactoe.GetCurrentTurnPlayerMark(), Properties.Settings.Default.DifficultySetting);
+            var computerMove = _tictactoe.ComputerPlayerAi.GetMove(_tictactoe.GetCurrentTurnPlayerMark(), Settings.Default.DifficultySetting);
             _tictactoe.PlaceMarker(computerMove.X, computerMove.Y);
 
             // Check for the game state and update user interface
@@ -69,27 +69,27 @@ namespace tictactoe.Windows
 
         private void MenuItemAiEasy_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.DifficultySetting = 0;
-            Properties.Settings.Default.Save();
+            Settings.Default.DifficultySetting = 0;
+            Settings.Default.Save();
         }
 
         private void MenuItemAiMedium_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.DifficultySetting = 1;
-            Properties.Settings.Default.Save();
+            Settings.Default.DifficultySetting = 1;
+            Settings.Default.Save();
         }
 
         private void MenuItemAiImpossible_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.DifficultySetting = 2;
-            Properties.Settings.Default.Save();
+            Settings.Default.DifficultySetting = 2;
+            Settings.Default.Save();
         }
 
         private void MenuItemAiEasy_Loaded(object sender, RoutedEventArgs e)
         {
             DisableMenuItemAfterFirstTurn(sender as MenuItem);
 
-            if (Properties.Settings.Default.DifficultySetting != 0) return;
+            if (Settings.Default.DifficultySetting != 0) return;
 
             MenuItemAiEasy.IsChecked = true;
             MenuItemAiMedium.IsChecked = false;
@@ -100,7 +100,7 @@ namespace tictactoe.Windows
         {
             DisableMenuItemAfterFirstTurn(sender as MenuItem);
 
-            if (Properties.Settings.Default.DifficultySetting != 1) return;
+            if (Settings.Default.DifficultySetting != 1) return;
 
             MenuItemAiEasy.IsChecked = false;
             MenuItemAiMedium.IsChecked = true;
@@ -125,7 +125,7 @@ namespace tictactoe.Windows
         {
             DisableMenuItemAfterFirstTurn(sender as MenuItem);
 
-            if (Properties.Settings.Default.DifficultySetting != 2) return;
+            if (Settings.Default.DifficultySetting != 2) return;
 
             MenuItemAiEasy.IsChecked = false;
             MenuItemAiMedium.IsChecked = false;
@@ -138,7 +138,7 @@ namespace tictactoe.Windows
         /// <returns>A bool value when the user confirmed the action.</returns>
         private static bool UserConfirmedSettingsChange()
         {
-            var messageBoxResult = MessageBox.Show("Changing this setting requires a game restart. Are you sure you want to restart the game?", "Restart game", MessageBoxButton.YesNo);
+            var messageBoxResult = MessageBox.Show(Properties.Resources.TicTacToeWindow_UserConfirmedSettingsChangeString, "Restart game", MessageBoxButton.YesNo);
 
             return messageBoxResult == MessageBoxResult.Yes;
         }
@@ -148,8 +148,8 @@ namespace tictactoe.Windows
             // Save the selected option if user clicked Yes
             if (UserConfirmedSettingsChange())
             {
-                Properties.Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
-                Properties.Settings.Default.Save();
+                Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
+                Settings.Default.Save();
 
                 // Restart the game
                 _tictactoe.RestartGame();
@@ -166,8 +166,8 @@ namespace tictactoe.Windows
             // Save the selected option if user clicked Yes
             if (UserConfirmedSettingsChange())
             {
-                Properties.Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
-                Properties.Settings.Default.Save();
+                Settings.Default.PlayerStartsFirst = MenuItemPlayerStartsFirst.IsChecked;
+                Settings.Default.Save();
 
                 // Restart the game
                 _tictactoe.RestartGame();
@@ -187,12 +187,12 @@ namespace tictactoe.Windows
 
         private void MenuItemVsComputer_Loaded(object sender, RoutedEventArgs e)
         {
-            MenuItemVsComputer.IsChecked = Properties.Settings.Default.VsComputer;
+            MenuItemVsComputer.IsChecked = Settings.Default.VsComputer;
         }
 
         private void MenuItemPlayerStartsFirst_Loaded(object sender, RoutedEventArgs e)
         {
-            MenuItemPlayerStartsFirst.IsChecked = Properties.Settings.Default.PlayerStartsFirst;
+            MenuItemPlayerStartsFirst.IsChecked = Settings.Default.PlayerStartsFirst;
             MenuItemPlayerStartsFirst.IsEnabled = MenuItemVsComputer.IsChecked;
         }
     }

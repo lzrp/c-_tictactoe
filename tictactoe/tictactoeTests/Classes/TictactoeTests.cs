@@ -1,20 +1,62 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Controls;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using tictactoe.Classes;
 
 namespace tictactoeTests.Classes
 {
     [TestClass()]
     public class TictactoeTests
     {
+        readonly IEnumerable<Button> _buttons = new List<Button>()
+        { new Button() {Tag = 00}, new Button() {Tag = 01}, new Button() {Tag = 02},
+          new Button() {Tag = 10}, new Button() {Tag = 11}, new Button(){Tag = 12},
+          new Button() {Tag = 20}, new Button() {Tag = 21}, new Button() {Tag = 22}
+        };
+
         [TestMethod()]
-        public void TictactoeTest()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TicTacToe_ButtonListParameterIsNull_ThrowsException()
         {
-            Assert.Fail();
+            // Assign
+            IEnumerable<Button> nullButtonList = null;
+
+            // Act
+            var ticTacToe = new Tictactoe(nullButtonList);
+
+            // Assert
+            Assert.Fail("No exception was thrown.");
         }
 
         [TestMethod()]
-        public void GetBoardSizeHorizontalTest()
+        [ExpectedException(typeof (ArgumentOutOfRangeException))]
+        public void TicTacToe_InvalidButtonCountInButtonList_ThrowsException()
         {
-            Assert.Fail();
+            // Assign
+            IEnumerable<Button> filteredButtonList =
+                _buttons.Where(x => x.Tag.ToString().StartsWith("0"));
+
+            // Act
+            var ticTacToe = new Tictactoe(filteredButtonList);
+
+            // Assert
+            Assert.Fail("No exception was thrown.");
+        }
+
+        [TestMethod()]
+        public void GetBoardHorizontalSize_ValidUse_Success()
+        {
+            // Assign
+            int expectedBoardSizeHorizontal = 3;
+
+            // Act
+            int actualBoardSizeHorizontal = Tictactoe.GetBoardHorizontalSize();
+
+            // Assert
+            Assert.AreEqual(expectedBoardSizeHorizontal, actualBoardSizeHorizontal);
         }
 
         [TestMethod()]
