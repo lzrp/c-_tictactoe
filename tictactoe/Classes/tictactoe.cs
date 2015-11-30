@@ -29,6 +29,7 @@ namespace tictactoe.Classes
         /// <param name="buttonList">Button collection representing the playing board.</param>
         public Tictactoe(IEnumerable<Button> buttonList)
         {
+
             // Assign the button collection
             ButtonCollection = buttonList;
 

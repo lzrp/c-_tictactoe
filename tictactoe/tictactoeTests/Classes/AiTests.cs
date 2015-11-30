@@ -16,7 +16,7 @@ namespace tictactoeTests.Classes
         readonly MockRandom _mockRandomGenerator = new MockRandom();
 
         [TestMethod()]
-        public void Ai_BoardParameterIsNotNull_Success()
+        public void Ai_BoardParameterValidUse_Success()
         {
             // Arrange
             // Act
