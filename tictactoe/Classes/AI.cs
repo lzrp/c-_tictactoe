@@ -18,13 +18,14 @@ namespace tictactoe.Classes
             Medium = 1,
             Impossible = 2
         }
+
         public struct Move
         {
             public int X;
             public int Y;
             public int Value;
         }
-
+        
         public Ai(string[,] ticTacToeBoard, Random randomGenerator)
         {
             if (ticTacToeBoard == null)
@@ -86,7 +87,7 @@ namespace tictactoe.Classes
         /// <summary>
         /// Generate a predictable move.
         /// </summary>
-        /// <returns>Returns a move object with defined X, Y coordinates</returns>
+        /// <returns>Returns a move structure with defined X, Y coordinates</returns>
         private Move GenerateEasyDifficultyMove()
         {
             // This AI uses always the same strategy, filling the board from bottom left to the right and upwards.
@@ -113,7 +114,7 @@ namespace tictactoe.Classes
         /// <summary>
         /// Generates a random, unpredictable move.
         /// </summary>
-        /// <returns>Returns a move object with defined X, Y coordinates.</returns>
+        /// <returns>Returns a move structure with defined X, Y coordinates.</returns>
         private Move GenerateMediumDifficultyMove()
         {
             bool isValidMoveFound = false;
@@ -141,7 +142,7 @@ namespace tictactoe.Classes
 /// </summary>
 /// <param name="board">Board on which to do the calculations.</param>
 /// <param name="playerMark">Mark of the player who is calling the function.</param>
-/// <returns>An optimal move coordinates for the given board and player.</returns>
+/// <returns>An optimal move for the given board and player.</returns>
 /// Can be upgraded with alpha-beta pruning to increase performance.
 private  Move GenerateImpossibleDifficultyMove(string[,] board, string playerMark)
         {
