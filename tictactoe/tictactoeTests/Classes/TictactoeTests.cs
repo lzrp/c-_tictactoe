@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Controls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using tictactoe.Classes;
+using tictactoeTests.Properties;
 
 namespace tictactoeTests.Classes
 {
@@ -12,9 +13,9 @@ namespace tictactoeTests.Classes
     public class TictactoeTests
     {
         readonly IEnumerable<Button> _buttons = new List<Button>()
-        { new Button() {Tag = 00}, new Button() {Tag = 01}, new Button() {Tag = 02},
-          new Button() {Tag = 10}, new Button() {Tag = 11}, new Button(){Tag = 12},
-          new Button() {Tag = 20}, new Button() {Tag = 21}, new Button() {Tag = 22}
+        { new Button() {Tag = 00, Content = Resources.BoardEmptyField  }, new Button() {Tag = 01}, new Button() {Tag = 02},
+          new Button() {Tag = 10, Content = Resources.BoardCrossMark}, new Button() {Tag = 11}, new Button(){Tag = 12},
+          new Button() {Tag = 20, Content = Resources.BoardCircleMark}, new Button() {Tag = 21}, new Button() {Tag = 22}
         };
 
         [TestMethod()]
@@ -50,31 +51,68 @@ namespace tictactoeTests.Classes
         public void GetBoardHorizontalSize_ValidUse_Success()
         {
             // Assign
-            int expectedBoardSizeHorizontal = 3;
+            int expectedBoardHorizontalSize = 3;
 
             // Act
-            int actualBoardSizeHorizontal = Tictactoe.GetBoardHorizontalSize();
+            int actualBoardHorizontalSize = Tictactoe.GetBoardHorizontalSize();
 
             // Assert
-            Assert.AreEqual(expectedBoardSizeHorizontal, actualBoardSizeHorizontal);
+            Assert.AreEqual(expectedBoardHorizontalSize, actualBoardHorizontalSize);
         }
 
         [TestMethod()]
-        public void GetBoardSizeVerticalTest()
+        public void GetBoardVerticalSize_ValidUse_Success()
         {
-            Assert.Fail();
+            // Assign
+            int expectedBoardVerticalSize = 3;
+
+            // Act
+            int actualBoardVerticalSize = Tictactoe.GetBoardVerticalSize();
+
+            // Assert
+            Assert.AreEqual(expectedBoardVerticalSize, actualBoardVerticalSize);
+        }
+        
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void IsBoardFieldEmpty_ButtonParameterIsNull_ThrowsException()
+        {
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+            
+            // Act
+            bool validButtonActualResult = ticTacToe.IsBoardFieldEmpty(_buttons.First());
+            bool invalidButtonResult = ticTacToe.IsBoardFieldEmpty(null);
+
+            // Assert
+            Assert.Fail("No exception was thrown.");
         }
 
         [TestMethod()]
-        public void AskForNewGameTest()
+        public void IsBoardFieldEmpty_ValidUse_Success()
         {
-            Assert.Fail();
-        }
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+            bool emptyFieldButtonExpectedResult = true;
+            bool crossMarkButtonExpectedResult = false;
+            bool circleMarkButtonExpectedResult = false;
 
-        [TestMethod()]
-        public void IsBoardFieldEmptyTest()
-        {
-            Assert.Fail();
+            var emptyFieldButton = _buttons.Select(x => x.Content.ToString() == Resources.BoardEmptyField) as Button;
+                //_buttons.Where(x => x.Content.ToString() == Resources.BoardEmptyField);
+            //var crossMarkButton =
+            //    _buttons.Where(x => x.Content.ToString() == Resources.BoardCrossMark);
+            //var circleMarkButton =
+            //    _buttons.Where(x => x.Content.ToString() == Resources.BoardCircleMark);
+
+            // Act
+            bool emptyFieldButtonActualResult = ticTacToe.IsBoardFieldEmpty(emptyFieldButton);
+            //bool crossMarkButtonActualResult = ticTacToe.IsBoardFieldEmpty(crossMarkButton);
+            //bool circleMarkButtonActualResult = ticTacToe.IsBoardFieldEmpty(circleMarkButton);
+
+            // Assert
+            Assert.AreEqual(emptyFieldButtonExpectedResult, emptyFieldButtonActualResult);
+            //Assert.AreEqual(crossMarkButtonExpectedResult, crossMarkButtonActualResult);
+            //Assert.AreEqual(circleMarkButtonExpectedResult, circleMarkButtonActualResult);
         }
 
         [TestMethod()]

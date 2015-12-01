@@ -12,9 +12,6 @@ namespace tictactoe.Classes
     {
         private const int BoardSizeHorizontal = 3;
         private const int BoardSizeVertical = 3;
-        private const string EmptyField = " ";
-        private const string CrossMark = "X";
-        private const string CircleMark = "O";
         private readonly Random _randomGenerator = new Random();
 
         public bool Turn { get; private set; } // true = Xs turn, false = Os turn
@@ -99,7 +96,12 @@ namespace tictactoe.Classes
         /// <returns>Bool result true if the field is empty.</returns>
         public bool IsBoardFieldEmpty(Button button)
         {
-            return button.Content.ToString() == EmptyField;
+            if (button == null)
+            {
+                throw new ArgumentNullException(nameof(button));
+            }
+
+            return button.Content.ToString() == Resources.BoardEmptyField;
         }
 
         /// <summary>
@@ -110,7 +112,7 @@ namespace tictactoe.Classes
         /// <returns>Bool result true if the field is empty.</returns>
         public bool IsBoardFieldEmpty(int x, int y)
         {
-            return Board[x, y] == EmptyField;
+            return Board[x, y] == Resources.BoardEmptyField;
         }
 
         /// <summary>
@@ -119,7 +121,7 @@ namespace tictactoe.Classes
         /// <returns>String representation of a players marker.</returns>
         public string GetCurrentTurnPlayerMark()
         {
-            return Turn ? CrossMark : CircleMark;
+            return Turn ? Resources.BoardCrossMark : Resources.BoardCircleMark;
         }
 
         /// <summary>
@@ -159,10 +161,10 @@ namespace tictactoe.Classes
                 int buttonHorizontalPosition = GetButtonHorizontalCoordinate(button);
                 int buttonVerticalPosition = GetButtonVerticalCoordinate(button);
 
-                Board[buttonHorizontalPosition, buttonVerticalPosition] = EmptyField;
+                Board[buttonHorizontalPosition, buttonVerticalPosition] = Resources.BoardEmptyField;
 
                 // Reset buttons
-                button.Content = EmptyField;
+                button.Content = Resources.BoardEmptyField;
                 button.IsEnabled = true;
             }
         }
@@ -189,7 +191,7 @@ namespace tictactoe.Classes
                 button.Content = Board[x, y];
 
                 // Disable the button if its marked by a player
-                if (button.Content.ToString() != EmptyField)
+                if (button.Content.ToString() != Resources.BoardEmptyField)
                 {
                     button.IsEnabled = false;
                 }
@@ -295,7 +297,7 @@ namespace tictactoe.Classes
             {
                 for (int j = 0; j < BoardSizeVertical; j++)
                 {
-                    if (board[i,j] == EmptyField)
+                    if (board[i,j] == Resources.BoardEmptyField)
                     {
                         return false;
                     }
