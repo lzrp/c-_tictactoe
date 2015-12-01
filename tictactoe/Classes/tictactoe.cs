@@ -98,7 +98,7 @@ namespace tictactoe.Classes
         {
             if (button == null)
             {
-                throw new ArgumentNullException(nameof(button));
+                throw new NullReferenceException(nameof(button));
             }
 
             return button.Content.ToString() == Resources.BoardEmptyField;

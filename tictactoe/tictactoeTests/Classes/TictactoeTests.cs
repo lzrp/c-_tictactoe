@@ -12,10 +12,16 @@ namespace tictactoeTests.Classes
     [TestClass()]
     public class TictactoeTests
     {
-        readonly IEnumerable<Button> _buttons = new List<Button>()
-        { new Button() {Tag = 00, Content = Resources.BoardEmptyField  }, new Button() {Tag = 01}, new Button() {Tag = 02},
-          new Button() {Tag = 10, Content = Resources.BoardCrossMark}, new Button() {Tag = 11}, new Button() {Tag = 12},
-          new Button() {Tag = 20, Content = Resources.BoardCircleMark}, new Button() {Tag = 21}, new Button() {Tag = 22}
+        private readonly List<Button> _buttons = new List<Button>()
+        { new Button() {Tag = 00},
+          new Button() {Tag = 01},
+          new Button() {Tag = 02},
+          new Button() {Tag = 10},
+          new Button() {Tag = 11},
+          new Button() {Tag = 12},
+          new Button() {Tag = 20, Content = Resources.BoardCircleMark},
+          new Button() {Tag = 21, Content = Resources.BoardCrossMark},
+          new Button() {Tag = 22, Content = Resources.BoardEmptyField}
         };
 
         [TestMethod()]
@@ -74,14 +80,16 @@ namespace tictactoeTests.Classes
         }
         
         [TestMethod()]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void IsBoardFieldEmpty_ButtonParameterIsNull_ThrowsException()
         {
             // Assign
-            bool validButtonActualResult = IsBoardFieldEmpty(_buttons.First(x => x.Content.ToString() == Resources.BoardEmptyField));
+            bool validButtonActualResult = Tictactoe.IsBoardFieldEmpty(_buttons.First(x => x.Content.Equals(Resources.BoardEmptyField)));
+            Button nullButton = new Button();
+            nullButton = null;
 
             // Act
-            bool invalidButtonResult = IsBoardFieldEmpty(null);
+            bool invalidButtonResult = Tictactoe.IsBoardFieldEmpty(nullButton);
 
             // Assert
             Assert.Fail("No exception was thrown.");
@@ -91,27 +99,23 @@ namespace tictactoeTests.Classes
         public void IsBoardFieldEmpty_ValidUse_Success()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
             bool emptyFieldButtonExpectedResult = true;
             bool crossMarkButtonExpectedResult = false;
             bool circleMarkButtonExpectedResult = false;
 
-            //var emptyFieldButton = _buttons.First(x => x.Content.ToString() == Resources.BoardEmptyField);
-            //_buttons.Where(x => x.Content.ToString() == Resources.BoardEmptyField);
-            var crossMarkButton =
-                _buttons.First(x => x.Content.ToString() == Resources.BoardCrossMark);
-            //var circleMarkButton =
-            //    _buttons.Where(x => x.Content.ToString() == Resources.BoardCircleMark);
+            var emptyFieldButton = _buttons.First(x => x.Content.ToString().StartsWith(Resources.BoardEmptyField));
+            var crossMarkButton = _buttons.First(x => x.Content.Equals(Resources.BoardCrossMark));
+            var circleMarkButton = _buttons.First(x => x.Content.Equals(Resources.BoardCircleMark));
 
             // Act
-            //bool emptyFieldButtonActualResult = ticTacToe.IsBoardFieldEmpty(emptyFieldButton);
-            bool crossMarkButtonActualResult = ticTacToe.IsBoardFieldEmpty(crossMarkButton);
-            //bool circleMarkButtonActualResult = ticTacToe.IsBoardFieldEmpty(circleMarkButton);
+            bool emptyFieldButtonActualResult = Tictactoe.IsBoardFieldEmpty(emptyFieldButton);
+            bool crossMarkButtonActualResult = Tictactoe.IsBoardFieldEmpty(crossMarkButton);
+            bool circleMarkButtonActualResult = Tictactoe.IsBoardFieldEmpty(circleMarkButton);
 
             // Assert
-            //Assert.AreEqual(emptyFieldButtonExpectedResult, emptyFieldButtonActualResult);
+            Assert.AreEqual(emptyFieldButtonExpectedResult, emptyFieldButtonActualResult);
             Assert.AreEqual(crossMarkButtonExpectedResult, crossMarkButtonActualResult);
-            //Assert.AreEqual(circleMarkButtonExpectedResult, circleMarkButtonActualResult);
+            Assert.AreEqual(circleMarkButtonExpectedResult, circleMarkButtonActualResult);
         }
 
         [TestMethod()]

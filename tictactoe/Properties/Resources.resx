@@ -125,6 +125,7 @@
   </data>
   <data name="BoardEmptyField" xml:space="preserve">
     <value> </value>
+    <comment>Use space character for empty field.</comment>
   </data>
   <data name="TicTacToeWindow_UserConfirmedSettingsChangeString" xml:space="preserve">
     <value>Changing this setting requires a game restart. Are you sure you want to restart the game?</value>
