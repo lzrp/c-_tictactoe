@@ -14,7 +14,7 @@ namespace tictactoeTests.Classes
     {
         readonly IEnumerable<Button> _buttons = new List<Button>()
         { new Button() {Tag = 00, Content = Resources.BoardEmptyField  }, new Button() {Tag = 01}, new Button() {Tag = 02},
-          new Button() {Tag = 10, Content = Resources.BoardCrossMark}, new Button() {Tag = 11}, new Button(){Tag = 12},
+          new Button() {Tag = 10, Content = Resources.BoardCrossMark}, new Button() {Tag = 11}, new Button() {Tag = 12},
           new Button() {Tag = 20, Content = Resources.BoardCircleMark}, new Button() {Tag = 21}, new Button() {Tag = 22}
         };
 
@@ -78,11 +78,10 @@ namespace tictactoeTests.Classes
         public void IsBoardFieldEmpty_ButtonParameterIsNull_ThrowsException()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
-            
+            bool validButtonActualResult = IsBoardFieldEmpty(_buttons.First(x => x.Content.ToString() == Resources.BoardEmptyField));
+
             // Act
-            bool validButtonActualResult = ticTacToe.IsBoardFieldEmpty(_buttons.First());
-            bool invalidButtonResult = ticTacToe.IsBoardFieldEmpty(null);
+            bool invalidButtonResult = IsBoardFieldEmpty(null);
 
             // Assert
             Assert.Fail("No exception was thrown.");
@@ -97,21 +96,21 @@ namespace tictactoeTests.Classes
             bool crossMarkButtonExpectedResult = false;
             bool circleMarkButtonExpectedResult = false;
 
-            var emptyFieldButton = _buttons.Select(x => x.Content.ToString() == Resources.BoardEmptyField) as Button;
-                //_buttons.Where(x => x.Content.ToString() == Resources.BoardEmptyField);
-            //var crossMarkButton =
-            //    _buttons.Where(x => x.Content.ToString() == Resources.BoardCrossMark);
+            //var emptyFieldButton = _buttons.First(x => x.Content.ToString() == Resources.BoardEmptyField);
+            //_buttons.Where(x => x.Content.ToString() == Resources.BoardEmptyField);
+            var crossMarkButton =
+                _buttons.First(x => x.Content.ToString() == Resources.BoardCrossMark);
             //var circleMarkButton =
             //    _buttons.Where(x => x.Content.ToString() == Resources.BoardCircleMark);
 
             // Act
-            bool emptyFieldButtonActualResult = ticTacToe.IsBoardFieldEmpty(emptyFieldButton);
-            //bool crossMarkButtonActualResult = ticTacToe.IsBoardFieldEmpty(crossMarkButton);
+            //bool emptyFieldButtonActualResult = ticTacToe.IsBoardFieldEmpty(emptyFieldButton);
+            bool crossMarkButtonActualResult = ticTacToe.IsBoardFieldEmpty(crossMarkButton);
             //bool circleMarkButtonActualResult = ticTacToe.IsBoardFieldEmpty(circleMarkButton);
 
             // Assert
-            Assert.AreEqual(emptyFieldButtonExpectedResult, emptyFieldButtonActualResult);
-            //Assert.AreEqual(crossMarkButtonExpectedResult, crossMarkButtonActualResult);
+            //Assert.AreEqual(emptyFieldButtonExpectedResult, emptyFieldButtonActualResult);
+            Assert.AreEqual(crossMarkButtonExpectedResult, crossMarkButtonActualResult);
             //Assert.AreEqual(circleMarkButtonExpectedResult, circleMarkButtonActualResult);
         }
 

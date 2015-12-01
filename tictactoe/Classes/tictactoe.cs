@@ -8,7 +8,7 @@ using static tictactoe.Classes.Ai;
 
 namespace tictactoe.Classes
 {
-    public class Tictactoe : IGame
+    public class Tictactoe
     {
         private const int BoardSizeHorizontal = 3;
         private const int BoardSizeVertical = 3;
@@ -94,7 +94,7 @@ namespace tictactoe.Classes
         /// </summary>
         /// <param name="button">Button which board field is checked.</param>
         /// <returns>Bool result true if the field is empty.</returns>
-        public bool IsBoardFieldEmpty(Button button)
+        public static bool IsBoardFieldEmpty(Button button)
         {
             if (button == null)
             {
