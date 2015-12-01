@@ -54,7 +54,7 @@ namespace tictactoeTests.Classes
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void IsBoardFieldEmpty_BoardIsNull_ThrowsException()
+        public void IsBoardFieldEmpty_BoardParameterIsNull_ThrowsException()
         {
             // Arrange
             string[,] board = null;

@@ -84,7 +84,6 @@ namespace tictactoeTests.Classes
         public void IsBoardFieldEmpty_ButtonParameterIsNull_ThrowsException()
         {
             // Assign
-            bool validButtonActualResult = Tictactoe.IsBoardFieldEmpty(_buttons.First(x => x.Content.Equals(Resources.BoardEmptyField)));
             Button nullButton = new Button();
             nullButton = null;
 
@@ -103,9 +102,9 @@ namespace tictactoeTests.Classes
             bool crossMarkButtonExpectedResult = false;
             bool circleMarkButtonExpectedResult = false;
 
-            var emptyFieldButton = _buttons.First(x => x.Content.ToString().StartsWith(Resources.BoardEmptyField));
-            var crossMarkButton = _buttons.First(x => x.Content.Equals(Resources.BoardCrossMark));
-            var circleMarkButton = _buttons.First(x => x.Content.Equals(Resources.BoardCircleMark));
+            var emptyFieldButton = new Button() {Content = Resources.BoardEmptyField};
+            var crossMarkButton = new Button() { Content = Resources.BoardCrossMark };
+            var circleMarkButton = new Button() { Content = Resources.BoardCircleMark };
 
             // Act
             bool emptyFieldButtonActualResult = Tictactoe.IsBoardFieldEmpty(emptyFieldButton);

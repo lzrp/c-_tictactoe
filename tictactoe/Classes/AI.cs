@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows;
+using tictactoe.Properties;
 
 namespace tictactoe.Classes
 {
     public class Ai
     {
-        private const string EmptyField = " ";
-        private const string CrossMark = "X";
-        private const string CircleMark = "O";
         private Random RandomGenerator { get; }
 
         public string[,] Board { get; }
@@ -56,7 +54,7 @@ namespace tictactoe.Classes
                 throw new ArgumentNullException(nameof(board));
             }
 
-            return board[x, y] == EmptyField;
+            return board[x, y] == Resources.BoardEmptyField;
         }
         /// <summary>
         /// Gets the move to perform by the AI with a specific difficulty setting.
@@ -65,7 +63,7 @@ namespace tictactoe.Classes
         public Move GetMove(string playerMark, int aiDifficulty)
         {
             // Throw an exception if the players mark doesnt match a cross or a circle mark
-            if (playerMark != CircleMark && playerMark != CrossMark)
+            if (playerMark != Resources.BoardCircleMark && playerMark != Resources.BoardCrossMark)
             {
                 throw new ArgumentException();
             }
@@ -147,7 +145,7 @@ namespace tictactoe.Classes
 private  Move GenerateImpossibleDifficultyMove(string[,] board, string playerMark)
         {
             // Set the oponent players mark
-            string oponentPlayerMark = (playerMark == CrossMark) ? CircleMark : CrossMark;
+            string oponentPlayerMark = (playerMark == Resources.BoardCrossMark) ? Resources.BoardCircleMark : Resources.BoardCrossMark;
 
             // Check if the player calling the function has won
             if (Tictactoe.HasPlayerWon(board, playerMark))
@@ -192,7 +190,7 @@ private  Move GenerateImpossibleDifficultyMove(string[,] board, string playerMar
                         }
 
                         // Change the board field back to empty
-                        board[i, j] = EmptyField;
+                        board[i, j] = Resources.BoardEmptyField;
                     }
                 }
             }
