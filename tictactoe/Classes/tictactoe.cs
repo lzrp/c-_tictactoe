@@ -13,15 +13,14 @@ namespace tictactoe.Classes
         private const int BoardSizeHorizontal = 3;
         private const int BoardSizeVertical = 3;
         private readonly Random _randomGenerator = new Random();
+        private IEnumerable<Button> ButtonCollection { get; }
 
         public bool Turn { get; private set; } // true = Xs turn, false = Os turn
         public bool IsGameInProgress { get; private set; }
         public int BoardFieldsLeftCounter { get; private set; } = 9;
         public Ai ComputerPlayerAi { get; }
 
-        public string[,] Board { get; } = new string[BoardSizeHorizontal, BoardSizeVertical];
-        public IEnumerable<Button> ButtonCollection { get; }
-        
+        public string[,] Board { get; } = new string[BoardSizeHorizontal, BoardSizeVertical];        
         /// <summary>
         /// Creates a new instance of the Tictactoe class.
         /// </summary>
@@ -230,6 +229,16 @@ namespace tictactoe.Classes
         /// <param name="y">The vertical coordinate within the board.</param>
         public void PlaceMarker(int x, int y)
         {
+            if (x < 0 || x > BoardSizeHorizontal)
+            {
+                throw new ArgumentOutOfRangeException(nameof(x));
+            }
+
+            if (y < 0 || y > BoardSizeVertical)
+            {
+                throw new ArgumentOutOfRangeException(nameof(y));
+            }
+
             // Adjust the fields left counter and mark the board field
             BoardFieldsLeftCounter--;
             Board[x, y] = GetCurrentTurnPlayerMark();
@@ -241,6 +250,11 @@ namespace tictactoe.Classes
         /// <param name="button">Pressed button indicating the position on the board.</param>
         public void PlaceMarker(Button button)
         {
+            if (button == null)
+            {
+                throw new NullReferenceException(nameof(button));
+            }
+
             // Return immediately when the game ended or havent started yet
             if (!IsGameInProgress) return;
 

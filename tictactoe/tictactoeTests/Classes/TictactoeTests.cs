@@ -204,35 +204,116 @@ namespace tictactoeTests.Classes
             // Assert
             Assert.Fail("No exception was thrown.");
         }
-
+        
         [TestMethod()]
-        public void RestartGameTest()
+        public void ResetBoard_ValidUse_Success()
         {
-            Assert.Fail();
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+            ticTacToe.StartNewGame(true, false, 0);
+
+            // Act
+            // ResetBoard method call is in the Tictactoe() ctor
+
+            // Assert
+            for (int i = 0; i < Tictactoe.GetBoardHorizontalSize(); i++)
+            {
+                for (int j = 0; j < Tictactoe.GetBoardVerticalSize(); j++)
+                {
+                    bool isBoardFieldReset = ticTacToe.IsBoardFieldEmpty(i, j);
+
+                    Assert.AreEqual(true, isBoardFieldReset);
+                }
+            }            
         }
 
         [TestMethod()]
-        public void UpdateUiTest()
+        public void NextTurn_ValidUse_Success()
         {
-            Assert.Fail();
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+            ticTacToe.StartNewGame(true, false, 0);
+
+            // Act
+            bool shouldBeTrue = ticTacToe.Turn;
+            ticTacToe.NextTurn();
+
+            bool shouldBeFalse = ticTacToe.Turn;
+            ticTacToe.NextTurn();
+
+            bool shouldBeTrueAgain = ticTacToe.Turn;
+
+            // Assert
+            Assert.AreEqual(true, shouldBeTrue);
+            Assert.AreEqual(false, shouldBeFalse);
+            Assert.AreEqual(true, shouldBeTrueAgain);
         }
 
         [TestMethod()]
-        public void NextTurnTest()
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void PlaceMarker_HorizontalParameterOutOfRange_ThrowsException()
         {
-            Assert.Fail();
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+
+            // Act
+            ticTacToe.PlaceMarker(5, 1);
+            ticTacToe.PlaceMarker(-1, 1);
+
+            // Assert
+            Assert.Fail("No exception was thrown.");
         }
 
         [TestMethod()]
-        public void PlaceMarkerTest()
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void PlaceMarker_VerticalParameterOutOfRange_ThrowsException()
         {
-            Assert.Fail();
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+
+            // Act
+            ticTacToe.PlaceMarker(1, 5);
+            ticTacToe.PlaceMarker(1, -1);
+
+            // Assert
+            Assert.Fail("No exception was thrown.");
         }
 
         [TestMethod()]
-        public void PlaceMarkerTest1()
+        [ExpectedException(typeof(NullReferenceException))]
+        public void PlaceMarker_ButtonParameterIsNull_ThrowsException()
         {
-            Assert.Fail();
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+            ticTacToe.StartNewGame(true, false, 0);
+
+            // Act            
+            ticTacToe.PlaceMarker(null);
+
+            // Assert
+            Assert.Fail("No exception was thrown.");
+        }
+           
+        [TestMethod()]
+        public void PlaceMarker_ValidUse_Success()
+        {
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+            ticTacToe.StartNewGame(true, false, 0);
+            var buttonForCrossMarkPlacement = _buttons.First(x => x.Tag.ToString() == "00");
+            var buttonForCircleMarkPlacement = _buttons.First(x => x.Tag.ToString() == "01");
+
+            // Act
+            ticTacToe.PlaceMarker(buttonForCrossMarkPlacement);
+            ticTacToe.NextTurn();
+            ticTacToe.PlaceMarker(buttonForCircleMarkPlacement);
+
+            var buttonWithCrossMark = buttonForCrossMarkPlacement.Content.ToString();
+            var buttonWithCircleMark = buttonForCircleMarkPlacement.Content.ToString();
+
+            // Assert
+            Assert.AreEqual(Resources.BoardCrossMark, buttonWithCrossMark);
+            Assert.AreEqual(Resources.BoardCircleMark, buttonWithCircleMark);
         }
 
         [TestMethod()]
