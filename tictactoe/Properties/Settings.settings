@@ -2,10 +2,10 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="tictactoe.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="DifficultySetting" Type="System.Int32" Scope="User">
+    <Setting Name="AiDifficultySetting" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="VsComputer" Type="System.Boolean" Scope="User">
+    <Setting Name="ComputerOponentEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="PlayerStartsFirst" Type="System.Boolean" Scope="User">

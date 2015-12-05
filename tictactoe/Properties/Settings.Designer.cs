@@ -26,24 +26,24 @@ namespace tictactoe.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int DifficultySetting {
+        public int AiDifficultySetting {
             get {
-                return ((int)(this["DifficultySetting"]));
+                return ((int)(this["AiDifficultySetting"]));
             }
             set {
-                this["DifficultySetting"] = value;
+                this["AiDifficultySetting"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool VsComputer {
+        public bool ComputerOponentEnabled {
             get {
-                return ((bool)(this["VsComputer"]));
+                return ((bool)(this["ComputerOponentEnabled"]));
             }
             set {
-                this["VsComputer"] = value;
+                this["ComputerOponentEnabled"] = value;
             }
         }
         

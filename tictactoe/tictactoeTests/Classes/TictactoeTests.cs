@@ -12,16 +12,16 @@ namespace tictactoeTests.Classes
     [TestClass()]
     public class TictactoeTests
     {
-        private readonly List<Button> _buttons = new List<Button>()
-        { new Button() {Tag = 00},
-          new Button() {Tag = 01},
-          new Button() {Tag = 02},
+        private readonly List<Button> _buttons = new List<Button>
+        { new Button() {Tag = "00"},
+          new Button() {Tag = "01"},
+          new Button() {Tag = "02"},
           new Button() {Tag = 10},
           new Button() {Tag = 11},
           new Button() {Tag = 12},
-          new Button() {Tag = 20, Content = Resources.BoardCircleMark},
-          new Button() {Tag = 21, Content = Resources.BoardCrossMark},
-          new Button() {Tag = 22, Content = Resources.BoardEmptyField}
+          new Button() {Tag = 20},
+          new Button() {Tag = 21},
+          new Button() {Tag = 22}
         };
 
         [TestMethod()]
@@ -39,7 +39,7 @@ namespace tictactoeTests.Classes
         }
 
         [TestMethod()]
-        [ExpectedException(typeof (ArgumentOutOfRangeException))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TicTacToe_InvalidButtonCountInButtonList_ThrowsException()
         {
             // Assign
@@ -78,7 +78,7 @@ namespace tictactoeTests.Classes
             // Assert
             Assert.AreEqual(expectedBoardVerticalSize, actualBoardVerticalSize);
         }
-        
+
         [TestMethod()]
         [ExpectedException(typeof(NullReferenceException))]
         public void IsBoardFieldEmpty_ButtonParameterIsNull_ThrowsException()
@@ -102,7 +102,7 @@ namespace tictactoeTests.Classes
             bool crossMarkButtonExpectedResult = false;
             bool circleMarkButtonExpectedResult = false;
 
-            var emptyFieldButton = new Button() {Content = Resources.BoardEmptyField};
+            var emptyFieldButton = new Button() { Content = Resources.BoardEmptyField };
             var crossMarkButton = new Button() { Content = Resources.BoardCrossMark };
             var circleMarkButton = new Button() { Content = Resources.BoardCircleMark };
 
@@ -118,21 +118,91 @@ namespace tictactoeTests.Classes
         }
 
         [TestMethod()]
-        public void IsBoardFieldEmptyTest1()
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void IsBoardFieldEmpty2_HorizontalCoordinateOutOfRange_ThrowsException()
         {
-            Assert.Fail();
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+
+            // Act
+            ticTacToe.IsBoardFieldEmpty(-1, 1);
+            ticTacToe.IsBoardFieldEmpty(5, 1);
+
+            // Assert
+            Assert.Fail("No exception was thrown.");
         }
 
         [TestMethod()]
-        public void GetCurrentTurnPlayerTest()
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void IsBoardFieldEmpty2_VerticalCoordinateOutOfRange_ThrowsException()
         {
-            Assert.Fail();
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+
+            // Act
+            ticTacToe.IsBoardFieldEmpty(1, -1);
+            ticTacToe.IsBoardFieldEmpty(1, 5);
+
+            // Assert
+            Assert.Fail("No exception was thrown.");
         }
 
         [TestMethod()]
-        public void NewGameTest()
+        public void IsBoardFieldEmpty2_ValidUse_Success()
         {
-            Assert.Fail();
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+
+            // Act
+            ticTacToe.PlaceMarker(1, 0);
+
+                bool fieldShouldBeEmpty = ticTacToe.IsBoardFieldEmpty(0, 0);
+            bool fieldShouldNotBeEmpty = ticTacToe.IsBoardFieldEmpty(1, 0);
+
+            // Assert
+            Assert.AreEqual(true, fieldShouldBeEmpty);
+                Assert.AreEqual(false, fieldShouldNotBeEmpty);
+            
+        }
+
+        [TestMethod()]
+        public void GetCurrentTurnPlayerMark_ValidUse_Success()
+        {
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+            ticTacToe.StartNewGame(true, false, 0);
+
+            // Act
+            string shouldBeCrossMark = ticTacToe.GetCurrentTurnPlayerMark();
+            ticTacToe.NextTurn();
+
+            string shouldBeCircleMark = ticTacToe.GetCurrentTurnPlayerMark();
+            ticTacToe.NextTurn();
+
+            string shouldBeCrossMarkAgain = ticTacToe.GetCurrentTurnPlayerMark();
+
+            // Assert
+            Assert.AreEqual(Resources.BoardCrossMark, shouldBeCrossMark);
+            Assert.AreEqual(Resources.BoardCircleMark, shouldBeCircleMark);
+            Assert.AreEqual(Resources.BoardCrossMark, shouldBeCrossMarkAgain);
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void StartNewGame_AiParameterOutOfRange_ThrowsException()
+        {
+            // Assign
+            var ticTacToe = new Tictactoe(_buttons);
+
+            // Act
+            ticTacToe.StartNewGame(false, false, 0);
+            ticTacToe.StartNewGame(false, false, 1);
+            ticTacToe.StartNewGame(false, false, 2);
+            ticTacToe.StartNewGame(false, false, 3);
+            ticTacToe.StartNewGame(false, false, -1);
+
+            // Assert
+            Assert.Fail("No exception was thrown.");
         }
 
         [TestMethod()]

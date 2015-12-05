@@ -45,10 +45,10 @@ namespace tictactoe.Windows
 
             // Computers turn
             // Skip when the computer oponent is disabled
-            if (!Settings.Default.VsComputer) return;
+            if (!Settings.Default.ComputerOponentEnabled) return;
 
             // Compute the AIs move and place the marker
-            var computerMove = _tictactoe.ComputerPlayerAi.GetMove(_tictactoe.GetCurrentTurnPlayerMark(), Settings.Default.DifficultySetting);
+            var computerMove = _tictactoe.ComputerPlayerAi.GetMove(_tictactoe.GetCurrentTurnPlayerMark(), Settings.Default.AiDifficultySetting);
             _tictactoe.PlaceMarker(computerMove.X, computerMove.Y);
 
             // Check for the game state and update user interface
@@ -69,19 +69,19 @@ namespace tictactoe.Windows
 
         private void MenuItemAiEasy_Click(object sender, RoutedEventArgs e)
         {
-            Settings.Default.DifficultySetting = 0;
+            Settings.Default.AiDifficultySetting = 0;
             Settings.Default.Save();
         }
 
         private void MenuItemAiMedium_Click(object sender, RoutedEventArgs e)
         {
-            Settings.Default.DifficultySetting = 1;
+            Settings.Default.AiDifficultySetting = 1;
             Settings.Default.Save();
         }
 
         private void MenuItemAiImpossible_Click(object sender, RoutedEventArgs e)
         {
-            Settings.Default.DifficultySetting = 2;
+            Settings.Default.AiDifficultySetting = 2;
             Settings.Default.Save();
         }
 
@@ -89,7 +89,7 @@ namespace tictactoe.Windows
         {
             DisableMenuItemAfterFirstTurn(sender as MenuItem);
 
-            if (Settings.Default.DifficultySetting != 0) return;
+            if (Settings.Default.AiDifficultySetting != 0) return;
 
             MenuItemAiEasy.IsChecked = true;
             MenuItemAiMedium.IsChecked = false;
@@ -100,7 +100,7 @@ namespace tictactoe.Windows
         {
             DisableMenuItemAfterFirstTurn(sender as MenuItem);
 
-            if (Settings.Default.DifficultySetting != 1) return;
+            if (Settings.Default.AiDifficultySetting != 1) return;
 
             MenuItemAiEasy.IsChecked = false;
             MenuItemAiMedium.IsChecked = true;
@@ -125,7 +125,7 @@ namespace tictactoe.Windows
         {
             DisableMenuItemAfterFirstTurn(sender as MenuItem);
 
-            if (Settings.Default.DifficultySetting != 2) return;
+            if (Settings.Default.AiDifficultySetting != 2) return;
 
             MenuItemAiEasy.IsChecked = false;
             MenuItemAiMedium.IsChecked = false;
@@ -148,7 +148,7 @@ namespace tictactoe.Windows
             // Save the selected option if user clicked Yes
             if (UserConfirmedSettingsChange())
             {
-                Settings.Default.VsComputer = MenuItemVsComputer.IsChecked;
+                Settings.Default.ComputerOponentEnabled = MenuItemVsComputer.IsChecked;
                 Settings.Default.Save();
 
                 // Restart the game
@@ -187,7 +187,7 @@ namespace tictactoe.Windows
 
         private void MenuItemVsComputer_Loaded(object sender, RoutedEventArgs e)
         {
-            MenuItemVsComputer.IsChecked = Settings.Default.VsComputer;
+            MenuItemVsComputer.IsChecked = Settings.Default.ComputerOponentEnabled;
         }
 
         private void MenuItemPlayerStartsFirst_Loaded(object sender, RoutedEventArgs e)

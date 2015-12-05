@@ -45,7 +45,7 @@ namespace tictactoe.Classes
             ComputerPlayerAi = new Ai(Board, _randomGenerator);
 
             // Start a new game
-            StartNewGame();
+            StartNewGame(Settings.Default.PlayerStartsFirst, Settings.Default.ComputerOponentEnabled, Settings.Default.AiDifficultySetting);
         }
 
         /// <summary>
@@ -112,6 +112,16 @@ namespace tictactoe.Classes
         /// <returns>Bool result true if the field is empty.</returns>
         public bool IsBoardFieldEmpty(int x, int y)
         {
+            if (x < 0 || x > BoardSizeHorizontal)
+            {
+                throw new ArgumentOutOfRangeException(nameof(x));
+            }
+
+            if (y < 0 || y > BoardSizeVertical)
+            {
+                throw new ArgumentOutOfRangeException(nameof(y));
+            }
+
             return Board[x, y] == Resources.BoardEmptyField;
         }
 
@@ -125,10 +135,17 @@ namespace tictactoe.Classes
         }
 
         /// <summary>
-        /// Resets game parameters, board fields and buttons representing the board.
+        /// Starts a new game - resets game parameters, board fields and buttons representing the board.
         /// </summary>
-        public void StartNewGame()
+        /// <param name="doesPlayerStartFirst">Specifies if the human player starts first during the turn (specifies if human player has the X mark).</param>
+        /// <param name="computerOponentEnabled"></param>
+        public void StartNewGame(bool doesPlayerStartFirst, bool computerOponentEnabled, int aiDifficultySetting)
         {
+            if (aiDifficultySetting < 0 || aiDifficultySetting > 2)
+            {
+                throw new ArgumentOutOfRangeException(nameof(aiDifficultySetting));
+            }
+
             // Start the game and reset the empty fields counter
             IsGameInProgress = true;
             BoardFieldsLeftCounter = 9;
@@ -139,9 +156,9 @@ namespace tictactoe.Classes
             Turn = true;
 
             // If the AI is the first on turn, let it make the first move
-            if (Properties.Settings.Default.PlayerStartsFirst || !Properties.Settings.Default.VsComputer) return;
+            if (doesPlayerStartFirst || !computerOponentEnabled) return;
 
-            Move computerMove = ComputerPlayerAi.GetMove(GetCurrentTurnPlayerMark(), Properties.Settings.Default.DifficultySetting);
+            Move computerMove = ComputerPlayerAi.GetMove(GetCurrentTurnPlayerMark(), aiDifficultySetting);
             PlaceMarker(computerMove.X, computerMove.Y);
 
             // Update the UI and check the state of the game
@@ -174,7 +191,7 @@ namespace tictactoe.Classes
         /// </summary>
         public void RestartGame()
         {
-            StartNewGame();
+            StartNewGame(Settings.Default.PlayerStartsFirst, Settings.Default.ComputerOponentEnabled, Settings.Default.AiDifficultySetting);
         }
 
         /// <summary>
@@ -323,7 +340,7 @@ namespace tictactoe.Classes
                 
                 if (UserWantsToStartNewGame())
                 {
-                    StartNewGame();
+                    StartNewGame(Settings.Default.PlayerStartsFirst, Settings.Default.ComputerOponentEnabled, Settings.Default.AiDifficultySetting);
                 }
 
                 return true;
@@ -337,7 +354,7 @@ namespace tictactoe.Classes
                 
                 if (UserWantsToStartNewGame())
                 {
-                    StartNewGame();
+                    StartNewGame(Settings.Default.PlayerStartsFirst, Settings.Default.ComputerOponentEnabled, Settings.Default.AiDifficultySetting);
                 }
 
                 return true;
