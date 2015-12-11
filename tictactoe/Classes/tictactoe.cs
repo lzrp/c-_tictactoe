@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -66,15 +67,17 @@ namespace tictactoe.Classes
         }
 
         /// <summary>
-        /// Displays a dialog asking if the user wants to play a new game.
+        /// Displays a dialog asking if the user wants to play a new game and starts a new game if the user clicked Yes.
         /// </summary>
-        /// <returns>Bool result true if the user selected yes.</returns>
-        public bool UserWantsToStartNewGame()
+        private void AskForNewGame()
         {
             var continueBoxResult = MessageBox.Show("Do you want to start a new game?", "New game?",
                 MessageBoxButton.YesNo);
 
-            return continueBoxResult == MessageBoxResult.Yes;
+            if (continueBoxResult == MessageBoxResult.Yes)
+            {
+                StartNewGame(Settings.Default.PlayerStartsFirst, Settings.Default.ComputerOponentEnabled, Settings.Default.AiDifficultySetting);
+            }
         }
 
         /// <summary>
@@ -360,6 +363,11 @@ namespace tictactoe.Classes
         /// <returns>A bool result true if there is a draw (zero remaining free fields).</returns>
         private static bool HavePlayersDraw(int fieldsLeftCounter)
         {
+            if (fieldsLeftCounter < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(fieldsLeftCounter));
+            }
+
             return fieldsLeftCounter == 0;
         }
 
@@ -370,6 +378,11 @@ namespace tictactoe.Classes
         /// <returns>A bool result true if the board state results in a draw (if there are no free fields left).</returns>
         public static bool HavePlayersDraw(string[,] board)
         {
+            if (board == null)
+            {
+                throw new NullReferenceException(nameof(board));
+            }
+
             for (int i = 0; i < BoardSizeHorizontal; i++)
             {
                 for (int j = 0; j < BoardSizeVertical; j++)
@@ -397,12 +410,7 @@ namespace tictactoe.Classes
             {
                 StopGame();
                 AnnounceWinner(currentPlayer);
-                
-                if (UserWantsToStartNewGame())
-                {
-                    StartNewGame(Settings.Default.PlayerStartsFirst, Settings.Default.ComputerOponentEnabled, Settings.Default.AiDifficultySetting);
-                }
-
+                AskForNewGame();
                 return true;
             }
 
@@ -411,12 +419,7 @@ namespace tictactoe.Classes
             {
                 StopGame();
                 AnnounceDraw();
-                
-                if (UserWantsToStartNewGame())
-                {
-                    StartNewGame(Settings.Default.PlayerStartsFirst, Settings.Default.ComputerOponentEnabled, Settings.Default.AiDifficultySetting);
-                }
-
+                AskForNewGame();
                 return true;
             }
 
@@ -445,7 +448,7 @@ namespace tictactoe.Classes
         /// <summary>
         /// Stops the game and disable all board buttons.
         /// </summary>
-        public void StopGame()
+        private void StopGame()
         {
             DisableButtons();
             IsGameInProgress = false;

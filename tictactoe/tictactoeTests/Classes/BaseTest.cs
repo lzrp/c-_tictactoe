@@ -323,7 +323,7 @@ namespace tictactoeTests.Classes
                 }
         };
 
-        protected string[,] BoardAllEmptyFields = 
+        protected string[,] BoardAllEmptyField = 
         {
             {
                 Resources.BoardEmptyField,
@@ -339,6 +339,44 @@ namespace tictactoeTests.Classes
                 Resources.BoardEmptyField,
                 Resources.BoardEmptyField,
                 Resources.BoardEmptyField
+                }
+        };
+
+        protected string[,] BoardAllCross =
+        {
+            {
+                Resources.BoardCrossMark,
+                Resources.BoardCrossMark,
+                Resources.BoardCrossMark
+                },
+                {
+                Resources.BoardCrossMark,
+                Resources.BoardCrossMark,
+                Resources.BoardCrossMark
+                },
+                {
+                Resources.BoardCrossMark,
+                Resources.BoardCrossMark,
+                Resources.BoardCrossMark
+                }
+        };
+
+        protected string[,] BoardAllCircle =
+        {
+            {
+                Resources.BoardCircleMark,
+                Resources.BoardCircleMark,
+                Resources.BoardCircleMark
+                },
+                {
+                Resources.BoardCircleMark,
+                Resources.BoardCircleMark,
+                Resources.BoardCircleMark
+                },
+                {
+                Resources.BoardCircleMark,
+                Resources.BoardCircleMark,
+                Resources.BoardCircleMark
                 }
         };
 
@@ -423,6 +461,21 @@ namespace tictactoeTests.Classes
         protected string[,] GetBoardTopRightBottomLeftDiagonalAllCircle()
         {
             return BoardTopRightBottomLeftDiagonalAllCircle;
+        }
+
+        protected string[,] GetBoardAllEmptyField()
+        {
+            return BoardAllEmptyField;
+        }
+
+        protected string[,] GetBoardAllCross()
+        {
+            return BoardAllCross;
+        }
+
+        protected string[,] GetBoardAllCircle()
+        {
+            return BoardAllCircle;
         }
     }
 }
