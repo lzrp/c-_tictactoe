@@ -136,16 +136,17 @@ namespace tictactoeTests.Classes
         {
             // Arrange
             var ticTacToe = new Tictactoe(GetBoardButtons());
+            ticTacToe.StartNewGame(true, false, 0);
 
             // Act
             ticTacToe.PlaceMarker(1, 0);
 
-                bool fieldShouldBeEmpty = ticTacToe.IsBoardFieldEmpty(0, 0);
+            bool fieldShouldBeEmpty = ticTacToe.IsBoardFieldEmpty(0, 0);
             bool fieldShouldNotBeEmpty = ticTacToe.IsBoardFieldEmpty(1, 0);
 
             // Assert
             Assert.AreEqual(true, fieldShouldBeEmpty);
-                Assert.AreEqual(false, fieldShouldNotBeEmpty);
+            Assert.AreEqual(false, fieldShouldNotBeEmpty);
             
         }
 

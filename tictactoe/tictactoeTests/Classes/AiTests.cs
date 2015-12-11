@@ -84,7 +84,7 @@ namespace tictactoeTests.Classes
         {
             // Arrange
             var computerPlayer = new Ai(GetBoard(), GetRandom());
-            var expectedMove = new Ai.Move() {X = 2, Y = 0};
+            var expectedMove = new Ai.Move() {X = 0, Y = 0};
             const int aiDifficulty = (int)Ai.AiDifficulty.Easy;
 
             // Act
