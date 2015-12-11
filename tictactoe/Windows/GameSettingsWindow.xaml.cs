@@ -16,19 +16,21 @@ namespace tictactoe.Windows
 
         private void ComboBoxDifficulty_Loaded(object sender, RoutedEventArgs e)
         {
+            // Load comboBox with all available AI difficulties
             ComboBoxDifficulty.ItemsSource = Enum.GetValues(typeof (Ai.AiDifficulty));
+
             ComboBoxDifficulty.SelectedIndex = Properties.Settings.Default.AiDifficultySetting;
         }
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             if (CheckBoxComputerOponentEnabled.IsChecked != null)
-                Properties.Settings.Default.ComputerOponentEnabled = (bool) CheckBoxComputerOponentEnabled.IsChecked;
+                Properties.Settings.Default.ComputerOponentEnabled = (bool)CheckBoxComputerOponentEnabled.IsChecked;
 
             if (CheckBoxPlayerStartsFirst.IsChecked != null && CheckBoxPlayerStartsFirst.IsEnabled)
                 Properties.Settings.Default.PlayerStartsFirst = (bool)CheckBoxPlayerStartsFirst.IsChecked;
 
-            if (ComboBoxDifficulty.SelectedIndex >= 0 && ComboBoxDifficulty.SelectedIndex < 4)
+            if (ComboBoxDifficulty.SelectedIndex >= 0 && ComboBoxDifficulty.SelectedIndex < 3)
             {
                 Properties.Settings.Default.AiDifficultySetting = ComboBoxDifficulty.SelectedIndex;
             }

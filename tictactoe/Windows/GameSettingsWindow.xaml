@@ -17,7 +17,7 @@
         <Button x:Name="ButtonCancel" Content="Cancel" Margin="0,0,10,5" Grid.Row="2" IsCancel="True" HorizontalAlignment="Right" Width="115"/>
         <CheckBox x:Name="CheckBoxComputerOponentEnabled" Content="Computer oponent" HorizontalAlignment="Left" Margin="10,29.8,0,0" Grid.Row="1" VerticalAlignment="Top" ToolTip="Controls whether multiplayer is enabled (disable this to play against a computer oponent)." Loaded="CheckBoxComputerOponentEnabled_Loaded"/>
         <Label x:Name="LabelDifficulty" Content="Computer oponent difficulty:" HorizontalAlignment="Left" Margin="10,49.8,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <ComboBox x:Name="ComboBoxDifficulty" Margin="189,50,10,0" Grid.Row="1" Loaded="ComboBoxDifficulty_Loaded" VerticalAlignment="Top" ToolTip="The difficulty setting for the computer oponent."/>
+        <ComboBox x:Name="ComboBoxDifficulty" Margin="189,50,10,0" Grid.Row="1" Loaded="ComboBoxDifficulty_Loaded" VerticalAlignment="Top" ToolTip="The difficulty setting for the computer oponent." Height="26"/>
 
     </Grid>
 </Window>
