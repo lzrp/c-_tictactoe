@@ -113,7 +113,7 @@ namespace tictactoe.Windows
         /// <param name="menuItem">Menuitem object which to disable.</param>
         private void DisableMenuItemAfterFirstTurn(MenuItem menuItem)
         {
-            if (_tictactoe.BoardFieldsLeftCounter < 8)
+            if (_tictactoe.BoardFieldsLeftCounter < 8 && _tictactoe.IsGameInProgress)
             {
                 menuItem.IsEnabled = false;
                 return;

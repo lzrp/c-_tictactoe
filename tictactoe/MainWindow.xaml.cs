@@ -15,18 +15,9 @@ namespace tictactoe
 
         private void ButtonStartNewGame_Click(object sender, RoutedEventArgs e)
         {
-            // Hide startscreen
-            Hide();
-            IsEnabled = false;
-
-            // Show main game window
             var ticTacToeWindow = new TicTacToeWindow();
-            ticTacToeWindow.ShowDialog();
-
-            // Show starscreen
-            Show();
-            IsEnabled = true;
-            Focus();
+            
+            ShowNewWindow(ticTacToeWindow);
         }
 
         private void ButtonExitGame_Click(object sender, RoutedEventArgs e)
@@ -36,15 +27,21 @@ namespace tictactoe
 
         private void ButtonGameSettings_Click(object sender, RoutedEventArgs e)
         {
-            // Hide startscreen
+            var settingsWindow = new GameSettingsWindow();
+            
+            ShowNewWindow(settingsWindow);
+        }
+
+        private void ShowNewWindow(Window window)
+        {
+            // Hide current window and disable it
             Hide();
             IsEnabled = false;
 
-            // Show game settings window
-            var settingsWindow = new GameSettingsWindow();
-            settingsWindow.ShowDialog();
+            // Show new window
+            window.ShowDialog();
 
-            // Show starscreen
+            // Show the default window after exit
             Show();
             IsEnabled = true;
             Focus();
