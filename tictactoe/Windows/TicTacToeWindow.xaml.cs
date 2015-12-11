@@ -33,6 +33,7 @@ namespace tictactoe.Windows
             // Players turn
             _tictactoe.PlaceMarker(sender as Button);
             _tictactoe.UpdateUi();
+            UpdateStatusLabel();
 
             // Check if the game state has changed
             if (_tictactoe.HasGameStateChanged())
@@ -40,8 +41,6 @@ namespace tictactoe.Windows
                 UpdateStatusLabel();
                 return;
             }
-
-            UpdateStatusLabel();
 
             // Computers turn
             // Skip when the computer oponent is disabled
