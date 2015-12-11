@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,7 +13,7 @@ namespace tictactoe.Classes
         private const int BoardSizeHorizontal = 3;
         private const int BoardSizeVertical = 3;
         private readonly Random _randomGenerator = new Random();
-        private IEnumerable<Button> ButtonCollection { get; }
+        private List<Button> ButtonCollection { get; }
 
         public bool Turn { get; private set; } // true = Xs turn, false = Os turn
         public bool IsGameInProgress { get; private set; }
@@ -22,11 +21,12 @@ namespace tictactoe.Classes
         public Ai ComputerPlayerAi { get; }
 
         public string[,] Board { get; } = new string[BoardSizeHorizontal, BoardSizeVertical];        
+
         /// <summary>
         /// Creates a new instance of the Tictactoe class.
         /// </summary>
         /// <param name="buttonList">Button collection representing the playing board.</param>
-        public Tictactoe(IEnumerable<Button> buttonList)
+        public Tictactoe(List<Button> buttonList)
         {
             if (buttonList == null)
             {
@@ -109,8 +109,8 @@ namespace tictactoe.Classes
         /// <summary>
         /// Checks if the board field is empty at the x, y coordinates.
         /// </summary>
-        /// <param name="x">X coordinate of the board field.</param>
-        /// <param name="y">Y coordinate of the board field.</param>
+        /// <param name="x">Horizontal coordinate of the board field.</param>
+        /// <param name="y">Vertical coordinate of the board field.</param>
         /// <returns>Bool result true if the field is empty.</returns>
         public bool IsBoardFieldEmpty(int x, int y)
         {
@@ -128,7 +128,7 @@ namespace tictactoe.Classes
         }
 
         /// <summary>
-        /// Gets the string representation of the currents player marker.
+        /// Gets the string representation of the current players marker.
         /// </summary>
         /// <returns>String representation of a players marker.</returns>
         public string GetCurrentTurnPlayerMark()
@@ -190,7 +190,7 @@ namespace tictactoe.Classes
         }
 
         /// <summary>
-        /// Restarts the game and updates the UI.
+        /// Restarts the game.
         /// </summary>
         public void RestartGame()
         {
@@ -359,8 +359,8 @@ namespace tictactoe.Classes
         /// <summary>
         /// Checks for a draw.
         /// </summary>
-        /// <param name="fieldsLeftCounter">Counter which keeps the number of free board fields.</param>
-        /// <returns>A bool result true if there is a draw (zero remaining free fields).</returns>
+        /// <param name="fieldsLeftCounter">Counter which keeps the number of empty board fields.</param>
+        /// <returns>A bool result true if there is a draw (zero remaining empty board fields).</returns>
         private static bool HavePlayersDraw(int fieldsLeftCounter)
         {
             if (fieldsLeftCounter < 0)
@@ -375,7 +375,7 @@ namespace tictactoe.Classes
         /// Checks for a draw.
         /// </summary>
         /// <param name="board">A board which has to be checked.</param>
-        /// <returns>A bool result true if the board state results in a draw (if there are no free fields left).</returns>
+        /// <returns>A bool result true if the board state results in a draw (if there are no empty board fields left).</returns>
         public static bool HavePlayersDraw(string[,] board)
         {
             if (board == null)
@@ -397,10 +397,10 @@ namespace tictactoe.Classes
             return true;
         }
 
-    /// <summary>
+        /// <summary>
         /// Checks for the state of the game.
         /// </summary>
-        /// <returns>Returns a bool result true if the game state changed. (Player ýwins or draws.)</returns>
+        /// <returns>Returns a bool result true if the game state changed. (Player wins or draws.)</returns>
         public bool HasGameStateChanged()
     {
         string currentPlayer = GetCurrentTurnPlayerMark();
@@ -446,7 +446,7 @@ namespace tictactoe.Classes
         }
 
         /// <summary>
-        /// Stops the game and disable all board buttons.
+        /// Stops the game and disables all board buttons.
         /// </summary>
         private void StopGame()
         {
@@ -463,6 +463,7 @@ namespace tictactoe.Classes
         {
             return int.Parse(button.Tag.ToString().Substring(0, 1));
         }
+
         /// <summary>
         /// Get the buttons vertical coordinate within the board given its tag.
         /// </summary>
