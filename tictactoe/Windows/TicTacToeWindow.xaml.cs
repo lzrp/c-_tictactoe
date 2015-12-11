@@ -195,6 +195,11 @@ namespace tictactoe.Windows
             MenuItemPlayerStartsFirst.IsChecked = Settings.Default.PlayerStartsFirst;
             MenuItemPlayerStartsFirst.IsEnabled = MenuItemVsComputer.IsChecked;
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
 

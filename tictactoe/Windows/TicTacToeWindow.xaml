@@ -35,6 +35,7 @@
                     <MenuItem x:Name="MenuItemPlayerStartsFirst" Header="Player Starts First" HorizontalAlignment="Left" Width="188" Click="MenuItemPlayerStartsFirst_Click" IsCheckable="True" IsChecked="True" Loaded="MenuItemPlayerStartsFirst_Loaded">
                     </MenuItem>
                 </MenuItem>
+                <MenuItem Header="Exit..." HorizontalAlignment="Left" Width="151" Click="MenuItem_Click"/>
 
             </MenuItem>
         </Menu>
