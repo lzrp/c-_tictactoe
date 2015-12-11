@@ -138,6 +138,7 @@ namespace tictactoe.Classes
         /// </summary>
         /// <param name="doesPlayerStartFirst">Specifies if the human player starts first during the turn (specifies if human player has the X mark).</param>
         /// <param name="computerOponentEnabled"></param>
+        /// <param name="aiDifficultySetting">Specifies the AI difficulty of the computer oponent.</param>
         public void StartNewGame(bool doesPlayerStartFirst, bool computerOponentEnabled, int aiDifficultySetting)
         {
             if (aiDifficultySetting < 0 || aiDifficultySetting > 2)
@@ -287,22 +288,67 @@ namespace tictactoe.Classes
         /// <returns>Bool result true if there is a winner.</returns>
         public static bool HasPlayerWon(string[,] board, string playerMark)
         {
-            // Check board rows, columns and diagonals. Also check for empty fields
-            // Check board rows - 00=01=02 | 10=11=12 | 20=21=22
+            if (board == null)
+            {
+                throw new NullReferenceException(nameof(board));
+            }
+
+            if (playerMark != Resources.BoardCircleMark && playerMark != Resources.BoardCrossMark)
+            {
+                throw new ArgumentException(nameof(playerMark));
+            }
+
+            return DidPlayerWinByRow(board, playerMark) ||
+                   DidPlayerWinByColumn(board, playerMark) ||
+                   DidPlayerWinByDiagonal(board, playerMark);
+        }
+
+        /// <summary>
+        /// Check if the player won the game by taking a row.
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="playerMark"></param>
+        /// <returns>Bool result true if player won by raking a row.</returns>
+        private static bool DidPlayerWinByRow(string[,] board, string playerMark)
+        {
             for (int i = 0; i < BoardSizeVertical; i++)
             {
-                if (board[i, 0] != board[i, 1] || board[i, 1] != board[i, 2] || board[i, 0] != playerMark) continue;
-                return true;
+                if (board[i, 0] == board[i, 1] && board[i, 1] == board[i, 2] && board[i, 0] == playerMark)
+                {
+                    return true;
+                }
             }
 
-            // Check board columns - 00=10=20 | 01=11=21 | 02=12=22
+            return false;
+        }
+
+        /// <summary>
+        /// Check if the player won the game by taking a column.
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="playerMark"></param>
+        /// <returns>Bool result true if player won by raking a column.</returns>
+        private static bool DidPlayerWinByColumn(string[,] board, string playerMark)
+        {
             for (int i = 0; i < BoardSizeHorizontal; i++)
             {
-                if (board[0, i] != board[1, i] || board[1, i] != board[2, i] || board[0, i] != playerMark) continue;
-                return true;
+                if (board[0, i] == board[1, i] && board[1, i] == board[2, i] && board[0, i] == playerMark)
+                {
+                    return true;
+                }
             }
 
-            // Check diagonals - 00=11=22 | 02=11=20
+            return false;
+        }
+
+        /// <summary>
+        /// Check if the player won the game by taking a diagonal line.
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="playerMark"></param>
+        /// <returns>Bool result true if player won by raking a diagonal line.</returns>
+        private static bool DidPlayerWinByDiagonal(string[,] board, string playerMark)
+        {
             return (board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2] ||
                     board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0]) && board[1, 1] == playerMark;
         }

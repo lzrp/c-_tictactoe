@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
@@ -10,21 +9,10 @@ using tictactoeTests.Properties;
 namespace tictactoeTests.Classes
 {
     [TestClass()]
-    public class TictactoeTests
+    public class TictactoeTests : BaseTest
     {
-        private readonly List<Button> _buttons = new List<Button>
-        { new Button() {Tag = "00"},
-          new Button() {Tag = "01"},
-          new Button() {Tag = "02"},
-          new Button() {Tag = 10},
-          new Button() {Tag = 11},
-          new Button() {Tag = 12},
-          new Button() {Tag = 20},
-          new Button() {Tag = 21},
-          new Button() {Tag = 22}
-        };
 
-        [TestMethod()]
+    [TestMethod()]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TicTacToe_ButtonListParameterIsNull_ThrowsException()
         {
@@ -44,7 +32,7 @@ namespace tictactoeTests.Classes
         {
             // Assign
             IEnumerable<Button> filteredButtonList =
-                _buttons.Where(x => x.Tag.ToString().StartsWith("0"));
+                GetBoardButtons().Where(x => x.Tag.ToString().StartsWith("0"));
 
             // Act
             var ticTacToe = new Tictactoe(filteredButtonList);
@@ -84,7 +72,7 @@ namespace tictactoeTests.Classes
         public void IsBoardFieldEmpty_ButtonParameterIsNull_ThrowsException()
         {
             // Assign
-            Button nullButton = new Button();
+            Button nullButton;
             nullButton = null;
 
             // Act
@@ -98,10 +86,6 @@ namespace tictactoeTests.Classes
         public void IsBoardFieldEmpty_ValidUse_Success()
         {
             // Assign
-            bool emptyFieldButtonExpectedResult = true;
-            bool crossMarkButtonExpectedResult = false;
-            bool circleMarkButtonExpectedResult = false;
-
             var emptyFieldButton = new Button() { Content = Resources.BoardEmptyField };
             var crossMarkButton = new Button() { Content = Resources.BoardCrossMark };
             var circleMarkButton = new Button() { Content = Resources.BoardCircleMark };
@@ -112,17 +96,17 @@ namespace tictactoeTests.Classes
             bool circleMarkButtonActualResult = Tictactoe.IsBoardFieldEmpty(circleMarkButton);
 
             // Assert
-            Assert.AreEqual(emptyFieldButtonExpectedResult, emptyFieldButtonActualResult);
-            Assert.AreEqual(crossMarkButtonExpectedResult, crossMarkButtonActualResult);
-            Assert.AreEqual(circleMarkButtonExpectedResult, circleMarkButtonActualResult);
+            Assert.AreEqual(true, emptyFieldButtonActualResult);
+            Assert.AreEqual(false, crossMarkButtonActualResult);
+            Assert.AreEqual(false, circleMarkButtonActualResult);
         }
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void IsBoardFieldEmpty2_HorizontalCoordinateOutOfRange_ThrowsException()
         {
-            // Assign
-            var ticTacToe = new Tictactoe(_buttons);
+        // Assign
+        var ticTacToe = new Tictactoe(GetBoardButtons());
 
             // Act
             ticTacToe.IsBoardFieldEmpty(-1, 1);
@@ -137,7 +121,7 @@ namespace tictactoeTests.Classes
         public void IsBoardFieldEmpty2_VerticalCoordinateOutOfRange_ThrowsException()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
+            var ticTacToe = new Tictactoe(GetBoardButtons());
 
             // Act
             ticTacToe.IsBoardFieldEmpty(1, -1);
@@ -151,7 +135,7 @@ namespace tictactoeTests.Classes
         public void IsBoardFieldEmpty2_ValidUse_Success()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
+            var ticTacToe = new Tictactoe(GetBoardButtons());
 
             // Act
             ticTacToe.PlaceMarker(1, 0);
@@ -169,7 +153,7 @@ namespace tictactoeTests.Classes
         public void GetCurrentTurnPlayerMark_ValidUse_Success()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
+            var ticTacToe = new Tictactoe(GetBoardButtons());
             ticTacToe.StartNewGame(true, false, 0);
 
             // Act
@@ -192,7 +176,7 @@ namespace tictactoeTests.Classes
         public void StartNewGame_AiParameterOutOfRange_ThrowsException()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
+            var ticTacToe = new Tictactoe(GetBoardButtons());
 
             // Act
             ticTacToe.StartNewGame(false, false, 0);
@@ -209,7 +193,7 @@ namespace tictactoeTests.Classes
         public void ResetBoard_ValidUse_Success()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
+            var ticTacToe = new Tictactoe(GetBoardButtons());
             ticTacToe.StartNewGame(true, false, 0);
 
             // Act
@@ -231,7 +215,7 @@ namespace tictactoeTests.Classes
         public void NextTurn_ValidUse_Success()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
+            var ticTacToe = new Tictactoe(GetBoardButtons());
             ticTacToe.StartNewGame(true, false, 0);
 
             // Act
@@ -254,7 +238,7 @@ namespace tictactoeTests.Classes
         public void PlaceMarker_HorizontalParameterOutOfRange_ThrowsException()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
+            var ticTacToe = new Tictactoe(GetBoardButtons());
 
             // Act
             ticTacToe.PlaceMarker(5, 1);
@@ -269,7 +253,7 @@ namespace tictactoeTests.Classes
         public void PlaceMarker_VerticalParameterOutOfRange_ThrowsException()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
+            var ticTacToe = new Tictactoe(GetBoardButtons());
 
             // Act
             ticTacToe.PlaceMarker(1, 5);
@@ -284,7 +268,7 @@ namespace tictactoeTests.Classes
         public void PlaceMarker_ButtonParameterIsNull_ThrowsException()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
+            var ticTacToe = new Tictactoe(GetBoardButtons());
             ticTacToe.StartNewGame(true, false, 0);
 
             // Act            
@@ -298,10 +282,10 @@ namespace tictactoeTests.Classes
         public void PlaceMarker_ValidUse_Success()
         {
             // Assign
-            var ticTacToe = new Tictactoe(_buttons);
+            var ticTacToe = new Tictactoe(GetBoardButtons());
             ticTacToe.StartNewGame(true, false, 0);
-            var buttonForCrossMarkPlacement = _buttons.First(x => x.Tag.ToString() == "00");
-            var buttonForCircleMarkPlacement = _buttons.First(x => x.Tag.ToString() == "01");
+            var buttonForCrossMarkPlacement = GetBoardButtons().First(x => x.Tag.ToString() == "00");
+            var buttonForCircleMarkPlacement = GetBoardButtons().First(x => x.Tag.ToString() == "01");
 
             // Act
             ticTacToe.PlaceMarker(buttonForCrossMarkPlacement);
@@ -317,9 +301,41 @@ namespace tictactoeTests.Classes
         }
 
         [TestMethod()]
-        public void CheckWinnerTest()
+        [ExpectedException(typeof(NullReferenceException))]
+        public void HasPlayerWon_BoardParameterIsNull_ThrowsException()
         {
-            Assert.Fail();
+            // Assign
+            string[,] gameBoard = null;
+
+            // Act
+            bool result = Tictactoe.HasPlayerWon(gameBoard, Resources.BoardCrossMark);
+
+            // Assert
+            Assert.Fail("No exception was thrown.");
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentException))]
+        public void HasPlayerWon_PlayerMarkParameterIsInvalid_ThrowsException()
+        {
+            // Assign
+            const string invalidPlayerMark = "A";
+
+            // Act
+            bool result = Tictactoe.HasPlayerWon(BoardAllEmptyFields, invalidPlayerMark);
+
+            // Assert
+            Assert.Fail("No exception was thrown.");
+        }
+
+        [TestMethod]
+        public void HasPlayerWon_ValidUse_Success()
+        {
+            // Assign
+
+            // Act
+
+            // Assert
         }
 
         [TestMethod()]
