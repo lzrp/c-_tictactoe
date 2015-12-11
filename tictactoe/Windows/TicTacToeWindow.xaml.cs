@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using tictactoe.Classes;
@@ -26,11 +27,9 @@ namespace tictactoe.Windows
 
         }
 
-        // Button click event, gets fired on each board button click
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
             // Players turn
-            // Place the marker and update the user interface
             _tictactoe.PlaceMarker(sender as Button);
             _tictactoe.UpdateUi();
 
@@ -107,20 +106,6 @@ namespace tictactoe.Windows
             MenuItemAiImpossible.IsChecked = false;
         }
 
-        /// <summary>
-        /// Disables a menuitem after certain number of turns have passed.
-        /// </summary>
-        /// <param name="menuItem">Menuitem object which to disable.</param>
-        private void DisableMenuItemAfterFirstTurn(MenuItem menuItem)
-        {
-            if (_tictactoe.BoardFieldsLeftCounter < 8 && _tictactoe.IsGameInProgress)
-            {
-                menuItem.IsEnabled = false;
-                return;
-            }
-            menuItem.IsEnabled = true;
-        }
-
         private void MenuItemAiImpossible_Loaded(object sender, RoutedEventArgs e)
         {
             DisableMenuItemAfterFirstTurn(sender as MenuItem);
@@ -130,6 +115,25 @@ namespace tictactoe.Windows
             MenuItemAiEasy.IsChecked = false;
             MenuItemAiMedium.IsChecked = false;
             MenuItemAiImpossible.IsChecked = true;
+        }
+
+        /// <summary>
+        /// Disables a menuitem after certain number of turns have passed.
+        /// </summary>
+        /// <param name="menuItem">Menuitem object which to disable.</param>
+        private void DisableMenuItemAfterFirstTurn(MenuItem menuItem)
+        {
+            if (menuItem == null)
+            {
+                throw new NullReferenceException(nameof(menuItem));
+            }
+
+            if (_tictactoe.BoardFieldsLeftCounter < 8 && _tictactoe.IsGameInProgress)
+            {
+                menuItem.IsEnabled = false;
+                return;
+            }
+            menuItem.IsEnabled = true;
         }
 
         /// <summary>
@@ -152,8 +156,7 @@ namespace tictactoe.Windows
                 Settings.Default.Save();
 
                 // Restart the game
-                _tictactoe.RestartGame();
-                UpdateStatusLabel();
+                RestartGameAndUpdate();
                 return;
             }
 
@@ -170,8 +173,7 @@ namespace tictactoe.Windows
                 Settings.Default.Save();
 
                 // Restart the game
-                _tictactoe.RestartGame();
-                UpdateStatusLabel();
+                RestartGameAndUpdate();
                 return;
             }
 
@@ -180,6 +182,11 @@ namespace tictactoe.Windows
         }
 
         private void NewGameMenuItemClick(object sender, RoutedEventArgs e)
+        {
+            RestartGameAndUpdate();
+        }
+
+        private void RestartGameAndUpdate()
         {
             _tictactoe.RestartGame();
             UpdateStatusLabel();
