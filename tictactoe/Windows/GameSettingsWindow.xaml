@@ -12,10 +12,10 @@
             <RowDefinition Height="15*" />
         </Grid.RowDefinitions>
         <Label x:Name="LabelGameSettings" Content="Here you can change various settings in the game." Grid.Row="0" Margin="0"/>
-        <CheckBox x:Name="CheckBoxPlayerStartsFirst" Content="Player starts first" HorizontalAlignment="Left" Margin="10,9.8,0,0" Grid.Row="1" VerticalAlignment="Top" ToolTip="Enabling this ensures that the human player starts first." IsEnabled="{Binding IsChecked, ElementName=CheckBoxVsComputer}"/>
+        <CheckBox x:Name="CheckBoxPlayerStartsFirst" Content="Player starts first" HorizontalAlignment="Left" Margin="10,9.8,0,0" Grid.Row="1" VerticalAlignment="Top" ToolTip="Enabling this ensures that the human player starts first." IsEnabled="{Binding IsChecked, ElementName=CheckBoxComputerOponentEnabled}" Loaded="CheckBoxPlayerStartsFirst_Loaded"/>
         <Button x:Name="ButtonSave" Content="Save" Margin="10,0,0,5" Grid.Row="2" Width="115" IsDefault="True" HorizontalAlignment="Left" Click="ButtonSave_Click"/>
         <Button x:Name="ButtonCancel" Content="Cancel" Margin="0,0,10,5" Grid.Row="2" IsCancel="True" HorizontalAlignment="Right" Width="115"/>
-        <CheckBox x:Name="CheckBoxVsComputer" Content="Computer oponent" HorizontalAlignment="Left" Margin="10,29.8,0,0" Grid.Row="1" VerticalAlignment="Top" ToolTip="Controls whether multiplayer is enabled (disable this to play against a computer oponent)."/>
+        <CheckBox x:Name="CheckBoxComputerOponentEnabled" Content="Computer oponent" HorizontalAlignment="Left" Margin="10,29.8,0,0" Grid.Row="1" VerticalAlignment="Top" ToolTip="Controls whether multiplayer is enabled (disable this to play against a computer oponent)." Loaded="CheckBoxComputerOponentEnabled_Loaded"/>
         <Label x:Name="LabelDifficulty" Content="Computer oponent difficulty:" HorizontalAlignment="Left" Margin="10,49.8,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <ComboBox x:Name="ComboBoxDifficulty" Margin="189,50,10,0" Grid.Row="1" Loaded="ComboBoxDifficulty_Loaded" VerticalAlignment="Top" ToolTip="The difficulty setting for the computer oponent."/>
 

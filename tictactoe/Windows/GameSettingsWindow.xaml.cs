@@ -22,8 +22,8 @@ namespace tictactoe.Windows
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckBoxVsComputer.IsChecked != null)
-                Properties.Settings.Default.ComputerOponentEnabled = (bool) CheckBoxVsComputer.IsChecked;
+            if (CheckBoxComputerOponentEnabled.IsChecked != null)
+                Properties.Settings.Default.ComputerOponentEnabled = (bool) CheckBoxComputerOponentEnabled.IsChecked;
 
             if (CheckBoxPlayerStartsFirst.IsChecked != null && CheckBoxPlayerStartsFirst.IsEnabled)
                 Properties.Settings.Default.PlayerStartsFirst = (bool)CheckBoxPlayerStartsFirst.IsChecked;
@@ -35,6 +35,16 @@ namespace tictactoe.Windows
 
             Properties.Settings.Default.Save();
             Close();
+        }
+
+        private void CheckBoxComputerOponentEnabled_Loaded(object sender, RoutedEventArgs e)
+        {
+            CheckBoxComputerOponentEnabled.IsChecked = Properties.Settings.Default.ComputerOponentEnabled;
+        }
+
+        private void CheckBoxPlayerStartsFirst_Loaded(object sender, RoutedEventArgs e)
+        {
+            CheckBoxPlayerStartsFirst.IsChecked = Properties.Settings.Default.PlayerStartsFirst;
         }
     }
 }
