@@ -16,7 +16,6 @@ namespace tictactoe.Classes
             Medium = 1,
             Impossible = 2
         }
-
         public struct Move
         {
             public int X;
@@ -56,6 +55,7 @@ namespace tictactoe.Classes
 
             return board[x, y] == Resources.BoardEmptyField;
         }
+
         /// <summary>
         /// Gets the move to perform by the AI with a specific difficulty setting.
         /// </summary>
@@ -88,13 +88,13 @@ namespace tictactoe.Classes
         /// <returns>Returns a move structure with defined X, Y coordinates</returns>
         private Move GenerateEasyDifficultyMove()
         {
-            // This AI uses always the same strategy, filling the board from bottom left to the right and upwards.
+            // This AI uses always the same strategy, filling the board from top left to the right and downwards.
             // Loop through all board fields, pick the first one which is empty
-            Move easyDifficultyMove = new Move();
+            var easyDifficultyMove = new Move();
             
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < Tictactoe.GetBoardHorizontalSize(); i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < Tictactoe.GetBoardVerticalSize(); j++)
                 {
                     // Check for an empty field
                     if (!IsBoardFieldEmpty(Board, i, j)) continue;
@@ -102,7 +102,7 @@ namespace tictactoe.Classes
                     // Assign coordinates if found
                     easyDifficultyMove.X = i;
                     easyDifficultyMove.Y = j;
-                    break;
+                    return easyDifficultyMove;
                 }
             }
 
@@ -121,13 +121,12 @@ namespace tictactoe.Classes
             while (!isValidMoveFound)
             {
                 // Generate random coordinates
-                mediumDifficultyMove.X = RandomGenerator.Next(0, 3);
-                mediumDifficultyMove.Y = RandomGenerator.Next(0, 3);
+                mediumDifficultyMove.X = RandomGenerator.Next(0, Tictactoe.GetBoardHorizontalSize());
+                mediumDifficultyMove.Y = RandomGenerator.Next(0, Tictactoe.GetBoardVerticalSize());
 
                 // Check if the field is empty
                 if (IsBoardFieldEmpty(Board, mediumDifficultyMove.X, mediumDifficultyMove.Y))
                 {
-                    // Indicate that a move is found and exit the loop
                     isValidMoveFound = true;
                 }
             }
@@ -135,14 +134,14 @@ namespace tictactoe.Classes
             return mediumDifficultyMove;
         }
 
-/// <summary>
-/// Generates the best move available using the negamax algorithm.
-/// </summary>
-/// <param name="board">Board on which to do the calculations.</param>
-/// <param name="playerMark">Mark of the player who is calling the function.</param>
-/// <returns>An optimal move for the given board and player.</returns>
-/// Can be upgraded with alpha-beta pruning to increase performance.
-private  Move GenerateImpossibleDifficultyMove(string[,] board, string playerMark)
+        /// <summary>
+        /// Generates the best move available using the negamax algorithm.
+        /// </summary>
+        /// <param name="board">Board on which to do the calculations.</param>
+        /// <param name="playerMark">Mark of the player who is calling the function.</param>
+        /// <returns>An optimal move for the given board and player.</returns>
+        /// Can be upgraded with alpha-beta pruning to increase performance.
+        private  Move GenerateImpossibleDifficultyMove(string[,] board, string playerMark)
         {
             // Set the oponent players mark
             string oponentPlayerMark = (playerMark == Resources.BoardCrossMark) ? Resources.BoardCircleMark : Resources.BoardCrossMark;
@@ -165,7 +164,7 @@ private  Move GenerateImpossibleDifficultyMove(string[,] board, string playerMar
                 return new Move() {Value = 0};
             }
 
-            // Set initial bestMove value to -2 because thats lower than the lowest possible value you can get from this implementation (which is -1)
+            // Set initial bestMove value to -2 because thats lower than the lowest possible value you can generate for a valid move from this implementation (which is -1)
             var bestMove = new Move() { Value = -2 };
 
             // Loop through the board
@@ -197,6 +196,5 @@ private  Move GenerateImpossibleDifficultyMove(string[,] board, string playerMar
             
             return bestMove;
         }
-        
     }
 }
