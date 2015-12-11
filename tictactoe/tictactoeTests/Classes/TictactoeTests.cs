@@ -9,7 +9,7 @@ using tictactoeTests.Properties;
 namespace tictactoeTests.Classes
 {
     [TestClass()]
-    public class TictactoeTests : BaseTest
+    public class TictactoeTests : BaseTicTacToeTest
     {
 
     [TestMethod()]

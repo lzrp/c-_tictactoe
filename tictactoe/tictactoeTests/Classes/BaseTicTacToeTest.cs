@@ -4,7 +4,7 @@ using tictactoeTests.Properties;
 
 namespace tictactoeTests.Classes
 {
-    public class BaseTest
+    public class BaseTicTacToeTest
     {
         protected List<Button> BoardButtons = new List<Button>
         {

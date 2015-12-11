@@ -56,7 +56,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Classes\AiTests.cs" />
-    <Compile Include="Classes\BaseTest.cs" />
+    <Compile Include="Classes\BaseAiTest.cs" />
+    <Compile Include="Classes\BaseTicTacToeTest.cs" />
     <Compile Include="Classes\MockRandom.cs" />
     <Compile Include="Classes\TictactoeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

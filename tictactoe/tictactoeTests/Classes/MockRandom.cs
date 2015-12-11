@@ -2,7 +2,7 @@
 
 namespace tictactoeTests.Classes
 {
-    class MockRandom : Random
+    public class MockRandom : Random
     {
         private static int _sequenceNumber = 0;
 

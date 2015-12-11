@@ -1,29 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using tictactoe.Classes;
-using tictactoeTests.Classes;
+using tictactoeTests.Properties;
 
 namespace tictactoeTests.Classes
 {
     [TestClass()]
-    public class AiTests
+    public class AiTests : BaseAiTest
     {
-        readonly string[,] _board = { { " ", "", "X" }, { "O", " ", "X" }, { " ", " ", "" } };
-        readonly Random _randomGenerator = new Random();
-        readonly MockRandom _mockRandomGenerator = new MockRandom();
-
         [TestMethod()]
-        public void Ai_BoardParameterValidUse_Success()
+        public void Ai_ValidUse_Success()
         {
             // Arrange
             // Act
-            var computerPlayer = new Ai(_board, _randomGenerator);
+            var computerPlayer = new Ai(GetBoard(), GetRandom());
             
             // Assert
-            Assert.AreEqual(computerPlayer.Board, _board);
+            Assert.AreEqual(computerPlayer.Board, GetBoard());
         }
 
         [TestMethod()]
@@ -32,7 +26,7 @@ namespace tictactoeTests.Classes
         {
             // Arrange
             // Act
-            var computerPlayer = new Ai(null, _randomGenerator);
+            var computerPlayer = new Ai(null, GetRandom());
 
             // Assert
             Assert.Fail("No exception was thrown.");
@@ -43,7 +37,7 @@ namespace tictactoeTests.Classes
         public void IsBoardFieldEmpty_BoardCoordinatesOutOfRange_ThrowsException()
         {
             // Arrange
-            var board = _board;
+            var board = GetBoard();
             
             // Act
             Ai.IsBoardFieldEmpty(board, 4, 5);
@@ -70,7 +64,7 @@ namespace tictactoeTests.Classes
         public void IsBoardFieldEmpty_ValidUse_Success()
         {
             // Arrange
-            var board = _board;
+            var board = GetBoard();
 
             // Act
             var isEmpty = Ai.IsBoardFieldEmpty(board, 0, 0);
@@ -89,12 +83,12 @@ namespace tictactoeTests.Classes
         public void GetMove_EasyAiValidMove_Success()
         {
             // Arrange
-            var computerPlayer = new Ai(_board, _randomGenerator);
+            var computerPlayer = new Ai(GetBoard(), GetRandom());
             var expectedMove = new Ai.Move() {X = 2, Y = 0};
             const int aiDifficulty = (int)Ai.AiDifficulty.Easy;
 
             // Act
-            var computersMove = computerPlayer.GetMove("O", aiDifficulty);
+            var computersMove = computerPlayer.GetMove(Resources.BoardCrossMark, aiDifficulty);
             
             // Assert
             Assert.AreEqual(expectedMove.X, computersMove.X);
@@ -106,11 +100,11 @@ namespace tictactoeTests.Classes
         public void GetMove_DifficultyIsOutOfRange_ThrowsException()
         {
             // Arrange
-            var computerPlayer = new Ai(_board, _randomGenerator);
+            var computerPlayer = new Ai(GetBoard(), GetRandom());
             const int aiDifficulty = 5;
 
             // Act
-            computerPlayer.GetMove("X", aiDifficulty);
+            computerPlayer.GetMove(Resources.BoardCrossMark, aiDifficulty);
 
             // Assert
             Assert.Fail("No exception was thrown.");
@@ -120,7 +114,7 @@ namespace tictactoeTests.Classes
         public void GetMove_MediumAiValidMove_Success()
         {
             // Arrange
-            var computerPlayer = new Ai(_board, _mockRandomGenerator);
+            var computerPlayer = new Ai(GetBoard(), GetMockRandom());
             const int aiDifficulty = (int)Ai.AiDifficulty.Medium;
             
             // Possible valid moves
@@ -132,10 +126,10 @@ namespace tictactoeTests.Classes
             Ai.Move[] validMoves = { validMoveOne, validMoveTwo, validMoveThree, validMoveFour};
 
             // Act
-            var computedMoveOne = computerPlayer.GetMove("O", aiDifficulty);
-            var computedMoveTwo = computerPlayer.GetMove("O", aiDifficulty);
-            var computedMoveThree = computerPlayer.GetMove("O", aiDifficulty);
-            var computedMoveFour = computerPlayer.GetMove("O", aiDifficulty);
+            var computedMoveOne = computerPlayer.GetMove(Resources.BoardCircleMark, aiDifficulty);
+            var computedMoveTwo = computerPlayer.GetMove(Resources.BoardCircleMark, aiDifficulty);
+            var computedMoveThree = computerPlayer.GetMove(Resources.BoardCircleMark, aiDifficulty);
+            var computedMoveFour = computerPlayer.GetMove(Resources.BoardCircleMark, aiDifficulty);
 
             Ai.Move[] computedMoves = {computedMoveOne, computedMoveTwo, computedMoveThree, computedMoveFour};
 
@@ -154,9 +148,9 @@ namespace tictactoeTests.Classes
             const int aiDifficulty = (int)Ai.AiDifficulty.Impossible;
             
             // Players mark is X
-            string[,] boardPlayerStartsFirstOne = { { "X", "O", "X" }, { "X", "O", " " }, { " ", " ", " " } };
-            string[,] boardPlayerStartsFirstTwo = { { "X", "O", "X" }, { "O", "O", " " }, { "X", "X", " " } };
-            string[,] boardPlayerStartsFirstThree = { { "X", "O", "X" }, { "O", "O", "X" }, { " ", "X", " " } };
+            string[,] boardPlayerStartsFirstOne = GetBoardPlayerStartsFirstOne();
+            string[,] boardPlayerStartsFirstTwo = GetBoardPlayerStartsFirstTwo();
+            string[,] boardPlayerStartsFirstThree = GetBoardPlayerStartsFirstThree();
 
             string[][,] boardsPlayerStartsFirst = {boardPlayerStartsFirstOne, boardPlayerStartsFirstTwo,
                 boardPlayerStartsFirstThree};
@@ -172,9 +166,9 @@ namespace tictactoeTests.Classes
             };
 
             // Players mark is O
-            string[,] boardAiStartsFirstOne = { { "X", "O", " " }, { "X", "X", " " }, { "O", "O", " " } };
-            string[,] boardAiStartsFirstTwo = { { "X", "O", " " }, { "X", "X", " " }, { "O", " ", "O" } };
-            string[,] boardAiStartsFirstThree = { { "X", "X", "O" }, { "O", "O", " " }, { "X", " ", " " } };
+            string[,] boardAiStartsFirstOne = GetBoardAiStartsFirstOne();
+            string[,] boardAiStartsFirstTwo = GetBoardAiStartsFirstTwo();
+            string[,] boardAiStartsFirstThree = GetBoardAiStartsFirstThree();
 
             string[][,] boardsAiStartsFirst = {boardAiStartsFirstOne, boardAiStartsFirstTwo,
                 boardAiStartsFirstThree};
@@ -194,12 +188,12 @@ namespace tictactoeTests.Classes
             // Act
             for (int i = 0; i < 3; i++)
             {
-                var computerPlayerOMark = new Ai(boardsPlayerStartsFirst[i], _randomGenerator);
-                var playerStartsFirstMove = computerPlayerOMark.GetMove("O", aiDifficulty);
+                var computerPlayerOMarkAi = new Ai(boardsPlayerStartsFirst[i], GetRandom());
+                var playerStartsFirstMove = computerPlayerOMarkAi.GetMove(Resources.BoardCircleMark, aiDifficulty);
                 performedPlayerStartsFirstMoves.Add(playerStartsFirstMove);
 
-                var computerPlayerXMark = new Ai(boardsAiStartsFirst[i], _randomGenerator);
-                var aiStartsFirstMove = computerPlayerXMark.GetMove("X", aiDifficulty);
+                var computerPlayerXMarkAi = new Ai(boardsAiStartsFirst[i], GetRandom());
+                var aiStartsFirstMove = computerPlayerXMarkAi.GetMove(Resources.BoardCrossMark, aiDifficulty);
                 
                 performedAiStartsFirstMoves.Add(aiStartsFirstMove);
             }
@@ -220,14 +214,14 @@ namespace tictactoeTests.Classes
         public void GetMove_InvalidPlayerMarkArgument_ThrowsException()
         {
             // Arrange
-            var computerPlayer = new Ai(_board, _randomGenerator);
+            var computerPlayer = new Ai(GetBoard(), GetRandom());
             const int aiDifficulty = (int)Ai.AiDifficulty.Easy;
 
             // Act
             computerPlayer.GetMove("invalidMark", aiDifficulty);
 
             // Assert
-            Assert.Fail();
+            Assert.Fail("No exception was thrown.");
         }
     }
 }
