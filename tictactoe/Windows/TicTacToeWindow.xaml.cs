@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +19,7 @@ namespace tictactoe.Windows
         {
             InitializeComponent();
 
-            var buttonCollection = GridPlayingField.Children.OfType<Button>();
+            List<Button> buttonCollection = new List<Button>(GridPlayingField.Children.OfType<Button>());
             _tictactoe = new Tictactoe(buttonCollection);
 
             // Update the user interface

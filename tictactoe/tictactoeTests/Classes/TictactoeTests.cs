@@ -17,7 +17,7 @@ namespace tictactoeTests.Classes
         public void TicTacToe_ButtonListParameterIsNull_ThrowsException()
         {
             // Arrange
-            IEnumerable<Button> nullButtonList = null;
+            List<Button> nullButtonList = null;
 
             // Act
             var ticTacToe = new Tictactoe(nullButtonList);
@@ -31,8 +31,8 @@ namespace tictactoeTests.Classes
         public void TicTacToe_InvalidButtonCountInButtonList_ThrowsException()
         {
             // Arrange
-            IEnumerable<Button> filteredButtonList =
-                GetBoardButtons().Where(x => x.Tag.ToString().StartsWith("0"));
+            List<Button> filteredButtonList =
+                new List<Button>(GetBoardButtons().Where(x => x.Tag.ToString().StartsWith("0")));
 
             // Act
             var ticTacToe = new Tictactoe(filteredButtonList);
